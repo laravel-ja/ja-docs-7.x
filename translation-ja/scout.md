@@ -37,7 +37,7 @@ Laravel Scout（スカウト、斥候）は、[Eloquentモデル](/docs/{{versio
 
     composer require laravel/scout
 
-Scoutをインストールしたら、`vendor:publish` Artisanコマンドを使用し、Scout設定ファイルを公開します。このコマンドは、`config`ディレクトリ下に`scout.php`設定ファイルを公開します。
+Scoutをインストールしたら、`vendor:publish` Artisanコマンドを使用し、Scout設定ファイルをリソース公開します。このコマンドは、`config`ディレクトリ下に`scout.php`設定ファイルをリソース公開します。
 
     php artisan vendor:publish --provider="Laravel\Scout\ScoutServiceProvider"
 

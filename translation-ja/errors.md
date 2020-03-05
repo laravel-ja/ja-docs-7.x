@@ -174,6 +174,6 @@ Laravelは可能である場合、文脈上のデータとしてすべての例�
 
     <h2>{{ $exception->getMessage() }}</h2>
 
-Laravelのエラーページテンプレートは、`vendor:publish` Artisanコマンドで公開できます。テンプレートを公開したら、好みのようにカスタマイズできます。
+Laravelのエラーページテンプレートは、`vendor:publish` Artisanコマンドでリソース公開できます。テンプレートをリソース公開したら、好みのようにカスタマイズできます。
 
     php artisan vendor:publish --tag=laravel-errors

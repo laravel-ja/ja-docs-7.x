@@ -142,11 +142,11 @@ Passportはデフォルトで、`user_id`の保存に整数カラムを使用し
 
 パスポートは皆さんのユーザーへ、クライアントとパーソナルアクセストークンを作成するために使用するJSON APIを初めから提供しています。しかし、こうしたAPIに関連するフロントエンドをコーディングするには時間を要します。そこで、Passportは実装例、もしくは実装の開始地点として役立ててもらうため、[Vue](https://vuejs.org)コンポーネントも用意しています。
 
-Passport Vueコンポーネントを公開（Laravel用語で開発者が変更可能なリソースを用意すること）するには、`vendor:publish` Artisanコマンドを使用します。
+Passport Vueコンポーネントをリソース公開するには、`vendor:publish` Artisanコマンドを使用します。
 
     php artisan vendor:publish --tag=passport-components
 
-公開されたコンポーネントは、`resources/js/components`ディレクトリへ設置されます。公開したコンポーネントは、`resources/js/app.js`ファイルで登録してください。
+リソース公開されたコンポーネントは、`resources/js/components`ディレクトリへ設置されます。リソース公開したコンポーネントは、`resources/js/app.js`ファイルで登録してください。
 
     Vue.component(
         'passport-clients',
@@ -194,7 +194,7 @@ Passportを実働サーバへ最初にデプロイするとき、`passport:keys`
         Passport::loadKeysFrom('/secret-keys/oauth');
     }
 
-さらに、`php artisan vendor:publish --tag=passport-config`により、Passportの設定ファイルを公開することもできます。これにより、環境変数から暗号化キーをロードするためのオプションを提供しています。
+さらに、`php artisan vendor:publish --tag=passport-config`により、Passportの設定ファイルをリソース公開することもできます。これにより、環境変数から暗号化キーをロードするためのオプションを提供しています。
 
     PASSPORT_PRIVATE_KEY="-----BEGIN RSA PRIVATE KEY-----
     <private key here>
@@ -381,7 +381,7 @@ JSON APIは`web`と`auth`ミドルウェアにより保護されています。�
 
 許可のリクエストを受け取ると、Passportはユーザーがその許可のリクエストを承認するか、拒絶するかのテンプレートを自動的に表示します。ユーザーが許可した場合、API利用側アプリケーションが指定した`redirect_uri`へリダイレクトします。`redirect_uri`は、クライアントを作成した時に指定した`redirect`のURLと一致する必要があります。
 
-許可の承認ページをカスタマイズしたい場合は、`vendor:publish` Artisanコマンドを使い、Passportのビューを公開することでリソースを用意する必要があります。公開されたビューは、`resources/views/vendor/passport`へ設置されます。
+許可の承認ページをカスタマイズしたい場合は、`vendor:publish` Artisanコマンドを使い、Passportのビューを公開することでリソースを用意する必要があります。リソース公開されたビューは、`resources/views/vendor/passport`へ設置されます。
 
     php artisan vendor:publish --tag=passport-views
 

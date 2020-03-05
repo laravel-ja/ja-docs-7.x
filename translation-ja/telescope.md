@@ -43,7 +43,7 @@ LaravelプロジェクトへTelescopeをインストールするには、Compose
 
     composer require laravel/telescope
 
-Telescopeをインストールしたら、`telescope:install` Artisanコマンドを使用し、アセットを公開してください。Telescopeのインストールが終わったら、`migrate`コマンドも実行する必要があります。
+Telescopeをインストールしたら、`telescope:install` Artisanコマンドを使用し、アセットをリソース公開してください。Telescopeのインストールが終わったら、`migrate`コマンドも実行する必要があります。
 
     php artisan telescope:install
 
@@ -51,7 +51,7 @@ Telescopeをインストールしたら、`telescope:install` Artisanコマン�
 
 #### Telescopeのアップデート
 
-Telescopeを更新したら、Telescopeのアセットを再公開してください。
+Telescopeを更新したら、Telescopeのアセットを再リソース公開してください。
 
     php artisan telescope:publish
 
@@ -83,7 +83,7 @@ Telescopeのデフォルトマイグレーションに従わない場合、`AppS
 <a name="configuration"></a>
 ### 設定
 
-Telescopeのアセットを公開すると、主となる設定ファイルが`config/telescope.php`へ設置されます。この設定ファイルでワッチャーのオプションや、説明をコメントで記述している各種の設定オプションを調整できます。そのため、このファイルを全部読んでください。
+Telescopeのアセットをリソース公開すると、主となる設定ファイルが`config/telescope.php`へ設置されます。この設定ファイルでワッチャーのオプションや、説明をコメントで記述している各種の設定オプションを調整できます。そのため、このファイルを全部読んでください。
 
 望むのであれば、`enabled`設定オプションを使用し、Telescopeのデータ収集全体を無効にできます。
 

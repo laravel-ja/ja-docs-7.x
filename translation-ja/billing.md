@@ -74,7 +74,7 @@ CashierサービスプロバーダでCashierのデータベースマイグレー
 
     php artisan migrate
 
-Cashierパッケージに始めから含まれているマイグレーションをオーバーライトしたい場合は、`vendor:publish` Artisanコマンドを使用し公開できます。
+Cashierパッケージに始めから含まれているマイグレーションをオーバーライトしたい場合は、`vendor:publish` Artisanコマンドを使用しリソース公開できます。
 
     php artisan vendor:publish --tag="cashier-migrations"
 
@@ -105,7 +105,7 @@ CashierはLaravelに含まれている`App\User`クラスがBillableモデルで
 
     CASHIER_MODEL=App\User
 
-> {note} Laravelの提供する`App\User`モデル以外のモデルを使用する場合は、提供している[マイグレーション](#installation)を公開し、モデルのテーブル名に一致するように変更する必要があります。
+> {note} Laravelの提供する`App\User`モデル以外のモデルを使用する場合は、提供している[マイグレーション](#installation)をリソース公開し、モデルのテーブル名に一致するように変更する必要があります。
 
 <a name="api-keys"></a>
 ### APIキー

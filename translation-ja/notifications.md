@@ -311,7 +311,7 @@ Laravelの各通知は、（通常、`app/Notifications`ディレクトリに設
 <a name="customizing-the-templates"></a>
 ### テンプレートのカスタマイズ
 
-通知パッケージのリソースを公開（開発者が変更できる場所にリソースを用意することを示すLaravel用語）することにより、メール通知で使用されるHTMLと平文テキストのテンプレートを変更することが可能です。次のコマンドを実行した後、メール通知のテンプレートは`resources/views/vendor/notifications`ディレクトリ下に作成されます。
+通知パッケージのリソースをリソース公開することにより、メール通知で使用されるHTMLと平文テキストのテンプレートを変更することが可能です。次のコマンドを実行した後、メール通知のテンプレートは`resources/views/vendor/notifications`ディレクトリ下に作成されます。
 
     php artisan vendor:publish --tag=laravel-notifications
 
@@ -404,11 +404,11 @@ Markdownメール通知ではBladeコンポーネントとMarkdown記法が利�
 <a name="customizing-the-components"></a>
 ### コンポーネントカスタマイズ
 
-自身のアプリケーション向きにカスタマイズできるように、Markdown通知コンポーネントはすべてエクスポートできます。コンポーネントをエクスポートするには、`vendor:publish` Artisanコマンドを使い、`laravel-mail`アセットを公開します。
+自身のアプリケーション向きにカスタマイズできるように、Markdown通知コンポーネントはすべてエクスポートできます。コンポーネントをエクスポートするには、`vendor:publish` Artisanコマンドを使い、`laravel-mail`アセットをリソース公開します。
 
     php artisan vendor:publish --tag=laravel-mail
 
-このコマンドにより、`resources/views/vendor/mail`ディレクトリ下にMarkdownメールコンポーネントが公開されます。`mail`ディレクトリ下に、`html`と`text`ディレクトリがあります。各ディレクトリは名前が示す形式で、利用できるコンポーネントすべてのレスポンシブなプレゼンテーションを持っています。これらのコンポーネントはお好きなよう、自由にカスタマイズしてください。
+このコマンドにより、`resources/views/vendor/mail`ディレクトリ下にMarkdownメールコンポーネントがリソース公開されます。`mail`ディレクトリ下に、`html`と`text`ディレクトリがあります。各ディレクトリは名前が示す形式で、利用できるコンポーネントすべてのレスポンシブなプレゼンテーションを持っています。これらのコンポーネントはお好きなよう、自由にカスタマイズしてください。
 
 #### CSSのカスタマイズ
 

@@ -491,11 +491,11 @@ Markdown MailableではBladeコンポーネントとMarkdown記法が利用で�
 <a name="customizing-the-components"></a>
 ### コンポーネントのカスタマイズ
 
-自身のアプリケーション向きにカスタマイズできるように、Markdownメールコンポーネントはすべてエクスポートできます。コンポーネントをエクスポートするには、`vendor:publish` Artisanコマンドを使い、`laravel-mail`アセットを公開します。
+自身のアプリケーション向きにカスタマイズできるように、Markdownメールコンポーネントはすべてエクスポートできます。コンポーネントをエクスポートするには、`vendor:publish` Artisanコマンドを使い、`laravel-mail`アセットをリソース公開します。
 
     php artisan vendor:publish --tag=laravel-mail
 
-このコマンドにより、`resources/views/vendor/mail`ディレクトリ下に、Markdownメールコンポーネントが公開されます。`mail`ディレクトリ下に、`html`と`markdown`ディレクトリがあります。各ディレクトリは名前が示す形式で、利用できる全コンポーネントを持っています。これらのコンポーネントはお好きなように、自由にカスタマイズしてください。
+このコマンドにより、`resources/views/vendor/mail`ディレクトリ下に、Markdownメールコンポーネントがリソース公開されます。`mail`ディレクトリ下に、`html`と`markdown`ディレクトリがあります。各ディレクトリは名前が示す形式で、利用できる全コンポーネントを持っています。これらのコンポーネントはお好きなように、自由にカスタマイズしてください。
 
 #### CSSのカスタマイズ
 

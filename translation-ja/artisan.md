@@ -48,7 +48,7 @@ TinkerによりコマンドラインでEloquent ORM、ジョブ、イベント�
 
     php artisan tinker
 
-`vendor:publish`コマンドにより、Tinkerの設定ファイルを公開することもできます。
+`vendor:publish`コマンドにより、Tinkerの設定ファイルをリソース公開することもできます。
 
     php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
 
