@@ -17,7 +17,7 @@
     - [コンポーネントのカスタマイズ](#customizing-the-components)
 - [メール送信](#sending-mail)
     - [キュー使用メール](#queueing-mail)
-- [Mailableのレンダリング](#rendering-mailables)
+- [Mailableのレンダーリング](#rendering-mailables)
     - [Previewing Mailables In The Browser](#previewing-mailables-in-the-browser)
 - [Mailableのローカライズ](#localizing-mailables)
 - [メールとローカル開発](#mail-and-local-development)
@@ -557,7 +557,7 @@ By default, Laravel will use the mailer configured as the `default` mailer in yo
             ->send(new OrderShipped($order));
 
 <a name="rendering-mailables"></a>
-## Mailableのレンダリング
+## Mailableのレンダーリング
 
 場合により、実際に送信はしないが、MailableのHTMLコンテンツを利用したいことも起きます。そのためには、Mailableの`render`メソッドを呼び出してください。このメソッドは、Mailableのコンテンツを評価し、文字列として返します。
 
@@ -568,7 +568,7 @@ By default, Laravel will use the mailer configured as the `default` mailer in yo
 <a name="previewing-mailables-in-the-browser"></a>
 ### Previewing Mailables In The Browser
 
-mailableのテンプレートをデザインしているとき、Bladeテンプレートのようにブラウザでレンダし、簡単にレビューできると便利です。そのため、Laravelでは、ルートのクロージャやコントローラから直接mailableを返すことができます。mailableが返されるとレンダされ、ブラウザに表示されますので、実際のメールアドレスへ送る必要はなく、素早くレビューできます。
+mailableのテンプレートをデザインしているとき、Bladeテンプレートのようにブラウザでレンダーし、簡単にレビューできると便利です。そのため、Laravelでは、ルートのクロージャやコントローラから直接mailableを返すことができます。mailableが返されるとレンダーされ、ブラウザに表示されますので、実際のメールアドレスへ送る必要はなく、素早くレビューできます。
 
     Route::get('mailable', function () {
         $invoice = App\Invoice::find(1);

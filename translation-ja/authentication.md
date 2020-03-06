@@ -28,7 +28,7 @@
 <a name="introduction"></a>
 ## イントロダクション
 
-> {tip} **Want to get started fast?** Install the `laravel/ui` Composer package and run `php artisan ui vue --auth` in a fresh Laravel application. After migrating your database, navigate your browser to `http://your-app.test/register` or any other URL that is assigned to your application. These commands will take care of scaffolding your entire authentication system!
+> {tip} **さくっと始めたいですか？** 真新しくインストールしたLaravelアプリケーションに`laravel/ui` Composerパッケージをインストールし、`php artisan ui vue --auth`を実行してください。データベースをマイグレーションし、`http://your-app.test/register`かアプリケーションに割り付けた別のURLをブラウザでアクセスしましょう。これらのコマンドが、認証システム全体のスカフォールドの面倒を見ます。
 
 Laravelでは簡単に認証が実装できます。実のところ、ほぼすべて最初から設定済みです。認証の設定ファイルは`config/auth.php`に用意してあり、認証サービスの振る舞いを調整できるように、読みやすいコメント付きでたくさんのオプションが用意されています。
 

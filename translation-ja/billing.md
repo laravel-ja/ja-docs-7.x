@@ -469,7 +469,7 @@ Stripeがサポートしている追加のフィールドについてのさら�
     use Laravel\Cashier\Cashier;
 
     /**
-     * Register any application services.
+     * 全アプリケーションサービスの登録
      *
      * @return void
      */
