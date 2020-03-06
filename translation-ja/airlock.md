@@ -1,62 +1,62 @@
 # Laravel Airlock
 
-- [Introduction](#introduction)
-    - [How It Works](#how-it-works)
-- [Installation](#installation)
-- [API Token Authentication](#api-token-authentication)
-    - [Issuing API Tokens](#issuing-api-tokens)
-    - [Token Abilities](#token-abilities)
-    - [Protecting Routes](#protecting-routes)
-    - [Revoking Tokens](#revoking-tokens)
-- [SPA Authentication](#spa-authentication)
-    - [Configuration](#spa-configuration)
-    - [Authenticating](#spa-authenticating)
-    - [Protecting Routes](#protecting-spa-routes)
-    - [Authorizing Private Broadcast Channels](#authorizing-private-broadcast-channels)
-- [Mobile Application Authentication](#mobile-application-authentication)
-    - [Issuing API Tokens](#issuing-mobile-api-tokens)
-    - [Protecting Routes](#protecting-mobile-api-routes)
-    - [Revoking Tokens](#revoking-mobile-api-tokens)
-- [Testing](#testing)
+- [イントロダクション](#introduction)
+    - [動作の仕組み](#how-it-works)
+- [インストール](#installation)
+- [APIトークン認証](#api-token-authentication)
+    - [APIトークン発行](#issuing-api-tokens)
+    - [トークンのアビリティ](#token-abilities)
+    - [ルート保護](#protecting-routes)
+    - [トークン破棄](#revoking-tokens)
+- [SPA認証](#spa-authentication)
+    - [設定](#spa-configuration)
+    - [認証](#spa-authenticating)
+    - [ルート保護](#protecting-spa-routes)
+    - [プライベートブロードキャストチャンネルの認証](#authorizing-private-broadcast-channels)
+- [モバイルアプリの認証](#mobile-application-authentication)
+    - [APIトークン発行](#issuing-mobile-api-tokens)
+    - [ルート保護](#protecting-mobile-api-routes)
+    - [トークン破棄](#revoking-mobile-api-tokens)
+- [テスト](#testing)
 
 <a name="introduction"></a>
-## Introduction
+## イントロダクション
 
-Laravel Airlock provides a featherweight authentication system for SPAs (single page applications), mobile applications, and simple, token based APIs. Airlock allows each user of your application to generate multiple API tokens for their account. These tokens may be granted abilities / scopes which specify which actions the tokens are allowed to perform.
+Laravel Airlock（エアーロック）はSPA（Single Page Applications）のための、シンプルでトークンベースのAPIを使った羽のように軽い認証システムです。Airlockはアプリケーションのユーザーのアカウントごとに、複数のAPIトークンを生成できます。これらのトークンには、実行可能なアクションを限定するアビリティ・スコープを与えられます。
 
 <a name="how-it-works"></a>
-### How It Works
+### 動作の仕組み
 
-#### API Tokens
+#### APIトークン
 
-Laravel Airlock exists to solve two separate problems. First, it is a simple package to issue API tokens to your users without the complication of OAuth. This feature is inspired by GitHub "access tokens". For example, imagine the "account settings" of your application has a screen where a user may generate an API token for their account. You may use Airlock to generate and manage those tokens. These tokens typically have a very long expiration time (years), but may be manually revoked by the user at anytime.
+Laravel Airlockは、別々の問題２つを解決するために存在しています。１つ目はOAuthの煩雑さなしにユーザーへAPIトークンを発行するためのシンプルなパッケージの提供です。たとえば、ユーザーがAPIトークンを自分のアカウントへ生成すると想像してください。アプリケーションへ「アカウント設定」ページを用意するでしょう。こうしたトークンを生成し、管理するためにAirlockが使われます。こうしたトークンへは通常数年にも渡る、とても長い有効期間を指定します。しかし、ユーザー自身はいつでも破棄可能です。
 
-Laravel Airlock offers this feature by storing user API tokens in a single database table and authenticating incoming requests via the `Authorization` header which should contain a valid API token.
+この機能を実現するため、Laravelは一つのデータベーステーブルへユーザーのAPIトークンを保存しておき、受信したリクエストが`Authorization`ヘッダに有効なAPIトークンを含んでいるかにより認証します。
 
-#### SPA Authentication
+#### SPA認証
 
-> {tip} It is perfectly fine to use Airlock only for API token authentication or only for SPA authentication. Just because you use Airlock does not mean you are required to use both features it offers.
+> {tip} APIトークン認証だけを使う場合、もしくはAPIトークン認証だけを使う場合のどちらにもAirlockは適しています。Airlockが２つの機能を提供しているからと言っても、両方共に使う必要はありません。
 
-Second, Airlock exists to offer a simple way to authenticate single page applications (SPAs) that need to communicate with a Laravel powered API. These SPAs might exist in the same repository as your Laravel application or might be an entirely separate repository, such as a SPA created using Vue CLI.
+２つ目の存在理由は、Laravelが提供するAPIを使用し通信する必要があるシングルページアプリケーション(SPA)へ、シンプルな認証方法を提供するためです。こうしたSPAはLaravelアプリケーションと同じリポジトリにあっても、まったく別のリポジトリに存在していてもかまいません。
 
-For this feature, Airlock does not use tokens of any kind. Instead, Airlock uses Laravel's built-in cookie based session authentication services. This provides the benefits of CSRF protection, session authentication, as well as protects against leakage of the authentication credentials via XSS. Airlock will only attempt to authenticate using cookies when the incoming request originates from your own SPA frontend.
+Airlockはこの機能の実現のためにトークンは一切使用しません。Laravelへ組み込まれているクッキーベースのセッション認証サービスを使用します。これにより、XSSによる認証情報リークに対する保護と同時に、CSRF保護・セッションの認証を提供しています。皆さんのSPAのフロントエンドから送信されるリクエストに対し、Airlockはクッキーだけを使用して認証を確立しようとします。
 
 <a name="installation"></a>
-## Installation
+## インストール
 
-You may install Laravel Airlock via Composer:
+Laravel AirlockはComposerでインストールします。
 
     composer require laravel/airlock
 
-Next, you should publish the Airlock configuration and migration files using the `vendor:publish` Artisan command. The `airlock` configuration file will be placed in your `config` directory:
+次に、`vendor:publish` Artisanコマンドを使用して、Airlockの設定とマイグレーションをリソース公開します。`airlock`設定ファイルが`config`ディレクトリに設置されます。
 
     php artisan vendor:publish --provider="Laravel\Airlock\AirlockServiceProvider"
 
-Finally, you should run your database migrations. Airlock will create one database table in which to store API tokens:
+最後に、データベースマイグレーションを実行してください。AirlockはAPIトークンを保存しておくデータベースを１つ作成します。
 
     php artisan migrate
 
-Next, if you plan to utilize Airlock to authenticate an SPA, you should add Airlock's middleware to your `api` middleware group within your `app/Http/Kernel.php` file:
+SPAの認証のためにAirlockを活用しようと計画している場合は、`app/Http/Kernel.php`ファイル中の`api`ミドルウェアグループへ、Airlockのミドルウェアを追加します。
 
     use Laravel\Airlock\Http\Middleware\EnsureFrontendRequestsAreStateful;
 
@@ -67,16 +67,16 @@ Next, if you plan to utilize Airlock to authenticate an SPA, you should add Airl
     ],
 
 <a name="api-token-authentication"></a>
-## API Token Authentication
+## APIトークン認証
 
-> {tip} You should not use API tokens to authenticate your own first-party SPA. Instead, use Airlock's built-in [SPA authentication](#spa-authentication).
+> {tip} 皆さん自身のファーストパーティSPAを認証するためにAPIトークンを決して利用してはいけません。代わりに、Airlockの組み込み[SPA認証](#spa-authentication)を使用してください。
 
 <a name="issuing-api-tokens"></a>
-### Issuing API Tokens
+### APIトークン発行
 
-Airlock allows you to issue API tokens / personal access tokens that may be used to authenticate API requests. When making requests using API tokens, the token should be included in the `Authorization` header as a `Bearer` token.
+APIリクエスト認証に使用するため、APIトークン／パーソナルアクセストークンをAirlockは発行します。APIトークンを利用するリクエストを作成する場合は、`Bearer`トークンとして`Authorization`ヘッダにトークンを含める必要があります。
 
-To begin issuing tokens for users, your User model should use the `HasApiTokens` trait:
+ユーザーにトークンを発行開始するには、Userモデルで`HasApiTokens`トレイトを使用してください。
 
     use Laravel\Airlock\HasApiTokens;
 
@@ -85,70 +85,70 @@ To begin issuing tokens for users, your User model should use the `HasApiTokens`
         use HasApiTokens, Notifiable;
     }
 
-To issue a token, you may use the `createToken` method. The `createToken` method returns a `Laravel\Airlock\NewAccessToken` instance. API tokens are hashed using SHA-256 hashing before being stored in your database, but you may access the plain-text value of the token using the `plainTextToken` property of the `NewAccessToken` instance. You should display this value to the user immediately after the token has been created:
+トークンを発行するには、`createToken`メソッドを使用します。この`createToken`メソッドは`Laravel\Airlock\NewAccessToken`インスタンスを返します。APIトークンはデータベースへ格納される前に、SHA-256を使いハッシュされますが、`NewAccessToken`インスタンスの`plainTextToken`プロパティにより、平文の値へアクセスできます。トークンを生成したら、ユーザーへこの値を表示しなくてはなりません。
 
     $token = $user->createToken('token-name');
 
     return $token->plainTextToken;
 
-You may access all of the user's tokens using the `tokens` Eloquent relationship provided by the `HasApiTokens` trait:
+そのユーザーのトークンすべてにアクセスするには、`HasApiTokens`トレイトが提供する`tokens` Eloquentリレーションを使用します。
 
     foreach ($user->tokens as $token) {
         //
     }
 
 <a name="token-abilities"></a>
-### Token Abilities
+### トークンのアビリティ
 
-Airlock allows you to assign "abilities" to tokens, similar to OAuth "scopes". You may pass an array of string abilities as the second argument to the `createToken` method:
+OAuthの「スコープ」と同じように、Airlockは「アビリティ（能力）」をトークンへ割り付けられます。`createToken`メソッドの第２引数として、アビリティの文字列の配列を渡してください。
 
     return $user->createToken('token-name', ['server:update'])->plainTextToken;
 
-When handling an incoming request authenticated by Airlock, you may determine if the token has a given ability using the `tokenCan` method:
+Airlockにより認証されたリクエストを処理するとき、そのトークンが特定のアビリティを持っているかを`tokenCan`メソッドで判定できます。
 
     if ($user->tokenCan('server:update')) {
         //
     }
 
-> {tip} For convenience, the `tokenCan` method will always return `true` if the incoming authenticated request was from your first-party SPA and you are using Airlock's built-in [SPA authentication](#spa-authentication).
+> {tip} 利便性のため、`tokenCan`メソッドは受信認証済みリクエストがファーストパーティSPAから送信されたとき、もしくはAirlockの組み込み[SPA認証](#spa-authentication)を使用している場合は常に`true`を返します。
 
 <a name="protecting-routes"></a>
-### Protecting Routes
+### ルート保護
 
-To protect routes so that all incoming requests must be authenticated, you should attach the `airlock` authentication guard to your API routes within your `routes/api.php` file. This guard will ensure that incoming requests are authenticated as either a stateful authenticated requests from your SPA or contain a valid API token header if the request is from a third party:
+受信リクエストをすべて認証済みに限定し、ルートを保護する場合は、`routes/api.php`ファイル中のAPIルートに対して`airlock`認証ガードを指定する必要があります。このガードは受信リクエストが認証済みであると保証します。そのリクエストが皆さん自身のSPAからのステートフルな認証済みであるか、もしくはサードパーティからのリクエストの場合は有効なAPIトークンのヘッダを持っているかのどちらか一方であるか確認します。
 
     Route::middleware('auth:airlock')->get('/user', function (Request $request) {
         return $request->user();
     });
 
 <a name="revoking-tokens"></a>
-### Revoking Tokens
+### トークン破棄
 
-You may "revoke" tokens by deleting them from your database using the `tokens` relationship that is provided by the `HasApiTokens` trait:
+データベースから削除し、トークンを「破棄」するには、`HasApiTokens`トレイトが提供している`tokens`リレーションを使用します。
 
-    // Revoke all tokens...
+    // 全トークンの破棄
     $user->tokens()->delete();
 
-    // Revoke a specific token...
+    // 特定トークンの破棄
     $user->tokens()->where('id', $id)->delete();
 
 <a name="spa-authentication"></a>
-## SPA Authentication
+## SPA認証
 
-Airlock exists to offer a simple way to authenticate single page applications (SPAs) that need to communicate with a Laravel powered API. These SPAs might exist in the same repository as your Laravel application or might be an entirely separate repository, such as a SPA created using Vue CLI.
+Laravelが提供するAPIを使用し通信する必要があるシングルページアプリケーション(SPA)へ、シンプルな認証方法を提供するためです。こうしたSPAはLaravelアプリケーションと同じリポジトリにあっても、もしくはVue CLIを使用して生成したSPAのように、まったく別のリポジトリに存在していてもかまいません。
 
-For this feature, Airlock does not use tokens of any kind. Instead, Airlock uses Laravel's built-in cookie based session authentication services. This provides the benefits of CSRF protection, session authentication, as well as protects against leakage of the authentication credentials via XSS. Airlock will only attempt to authenticate using cookies when the incoming request originates from your own SPA frontend.
+Airlockはこの機能の実現のためにトークンは一切使用しません。Laravelへ組み込まれているクッキーベースのセッション認証サービスを使用します。これにより、XSSによる認証情報リークに対する保護と同時に、CSRF保護・セッションの認証を提供しています。皆さんのSPAのフロントエンドから送信されるリクエストに対し、Airlockはクッキーだけを使用して認証を確立しようとします。
 
 <a name="spa-configuration"></a>
-### Configuration
+### 設定
 
-#### Configuring Your First-Party Domains
+#### ファーストパーティドメインの設定
 
-First, you should configure which domains your SPA will be making requests from. You may configure these domains using the `stateful` configuration option in your `airlock` configuration file. This configuration setting determines which domains will maintain "stateful" authentication using Laravel session cookies when making requests to your API.
+最初に、どのドメインから皆さんのSPAがリクエストを作成するのか設定する必要があります。`airlock`設定ファイルの`stateful`設定オプションを利用してこのドメインを指定します。この設定を元にして皆さんのAPIへリクエストを作成するときに、Laravelのセッションクッキーを使用することで「ステートフル」な認証を維持する必要があるドメインを判断します。
 
-#### Airlock Middleware
+#### Airlockミドルウェア
 
-Next, you should add Airlock's middleware to your `api` middleware group within your `app/Http/Kernel.php` file. This middleware is responsible for ensuring that incoming requests from your SPA can authenticate using Laravel's session cookies, while still allowing requests from third parties or mobile applications to authenticate using API tokens:
+次に、`app/Http/Kernel.php`ファイル中の`api`ミドルウェアグループへ、Airlockのミドルウェアを追加する必要があります。このミドルウェアは皆さんのSPAから受信するリクエストが、Laravelのセッションクッキーを使用して確実に認証できるようにする責任を負っています。同時に、サードパーティやモバイルアプリからのリクエストに対し、APIトークンを使用した認証ができるようにしています。
 
     use Laravel\Airlock\Http\Middleware\EnsureFrontendRequestsAreStateful;
 
@@ -159,52 +159,52 @@ Next, you should add Airlock's middleware to your `api` middleware group within 
     ],
 
 <a name="cors-and-cookies"></a>
-#### CORS & Cookies
+#### CORSとクッキー
 
-If you are having trouble authenticating with your application from an SPA that executes on a separate subdomain, you have likely misconfigured your CORS (Cross-Origin Resource Sharing) or session cookie settings.
+別のサブドメイン上のSPAからの認証でアプリケーションにトラブルが起きているのであれば、CORS(Cross-Origin Resource Sharing)かセッションクッキーの設定を間違えたのでしょう。
 
-You should ensure that your application's CORS configuration is returning the `Access-Control-Allow-Credentials` header with a value of `True`. You may configure your application's CORS settings in your `cors` configuration file.
+アプリケーションのCORS設定で、`Access-Control-Allow-Credentials`ヘッダが`True`の値を返していることを確認してください。アプリケーションのCORS設定は、`cors`設定ファイルで指定できます。
 
-In addition, you should enable the `withCredentials` option on your global `axios` instance. Typically, this should be performed in your `resources/js/bootstrap.js` file:
+さらに、グローバル`axios`インスタンス上で、`withCredentials`オプションを有効にしているかも確認してください。通常、これは`resources/js/bootstrap.js`ファイルで実行されるべきです。
 
     axios.defaults.withCredentials = true;
 
-Finally, you should ensure your application's session cookie domain configuration supports any subdomain of your root domain. You may do this by prefixing the domain with a leading `.` within your `session` configuration file:
+最後に、アプリケーションのセッションクッキードメイン設定で、ルートドメイン下の全サブドメインをサポートしているかを確認する必要があります。`session`設定ファイル中で、`.`にドメイン名を続ければ指定できます。
 
     'domain' => '.domain.com',
 
 <a name="spa-authenticating"></a>
-### Authenticating
+### 認証
 
-To authenticate your SPA, your SPA's login page should first make a request to the `/airlock/csrf-cookie` route to initialize CSRF protection for the application:
+皆さんのSPAを認証するには、SPAのログインページで最初に`/airlock/csrf-cookie`ルートへのリクエストを作成し、アプリケーションのCSRF保護を初期化しなくてはなりません。
 
     axios.get('/airlock/csrf-cookie').then(response => {
-        // Login...
+        // ログイン処理
     });
 
-Once CSRF protection has been initialized, you should make a `POST` request to the typical Laravel `/login` route. This `/login` route may be provided by the `laravel/ui` [authentication scaffolding](/docs/{{version}}/authentication#introduction) package.
+CSRF保護の初期化後、通常Laravelでは`/login`であるルートへ`POST`リクエストを送る必要があります。この`login`ルートは、`laravel/ui` [認証スカフォールド](/docs/{{version}}/authentication#introduction)が提供しています。
 
-If the login request is successful, you will be authenticated and subsequent requests to your API routes will automatically be authenticated via the session cookie that the Laravel backend issued to your client.
+ログインリクエストに成功するとユーザーは認証され、Laravelのバックエンドがクライアントへ発行しているセッションクッキーにより、APIルートに対する以降のリクエストも自動的に認証されます。
 
-> {tip} You are free to write your own `/login` endpoint; however, you should ensure that it authenticates the user using the standard, [session based authentication services that Laravel provides](/docs/{{version}}/authentication#authenticating-users).
+> {tip} `/login`エンドポイントは自由に書けます。ただし標準的な、[Laravelが提供する認証サービスベースのセッション](/docs/{{version}}/authentication#authenticating-users)をユーザー認証で確実に使用してください。
 
 <a name="protecting-spa-routes"></a>
-### Protecting Routes
+### ルート保護
 
-To protect routes so that all incoming requests must be authenticated, you should attach the `airlock` authentication guard to your API routes within your `routes/api.php` file. This guard will ensure that incoming requests are authenticated as either a stateful authenticated requests from your SPA or contain a valid API token header if the request is from a third party:
+受信リクエストをすべて認証済みに限定し、ルートを保護する場合は、`routes/api.php`ファイル中のAPIルートに対して`airlock`認証ガードを指定する必要があります。このガードは受信リクエストが認証済みであると保証します。そのリクエストが皆さん自身のSPAからのステートフルな認証済みであるか、もしくはサードパーティからのリクエストの場合は有効なAPIトークンのヘッダを持っているかのどちらか一方であるか確認します。
 
     Route::middleware('auth:airlock')->get('/user', function (Request $request) {
         return $request->user();
     });
 
 <a name="authorizing-private-broadcast-channels"></a>
-### Authorizing Private Broadcast Channels
+### プライベートブロードキャストチャンネルの認証
 
-If your SPA needs to authenticate with [private / presence broadcast channels](/docs/{{version}}/broadcasting#authorizing-channels), you should place the `Broadcast::routes` method call within your `routes/api.php` file:
+SPAで[プライベート／プレゼンスブロードキャストチャンネル](/docs/{{version}}/broadcasting#authorizing-channels)を使った認証が必要な場合は、`routes/api.php`ファイルの中で`Broadcast::routes`メソッドを呼び出す必要があります。
 
     Broadcast::routes(['middleware' => ['auth:airlock']]);
 
-Next, in order for Pusher's authorization requests to succeed, you will need to provide a custom Pusher `authorizer` when initializing [Laravel Echo](/docs/{{version}}/broadcasting#installing-laravel-echo). This allows your application to configure Pusher to use the `axios` instance that is [properly configured for cross-domain requests](#cors-and-cookies):
+次に、Pusherの認証リクエストを成功させるため、[Laravel Echo](/docs/{{version}}/broadcasting#installing-laravel-echo)の初期化時に、カスタムPusher `authorizer`を用意する必要があります。これにより、アプリケーションが[確実にクロスドメインのリクエストを処理できるように設定した](#cors-and-cookies)`axios`インスタンスをPusherが使用するように設定できます。
 
     window.Echo = new Echo({
         broadcaster: "pusher",
@@ -230,14 +230,14 @@ Next, in order for Pusher's authorization requests to succeed, you will need to 
     })
 
 <a name="mobile-application-authentication"></a>
-## Mobile Application Authentication
+## モバイルアプリの認証
 
-You may use Airlock tokens to authenticate your mobile application's requests to your API. The process for authenticating mobile application requests is similar to authenticating third-party API requests; however, there are small differences in how you will issue the API tokens.
+あなた自身のAPIに対するモバイルアプリのリクエストを認証するために、Airlockトークンを使用できます。モバイルアプリのリクエストに対する認証手順は、サードパーティAPIリクエストに対する認証と似ています。しかし、APIトークンの発行方法に多少の違いがあります。
 
 <a name="issuing-mobile-api-tokens"></a>
-### Issuing API Tokens
+### APIトークン発行
 
-To get started, create a route that accepts the user's email / username, password, and device name, then exchanges those credentials for a new Airlock token. The endpoint will return the plain-text Airlock token which may then be stored on the mobile device and used to make additional API requests:
+まずはじめに、ユーザーのメールアドレス／ユーザー名、パスワード、デバイス名を受け取るルートを作成し、次にこうした認証情報を元に新しいAirlockトークンを受け取ります。このエンドポイントは平文のAirlockトークンを返し、それはモバイルデバイス上に保存され、それ以降のAPIリクエストを作成するために利用されます。
 
     use App\User;
     use Illuminate\Http\Request;
@@ -262,34 +262,34 @@ To get started, create a route that accepts the user's email / username, passwor
         return $user->createToken($request->device_name)->plainTextToken;
     });
 
-When the mobile device uses the token to make an API request to your application, it should pass the token in the `Authorization` header as a `Bearer` token.
+モバイルデバイスが、アプリケーションへのAPIリクエストを作成するためにトークンを使用するときは、`Bearer`トークンとして`Authorization`ヘッダへそのトークンを渡します。
 
-> {tip} When issuing tokens for a mobile application, you are also free to specify [token abilities](#token-abilities)
+> {tip} モバイルアプリケーションに対してトークンを発行するときにも、自由に[トークンのアビリティ](#token-abilities)を指定できます。
 
 <a name="protecting-mobile-api-routes"></a>
-### Protecting Routes
+### ルート保護
 
-As previously documented, you may protect routes so that all incoming requests must be authenticated by attaching the `airlock` authentication guard to the routes. Typically, you will attach this guard to the routes defined within your `routes/api.php` file:
+以前に説明した通り、ルートへ`airlock`認証ガードを指定することで、受信リクエストをすべて認証済み必須にし、ルートを保護できます。通常、`routes/api.php`ファイルでこのガードを指定したルートを定義します。
 
     Route::middleware('auth:airlock')->get('/user', function (Request $request) {
         return $request->user();
     });
 
 <a name="revoking-mobile-api-tokens"></a>
-### Revoking Tokens
+### トークン破棄
 
-To allow users to revoke API tokens issued to mobile devices, you may list them by name, along with a "Revoke" button, within an "account settings" portion of your web application's UI. When the user clicks the "Revoke" button, you can delete the token from the database. Remember, you can access a user's API tokens via the `tokens` relationship provided by the `HasApiTokens` trait:
+モバイルデバイスに対して発行されたAPIトークンをユーザーが破棄できるようにするため、WebアプリケーションのUIで「アカウント設定」のようなページに一覧表示し、「破棄」ボタンを用意する必要があります。ユーザーが「破棄」ボタンをクリックしたら、データベースからトークンを削除します。`HasApiTokens`トレイトが提供する`tokens`リレーションにより、そのユーザーのAPIトークンへアクセスできるのを覚えておきましょう。
 
-    // Revoke all tokens...
+    // 全トークンの破棄
     $user->tokens()->delete();
 
-    // Revoke a specific token...
+    // 特定トークンの破棄
     $user->tokens()->where('id', $id)->delete();
 
 <a name="testing"></a>
-## Testing
+## テスト
 
-While testing, the `Airlock::actingAs` method may be used to authenticate a user and specify which abilities are granted to their token:
+テストをする時は、`Airlock::actingAs`メソッドでユーザーを認証し、トークンにアビリティを許可する指定を行えます。
 
     use App\User;
     use Laravel\Airlock\Airlock;
@@ -306,7 +306,7 @@ While testing, the `Airlock::actingAs` method may be used to authenticate a user
         $response->assertOk();
     }
 
-If you would like to grant all abilities to the token, you should include `*` in the ability list provided to the `actingAs` method:
+トークンに全アビリティを許可したい場合は、`actingAs`メソッドへ`*`を含めたアビリティリストを指定します。
 
     Airlock::actingAs(
         factory(User::class)->create(),

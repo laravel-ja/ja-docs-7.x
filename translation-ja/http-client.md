@@ -1,35 +1,35 @@
-# HTTP Client
+# HTTPクライアント
 
-- [Introduction](#introduction)
-- [Making Requests](#making-requests)
-    - [Request Data](#request-data)
-    - [Headers](#headers)
-    - [Authentication](#authentication)
-    - [Retries](#retries)
-    - [Error Handling](#error-handling)
-- [Testing](#testing)
-    - [Faking Responses](#faking-responses)
-    - [Inspecting Requests](#inspecting-requests)
+- [イントロダクション](#introduction)
+- [リクエスト作成](#making-requests)
+    - [リクエストデータ](#request-data)
+    - [ヘッダ](#headers)
+    - [認証](#authentication)
+    - [リトライ](#retries)
+    - [エラー処理](#error-handling)
+- [テスト](#testing)
+    - [レスポンスのFake](#faking-responses)
+    - [レスポンスの調査](#inspecting-requests)
 
 <a name="introduction"></a>
-## Introduction
+## イントロダクション
 
-Laravel provides an expressive, minimal API around the [Guzzle HTTP client](http://docs.guzzlephp.org/en/stable/), allowing you to quickly make outgoing HTTP requests to communicate with other web applications. Laravel's wrapper around Guzzle is focused on its most common use cases and a wonderful developer experience.
+他のWebアプリケーションと連携を取る、送信HTTPリクエストを簡単に作成できるよう、Laravelは小さくて読み書きしやすい[Guzzle HTTPクライアント](http://docs.guzzlephp.org/en/stable/)のAPIを提供しています。LaravelのGuzzleラッパーはもっとも繁用されるユースケースと開発者が素晴らしい体験をできることに重点を置いています。
 
-Before getting started, you should ensure that you have installed the Guzzle package as a dependency of your application. By default, Laravel automatically includes this dependency:
+取り掛かる前に、アプリケーションの依存パッケージとしてGuzzleパッケージをインストールする必要があります。Laravelはデフォルトとしてこの依存パッケージを含んでいます。
 
     composer require guzzlehttp/guzzle
 
 <a name="making-requests"></a>
-## Making Requests
+## リクエスト作成
 
-To make requests, you may use the `get`, `post`, `put`, `patch`, and `delete` methods. First, let's examine how to make a basic `GET` request:
+リクエストを作成するには、`get`、`post`、`put`、`patch`、`delete`メソッドを使用します。最初に基本となる`GET`リクエストをどのように作成するのか見てみましょう。
 
     use Illuminate\Support\Facades\Http;
 
     $response = Http::get('http://test.com');
 
-The `get` method returns an instance of `Illuminate\Http\Client\Response`, which provides a variety of methods that may be used to inspect the response:
+`get`メソッドは`Illuminate\Http\Client\Response`のインスタンスを返します。これはレスポンスを調べるために使用できるさまざまなメソッドを持っています。
 
     $response->body() : string;
     $response->json() : array;
@@ -41,38 +41,38 @@ The `get` method returns an instance of `Illuminate\Http\Client\Response`, which
     $response->header($header) : string;
     $response->headers() : array;
 
-The `Illuminate\Http\Client\Response` object also implements the PHP `ArrayAccess` interface, allowing you to access JSON response data directly on the response:
+`Illuminate\Http\Client\Response`オブジェクトは、レスポンス上のJSONレスポンスデータへ直接アクセスできるように、PHPの`ArrayAccess`インターフェイスも実装しています。
 
     return Http::get('http://test.com/users/1')['name'];
 
 <a name="request-data"></a>
-### Request Data
+### リクエストデータ
 
-Of course, it is common when using `POST`, `PUT`, and `PATCH` to send additional data with your request. So, these methods accept an array of data as their second argument. By default, data will be sent using the `application/json` content type:
+もちろん、`POST`、`PUT`、`PATCH`を使用する場合は、リクエストと追加のデータを一緒に送るのが一般的です。そのため、これらのメソッドは第２引数にデータの配列を受け取ります。データはデフォルトで`application/json`コンテンツタイプを使用して送信されます。
 
     $response = Http::post('http://test.com/users', [
         'name' => 'Steve',
         'role' => 'Network Administrator',
     ]);
 
-#### Sending Form URL Encoded Requests
+#### URLエンコードされたリクエストのフォーム送信
 
-If you would like to send data using the `application/x-www-form-urlencoded` content type, you should call the `asForm` method before making your request:
+`application/x-www-form-urlencoded`コンテンツタイプを使用してデータを送信したい場合は、リクエストを作成する前に`asForm`メソッドを呼び出す必要があります。
 
     $response = Http::asForm()->post('http://test.com/users', [
         'name' => 'Sara',
         'role' => 'Privacy Consultant',
     ]);
 
-#### Multi-Part Requests
+#### マルチパートリクエスト
 
-If you would like to send files as multi-part requests, you should call the `attach` method before making your request. This method accepts the name of the file and its contents. Optionally, you may provide a third argument which will be considered the file's filename:
+ファイルをマルチパートリクエストとして送信したい場合は、リクエストを作成する前に`attach`メソッドを呼び出す必要があります。このメソッドはファイル名と、その内容を引数に受け取ります。オプションとして第３引数に、ファイルのファイル名と想定できる文字列を指定できます。
 
     $response = Http::attach(
         'attachment', file_get_contents('photo.jpg'), 'photo.jpg'
     )->post('http://test.com/attachments');
 
-Instead of passing the raw contents of a file, you may also pass a stream resource:
+ファイルのコンテンツ内容をそのまま渡す代わりに、ストリームリソースも指定できます。
 
     $photo = fopen('photo.jpg', 'r');
 
@@ -81,9 +81,9 @@ Instead of passing the raw contents of a file, you may also pass a stream resour
     )->post('http://test.com/attachments');
 
 <a name="headers"></a>
-### Headers
+### ヘッダ
 
-Headers may be added to requests using the `withHeaders` method. This `withHeaders` method accepts an array of key / value pairs:
+`withHeaders`メソッドで、リクエストにヘッダを追加できます。この`withHeaders`メソッドは、キー／値ペアの配列を引数に取ります。
 
     $response = Http::withHeaders([
         'X-First' => 'foo',
@@ -93,71 +93,71 @@ Headers may be added to requests using the `withHeaders` method. This `withHeade
     ]);
 
 <a name="authentication"></a>
-### Authentication
+### 認証
 
-You may specify basic and digest authentication credentials using the `withBasicAuth` and `withDigestAuth` methods, respectively:
+`withBasicAuth`と`withDigestAuth`メソッドを使うと、Basic認証やDigest認証に使用する認証データを指定できます。
 
-    // Basic authentication...
+    // Basic認証
     $response = Http::withBasicAuth('taylor@laravel.com', 'secret')->post(...);
 
-    // Digest authentication...
+    // Digest認証
     $response = Http::withDigestAuth('taylor@laravel.com', 'secret')->post(...);
 
-#### Bearer Tokens
+#### Bearerトークン
 
-If you would like to quickly add an `Authorization` bearer token header to the request, you may use the `withToken` method:
+手早く`Authorization` bearerトークンをリクエストのヘッダに追加したい場合は、`withToken`メソッドを使います。
 
     $response = Http::withToken('token')->post(...);
 
 <a name="retries"></a>
-### Retries
+### リトライ
 
-If you would like HTTP client to automatically retry the request if a client or server error occurs, you may use the `retry` method. The `retry` method accepts two arguments: the number of times the request should be attempted and the number of milliseconds that Laravel should wait in between attempts:
+クライアントかサーバでエラーが発生したときに、HTTPクライアントへそのリクエストを自動的に再試行させたい場合は、`retry`メソッドを使います。`retry`メソッドは２つの引数を取ります。試行回数と、次に試みるまでLaravelに待たせるミリ秒です。
 
     $response = Http::retry(3, 100)->post(...);
 
-If all of the requests fail, an instance of `Illuminate\Http\Client\RequestException` will be thrown.
+リクエストに全部失敗したら、`Illuminate\Http\Client\RequestException`のインスタンスが投げられます。
 
 <a name="error-handling"></a>
-### Error Handling
+### エラー処理
 
-Unlike Guzzle's default behavior, Laravel's HTTP client wrapper does not throw exceptions on client or server errors (`400` and `500` level responses from servers). You may determine if one of these errors was returned using the `successful`, `clientError`, or `serverError` methods:
+Guzzleのデフォルト動作と異なり、LaravelのHTTPクライアントラッパーはクライアントの例外を投げたり、サーバからの`400`と`500`レベルのレスポンスとしてエラーレスポンスを返したりしません。こうしたエラーが発生したかは`successful`、`clientError`、`serverError`メソッドで判定できます。
 
-    // Determine if the status code was >= 200 and < 300...
+    // ステータスコードが２００以上、３００より小さいレスポンスであったかを判定
     $response->successful();
 
-    // Determine if the response has a 400 level status code...
+    // ステータスコードが４００レベルのレスポンスであったかを判定
     $response->clientError();
 
-    // Determine if the response has a 500 level status code...
+    // ステータスコードが５００レベルのレスポンスであったかを判定
     $response->serverError();
 
-#### Throwing Exceptions
+#### 例外を投げる
 
-If you have a response instance and would like to throw an instance of `Illuminate\Http\Client\RequestException` if the response is a client or server error, you may use the `throw` method:
+レスポンスインスタンスを受け取り、そのレスポンスがクライアントかサーバエラーであった場合に、`Illuminate\Http\Client\RequestException`のインスタンスを投げる場合は、`throw`メソッドを使います。
 
     $response = Http::post(...);
 
-    // Throw an exception if a client or server error occurred...
+    // クライアントかサーバエラーが発生したため例外を投げる
     $response->throw();
 
     return $response['user']['id'];
 
-The `Illuminate\Http\Client\RequestException` instance has a public `$response` property which will allow you to inspect the returned response.
+`Illuminate\Http\Client\RequestException`インスタンスはパブリックの`$response`プロパティを持ち、返されたレスポンスを調査できるようになっています。
 
-The `throw` method returns the response instance if no error occurred, allowing you to chain other operations onto the `throw` method:
+`throw`メソッドはエラーが起きていない場合にレスポンスインスタンスを返すため、別の操作を続けて記述できます。
 
     return Http::post(...)->throw()->json();
 
 <a name="testing"></a>
-## Testing
+## テスト
 
-Many Laravel services provide functionality to help you easily and expressively write tests, and Laravel's HTTP wrapper is no exception. The `Http` facade's `fake` method allows you to instruct the HTTP client to return stubbed / dummy responses when requests are made.
+多くのLaravelサービスは簡単に記述的なテストが書ける機能を提供していますが、HTTPラッパーも例外ではありません。`Http`ファサードの`fake`メソッドで、リクエストが作成されるときに、スタブ／ダミーのレスポンスを返すようにHTTPクライアントに支持できます。
 
 <a name="faking-responses"></a>
-### Faking Responses
+### レスポンスのFake
 
-For example, to instruct the HTTP client to return empty, `200` status code responses for every request, you may call the `fake` method with no arguments:
+たとえば、すべてのリクエストに`200`ステータスコードを持つ空のレスポンスをHTTPクライアントから返したい場合は、`fake`メソッドを引数なしで呼びます。
 
     use Illuminate\Support\Facades\Http;
 
@@ -165,70 +165,70 @@ For example, to instruct the HTTP client to return empty, `200` status code resp
 
     $response = Http::post(...);
 
-#### Faking Specific URLs
+#### 特定URLのFake
 
-Alternatively, you may pass an array to the `fake` method. The array's keys should represent URL patterns that you wish to fake and their associated responses. The `*` character may be used as a wildcard character. Any requests made to URLs that have not been faked will actually be executed. You may use the `response` method to construct stub / fake responses for these endpoints:
+`fake`メソッドに配列を渡すこともできます。配列のキーはfakeするURLパターンを表し、値はレスポンスです。`*`文字はワイルドカードとして使えます。FakeしないURLに対するリクエストは、実際に実行されます。エンドポイントに対するスタブ／fakeを組み立てるために、`response`メソッドを使います。
 
     Http::fake([
-        // Stub a JSON response for GitHub endpoints...
+        // GitHubエンドポイントに対するJSONレスポンスをスタブ
         'github.com/*' => Http::response(['foo' => 'bar'], 200, ['Headers']),
 
-        // Stub a string response for Google endpoints...
+        // Googleエンドポイントに対する文字列レスポンスをスタブ
         'google.com/*' => Http::response('Hello World', 200, ['Headers']),
     ]);
 
-If you would like to specify a fallback URL pattern that will stub all unmatched URLs, you may use a single `*` character:
+一致しないURLをすべてスタブするフォールバックURLパターンを指定する場合は、`*`文字だけを使います。
 
     Http::fake([
-        // Stub a JSON response for GitHub endpoints...
+        // GitHubエンドポイントに対するJSONレスポンスをスタブ
         'github.com/*' => Http::response(['foo' => 'bar'], 200, ['Headers']),
 
-        // Stub a string response for all other endpoints...
+        // その他すべてのエンドポイントに対して文字列レスポンスをスタブ
         '*' => Http::response('Hello World', 200, ['Headers']),
     ]);
 
-#### Faking Response Sequences
+#### 一連のレスポンスのFake
 
-Sometimes you may need to specify that a single URL should return a series of fake responses in a specific order. You may accomplish this using the `Http::sequence` method to build the responses:
+特定の順番で一連のfakeレスポンスを一つのURLに対して指定する必要がある場合もときどきあります。このレスポンスを組み立てるには、`Http::sequence`メソッドを使用します。
 
     Http::fake([
-        // Stub a series of responses for GitHub endpoints...
+        // GitHubエンドポイントに対して一連のレスポンスをスタブ
         'github.com/*' => Http::sequence()
                                 ->push('Hello World', 200)
                                 ->push(['foo' => 'bar'], 200)
                                 ->pushStatus(404),
     ]);
 
-When all of the responses in a response sequence have been consumed, any further requests will cause the response sequence to throw an exception. If you would like to specify a default response that should be returned when a sequence is empty, you may use the `whenEmpty` method:
+一連のレスポンスを全部返し終えると、そのエンドポイントに対する以降のリクエストには例外が投げられます。このとき例外を発生させる代わりに特定のレスポンスを返すように指定したい場合は、`whenEmpty`メソッドを使用します。
 
     Http::fake([
-        // Stub a series of responses for GitHub endpoints...
+        // GitHubエンドポイントに対して一連のレスポンスをスタブ
         'github.com/*' => Http::sequence()
                                 ->push('Hello World', 200)
                                 ->push(['foo' => 'bar'], 200)
                                 ->whenEmpty(Http::response()),
     ]);
 
-If you would like to fake a sequence of responses but do not need to specify a specific URL pattern that should be faked, you may use the `Http::fakeSequence` method:
+順番のあるレスポンスをfakeしたいが、fakeする特定のURLパターンを指定する必要がなければ、`Http::fakeSequence`メソッドを使います。
 
     Http::fakeSequence()
             ->push('Hello World', 200)
             ->whenEmpty(Http::response());
 
-#### Fake Callback
+#### コールバックのFake
 
-If you require more complicated logic to determine what responses to return for certain endpoints, you may pass a callback to the `fake` method. This callback will receive an instance of `Illuminate\Http\Client\Request` and should return a response instance:
+特定のエンドポイントでどんなレスポンスを返すか決めるために、より複雑なロジックが必要な場合は、`fake`メソッドへコールバックを渡してください。このコールバックは`Illuminate\Http\Client\Request`のインスタンスを受け取るので、レスポンスインスタンスを返してください。
 
     Http::fake(function ($request) {
         return Http::response('Hello World', 200);
     });
 
 <a name="inspecting-requests"></a>
-### Inspecting Requests
+### レスポンスの調査
 
-When faking responses, you may occasionally wish to inspect the requests the client receives in order to make sure your application is sending the correct data or headers. You may accomplish this by calling the `Http::assertSent` method after calling `Http::fake`.
+レスポンスをfakeしているとまれに、自分のアプリケーションが正しいデータやヘッダを送っていることを確認するため、クライアントが受け取るリクエストを調べたくなります。これを行うには、`Http::fake`を呼び出したあとに`Http::assertSent`メソッドを呼び出します。
 
-The `assertSent` method accepts a callback which will be given an `Illuminate\Http\Client\Request` instance and should return a boolean value indicating if the request matches your expectations. In order for the test to pass, at least one request must have been issued matching the given expectations:
+`assertSent`メソッドは`Illuminate\Http\Client\Request`インスタンスを受け取るコールバックを引数に取り、そのリクエストが期待通りであったかを示す論理値をそのコールバックから返します。テストにパスするには、指定した期待に合致する最低一つのリクエストが発送されている必要があります。
 
     Http::fake();
 
