@@ -17,15 +17,15 @@
     - [CSRFフィールド](#csrf-field)
     - [Methodフィールド](#method-field)
     - [バリデーションエラー](#validation-errors)
-- [Components](#components)
-    - [Displaying Components](#displaying-components)
-    - [Passing Data To Components](#passing-data-to-components)
-    - [Managing Attributes](#managing-attributes)
-    - [Slots](#slots)
-    - [Inline Component Views](#inline-component-views)
-    - [Anonymous Components](#anonymous-components)
+- [コンポーネント](#components)
+    - [コンポーネントの表示](#displaying-components)
+    - [コンポーネントへのデータ渡し](#passing-data-to-components)
+    - [属性の管理](#managing-attributes)
+    - [スロット](#slots)
+    - [インラインコンポーネントビュー](#inline-component-views)
+    - [無名コンポーネント](#anonymous-components)
 - [サブビューの読み込み](#including-subviews)
-    - [コレクションのレンダビュー](#rendering-views-for-collections)
+    - [コレクションのレンダービュー](#rendering-views-for-collections)
 - [スタック](#stacks)
 - [サービス注入](#service-injection)
 - [Blade拡張](#extending-blade)
@@ -63,7 +63,7 @@ Bladeを使用する主な利点は、**テンプレートの継承**と**セク
 
 ご覧の通り、典型的なHTMLマークアップで構成されたファイルです。しかし、`@section`や`@yield`ディレクティブに注目です。`@section`ディレクティブは名前が示す通りにコンテンツのセクションを定義し、一方の`@yield`ディレクティブは指定したセクションの内容を表示するために使用します。
 
-これでアプリケーションのレイアウトが定義できました。このレイアウトを継承する、子のページを定義しましょう。
+これでアプリケーションのレイアウトが定義できました。このレイアウトを継承する子のページを定義しましょう。
 
 <a name="extending-a-layout"></a>
 ### レイアウト拡張
@@ -86,11 +86,11 @@ Bladeを使用する主な利点は、**テンプレートの継承**と**セク
         <p>ここが本文のコンテンツ</p>
     @endsection
 
-この例の`sidebar`セクションでは、レイアウトのサイドバーの内容をコンテンツに上書きするのではなく追加するために`@@parent`ディレクティブを使用しています。`@@parent`ディレクティブはビューをレンダするときに、レイアウトの内容に置き換わります。
+この例の`sidebar`セクションでは、レイアウトのサイドバーの内容をコンテンツに上書きするのではなく追加するために`@@parent`ディレクティブを使用しています。`@@parent`ディレクティブはビューをレンダーするときに、レイアウトの内容に置き換わります。
 
 > {tip} 直前の例とは異なり、この`sidebar`セクションは`@show`の代わりに`@endsection`で終わっています。`@endsection`ディレクティブはセクションを定義するだけに対し、`@show`は定義しつつ、そのセクションを**即時にその場所に取り込みます**。
 
-`@yield`ディレクティブは、デフォルト値を第２引数に受け取ります。この値は埋め込み対象のセクションが未定義の場合にレンダされます。
+`@yield`ディレクティブは、デフォルト値を第２引数に受け取ります。この値は埋め込み対象のセクションが未定義の場合にレンダーされます。
 
     @yield('content', View::make('view.name'))
 
@@ -127,7 +127,7 @@ Bladeビューに渡されたデータは、波括弧で変数を囲うことで
 
 > {note} アプリケーションでユーザーの入力内容をechoする場合は注意が必要です。ユーザーの入力を表示するときは、常に二重の波括弧の記法でHTMLエンティティにエスケープすべきです。
 
-#### JSONのレンダ
+#### JSONのレンダー
 
 JavaScriptの変数を初期化するために、配列をビューに渡してJSONとして描画できます。
 
@@ -143,7 +143,7 @@ JavaScriptの変数を初期化するために、配列をビューに渡してJ
         var app = @json($array, JSON_PRETTY_PRINT);
     </script>
 
-> {note} 既存の変数をJSONとしてレンダするには、`@json`ディレクティブだけを使用してください。正規表現ベースのBladeテンプレートに、複雑な正規表現をディレクティブで渡すと、予期しない不良動作の原因になります。
+> {note} 既存の変数をJSONとしてレンダーするには、`@json`ディレクティブだけを使用してください。正規表現ベースのBladeテンプレートに、複雑な正規表現をディレクティブで渡すと、予期しない不良動作の原因になります。
 
 `@json`ディレクティブは、Vueコンポーネントや`data-*`属性を生成するのにも便利に使えます。
 
@@ -378,7 +378,7 @@ Blade（およびLaravelの`e`ヘルパ）はデフォルトで、HTMLエンテ�
 
 Bladeでビューにコメントを書くこともできます。HTMLコメントと異なり、Bladeのコメントはアプリケーションから返されるHTMLには含まれません。
 
-    {{-- このコメントはレンダ後のHTMLには現れない --}}
+    {{-- このコメントはレンダー後のHTMLには現れない --}}
 
 <a name="php"></a>
 ### PHP
@@ -444,57 +444,57 @@ HTMLフォームでは、`PUT`、`PATCH`、`DELETE`リクエストを作成で�
     @enderror
 
 <a name="components"></a>
-## Components
+## コンポーネント
 
-Components and slots provide similar benefits to sections and layouts; however, some may find the mental model of components and slots easier to understand. There are two approaches to writing components: class based components and anonymous components.
+コンポーネントとスロットは、レイアウトとセクションに似た利便性をもたらします。ですがコンポーネントとスロットのほうが簡単に理解できるメンタルモデルであると気づくはずです。コンポーネントを書くには２つのアプローチがあります。クラスベースコンポーネントと匿名コンポーネントです。
 
-To create a class based component, you may use the `make:component` Artisan command. To illustrate how to use components, we will create a simple `Alert` component. The `make:component` command will place the component in the `App\View\Components` directory:
+`make:component` Artisanコマンドを使えば、クラスベースのコンポーネントを生成できます。コンポーネントの使い方を説明するために、簡単な`Alert`コンポーネントを作成してみましょう。`make:component`コマンドは`App\View\Components`ディレクトリの中にコンポーネントを生成します。
 
     php artisan make:component Alert
 
-The `make:component` command will also create a view template for the component. The view will be placed in the `resources/views/components` directory.
+`make:component`コマンドは、コンポーネントのためのビューテンプレートも生成します。このビューは`resources/views/components`ディレクトリに生成されます。
 
-#### Manually Registering Package Components
+#### パッケージコンポーネントの登録
 
-When writing components for your own application, components are automatically discovered within the `app/View/Components` directory and `resources/views/components` directory.
+アプリケーションのために書いたコンポーネントは、自動的に`app/View/Components`と`resources/views/components`ディレクトリの中で見つけられます。
 
-However, if you are building a package that utilizes Blade components, you will need to manually register your component class and its HTML tag alias. You should typically register your components in the `boot` method of your package's service provider:
+しかしながら、Bladeコンポーネントを活用したパッケージを構築している場合、コンポーネントクラスとそのHTMLタグエイリアスを皆さん自身で登録する必要があります。通常、皆さんのパッケージのサービスプロバイダ内にある`boot`メソッドで、コンポーネントを登録する必要があります。
 
     use Illuminate\Support\Facades\Blade;
 
     /**
-     * Bootstrap your package's services.
+     * パッケージのサービスの初期処理
      */
     public function boot()
     {
         Blade::component(AlertComponent::class, 'package-alert');
     }
 
-Once your component has been registered, it may be rendered using its tag alias:
+コンポーネントを登録したら、そのタグエイリアスを使用してレンダーします。
 
     <x-package-alert/>
 
 <a name="displaying-components"></a>
-### Displaying Components
+### コンポーネントの表示
 
-To display a component, you may use a Blade component tag within one of your Blade templates. Blade component tags start with the string `x-` followed by the kebab case name of the component class:
+コンポーネントを表示するには、Bladeテンプレートの中でBladeコンポーネントタグを使用します。Bladeコンポーネントタグとは、コンポーネントクラス名のケバブケースを`x-`に続けた文字列のことです。
 
     <x-alert/>
 
     <x-user-profile/>
 
-If the component class is nested deeper within the `App\View\Components` directory, you may use the `.` character to indicate directory nesting. For example, if we assume a component is located at `App\View\Components\Inputs\Button.php`, we may render it like so:
+`App\View\Components`ディレクトリの中にコンポーネントクラスをネストしている場合は、ディレクトリのネストを表すために`.`を使います。たとえば`App\View\Components\Inputs\Button.php`がコンポーネントだとすると、次のようにレンダーします。
 
     <x-inputs.button/>
 
 <a name="passing-data-to-components"></a>
-### Passing Data To Components
+### コンポーネントへのデータ渡し
 
-You may pass data to Blade components using HTML attributes. Hard-coded, primitive values may be passed to the component using simple HTML attributes. PHP expressions and variables should be passed to the component via attributes that are prefixed with `:`:
+HTML属性を使い、Bladeコンポーネントへデータを渡すことができます。シンプルなHTML属性を使い、ハードコードしたプリミティブ値をコンポーネントへ渡します。PHP表現と変数は、`:`を前に付けた属性によりコンポーネントへ渡します。
 
     <x-alert type="error" :message="$message"/>
 
-You should define the component's required data in its class constructor. All public properties on a component will automatically be made available to the component's view. It is not necessary to pass the data to the view from the component's `render` method:
+コンポーネントで必須のデータは、クラスのコンストラクタで定義する必要があります。コンポーネント上のパブリックプロパティはすべて、コンポーネントのビューで自動的に使えます。コンポーネントの`render`メソッドからビューへデータを渡す必要はありません。
 
     <?php
 
@@ -505,21 +505,21 @@ You should define the component's required data in its class constructor. All pu
     class Alert extends Component
     {
         /**
-         * The alert type.
+         * alertのタイプ
          *
          * @var string
          */
         public $type;
 
         /**
-         * The alert message.
+         * alertのメッセージ
          *
          * @var string
          */
         public $message;
 
         /**
-         * Create the component instance.
+         * コンポーネントインスタンスの生成
          *
          * @param  string  $type
          * @param  string  $message
@@ -532,7 +532,7 @@ You should define the component's required data in its class constructor. All pu
         }
 
         /**
-         * Get the view / contents that represent the component.
+         * コンポーネントを表すビュー／コンテンツの取得
          *
          * @return \Illuminate\View\View|string
          */
@@ -542,18 +542,18 @@ You should define the component's required data in its class constructor. All pu
         }
     }
 
-When your component is rendered, you may display the contents of your component's public variables by echoing the variables by name:
+コンポーネントがレンダーされるときに、名前が一致するコンポーネントのパブリック変数がエコーされることにより、コンテンツは表示されます。
 
     <div class="alert alert-{{ $type }}">
         {{ $message }}
     </div>
 
-#### Component Methods
+#### コンポーネントメソッド
 
-In addition to public variables being available to your component template, any public methods on the component may also be executed. For example, imagine a component that has a `isSelected` method:
+コンポーネントテンプレートではパブリックな変数が使えるのに加え、コンポーネントの全パブリックメソッドも実行可能です。たとえば、今ポーエントに`isSelected`メソッドがあると想像してください。
 
     /**
-     * Determine if the given option is the current selected option.
+     * 指定されたオプションが現在選ばれているか判定する
      *
      * @param  string  $option
      * @return bool
@@ -563,16 +563,16 @@ In addition to public variables being available to your component template, any 
         return $option === $this->selected;
     }
 
-You may execute this method from your component template by invoking the variable matching the name of the method:
+メソッド名と一致する変数を呼び出せば、コンポーネントテンプレートからこのメソッドを実行できます。
 
     <option {{ $isSelected($value) ? 'selected="selected"' : '' }} value="{{ $value }}">
         {{ $label }}
     </option>
 
-If the component method accepts no arguments, you may simple render the method name as a variable instead of invoking it as a function. For example, imagine a component method that simply returns a string:
+コンポーネントメソッドが引数を取らない場合は、関数として呼び出す代わりに、変数としてそのメソッド名を簡単に記述できます。たとえば、シンプルに文字列を返すコンポーネントメソッドを考えてください。
 
     /**
-     * Get the size.
+     * サイズの取得
      *
      * @return string
      */
@@ -581,18 +581,18 @@ If the component method accepts no arguments, you may simple render the method n
         return 'Large';
     }
 
-Within a component, you may retrieve the value of the method as a variable:
+コンポーネントの中に変数として記述することで、メソッドの値を取得できます。
 
     {{ $size }}
 
-#### Additional Dependencies
+#### 依存の追加
 
-If your component requires dependencies from Laravel's [service container](/docs/{{version}}/container), you may list them before any of the component's data attributes and they will automatically be injected by the container:
+コンポーネントがLaravelの[サービスコンテナ](/docs/{{version}}/container)からの依存注入を必要としているなら、コンポーネントのデータ属性の前に依存をリストしておけば、コンテナにより自動的に注入されます。
 
     use App\AlertCreator
 
     /**
-     * Create the component instance.
+     * コンポーネントインスタンスの生成
      *
      * @param  \App\AlertCreator  $creator
      * @param  string  $type
@@ -607,40 +607,40 @@ If your component requires dependencies from Laravel's [service container](/docs
     }
 
 <a name="managing-attributes"></a>
-### Managing Attributes
+### 属性の管理
 
-We've already examined how to pass data attributes to a component; however, sometimes you may need to specify additional HTML attributes, such as `class`, that are not part of the data required for a component to function. Typically, you want to pass these additional attributes down to the root element of the component template. For example, imagine we want to render an `alert` component like so:
+コンポーネントへデータ属性を渡す方法はすでに説明しました。しかしながら、たとえばコンポーネントが機能するためには必須でないデータである`class`のような、追加のHTML属性を指定する必要も起き得ます。コンポーネントテンプレートのルート要素へ追加の属性を渡したい場合が、典型例でしょう。例として、`alert`コンポーネントを次のようにレンダーするのを想像してください。
 
     <x-alert type="error" :message="$message" class="mt-4"/>
 
-All of the attributes that are not part of the component's constructor will automatically be added to the component's "attribute bag". This attribute bag is automatically made available to the component via the `$attributes` variable. All of the attributes may be rendered within the component by echoing this variable:
+コンポーネントのコンストラクタで依存していしていない残りの属性すべては、そのコンポーネントの「属性バッグ」へ追加されます。この属性バッグは`$attributes`変数によりコンポーネントで使用可能になります。この変数をエコーすることにより、コンポーネント中ですべての属性がレンダーされます。
 
     <div {{ $attributes }}>
-        <!-- Component Content -->
+        <!-- コンポーネントのコンテンツ -->
     </div>
 
-#### Default / Merged Attributes
+#### デフォルト／属性のマージ
 
-Sometimes you may need to specify default values for attributes or merge additional values into some of the component's attributes. To accomplish this, you may use the attribute bag's `merge` method:
+属性にデフォルト値を指定、またはコンポーネントの属性へ追加の値をマージする必要も時に起きます。これには属性バッグの`merge`メソッドを使用します。
 
     <div {{ $attributes->merge(['class' => 'alert alert-'.$type]) }}>
         {{ $message }}
     </div>
 
-If we assume this component is utilized like so:
+このコンポーネントを次のように使用すると仮定してみましょう。
 
     <x-alert type="error" :message="$message" class="mb-4"/>
 
-The final, rendered HTML of the component will appear like the following:
+最終的にこのコンポーネントは、以下のようなHTMLでレンダーされます。
 
     <div class="alert alert-error mb-4">
-        <!-- Contents of the $message variable -->
+        <!-- ここには$message変数の内容がレンダーされる -->
     </div>
 
 <a name="slots"></a>
-### Slots
+### スロット
 
-Often, you will need to pass additional content to your component via "slots". Let's imagine that an `alert` component we created has the following markup:
+コンポーネントに「スロット」を使用して、追加のコンテンツを渡す必要性がしばしばあると思います。次のような`aleat`コンポーネントを作ったとイメージしてください。
 
     <!-- /resources/views/components/alert.blade.php -->
 
@@ -648,13 +648,13 @@ Often, you will need to pass additional content to your component via "slots". L
         {{ $slot }}
     </div>
 
-We may pass content to the `slot` by injecting content into the component:
+コンポーネントにコンテンツを挿入することにより、`slot`に内容を渡せます。
 
     <x-alert>
-        <strong>Whoops!</strong> Something went wrong!
+        <strong>あーーー！</strong> なんか変だ！
     </x-alert>
 
-Sometimes a component may need to render multiple different slots in different locations within the component. Let's modify our alert component to allow for the injection of a "title":
+コンポーネント中の別々の場所に、複数の別々なスロットをレンダーする必要も起きるでしょう。ではalertコンポーネントへ"title"を挿入できるように変更してみましょう。
 
     <!-- /resources/views/components/alert.blade.php -->
 
@@ -664,23 +664,23 @@ Sometimes a component may need to render multiple different slots in different l
         {{ $slot }}
     </div>
 
-You may define the content of the named slot using the `x-slot` tag. Any content not within a `x-slot` tag will be passed to the component in the `$slot` variable:
+`x-slot`タグを使い、名前付きスロットのコンテンツを定義します。`x-slot`の外のコンテンツは、すべて`$slot`変数によりコンポーネントへ渡されます。
 
     <x-alert>
         <x-slot name="title">
-            Server Error
+            サーバエラー
         </x-slot>
 
-        <strong>Whoops!</strong> Something went wrong!
+        <strong>あーーー！</strong> なんか変だ！
     </x-alert>
 
 <a name="inline-component-views"></a>
-### Inline Component Views
+### インラインコンポーネントビュー
 
-For very small components, it may feel cumbersome to manage both the component class and the component's view template. For this reason, you may return the component's markup directly from the `render` method:
+小さなコンポーネントでは、コンポーネントクラスとコンポーネントのビューテンプレート両方を管理するのは面倒に感じるでしょう。そのため、コンポーネントのマークアップを直接`render`メソッドから返せます。
 
     /**
-     * Get the view / contents that represent the component.
+     * コンポーネントを表すビュー／コンテンツの取得
      *
      * @return \Illuminate\View\View|string
      */
@@ -693,28 +693,28 @@ For very small components, it may feel cumbersome to manage both the component c
         blade;
     }
 
-#### Generating Inline View Components
+#### インラインビューコンポーネントの生成
 
-To create a component that renders an inline view, you may use the `inline` option when executing the `make:component` command:
+インラインビューをレンダーするコンポーネントを生成するには、`make:component`コマンド実行時に`inline`オプションを使用します。
 
     php artisan make:component Alert --inline
 
 <a name="anonymous-components"></a>
-### Anonymous Components
+### 無名コンポーネント
 
-Similar to inline components, anonymous components provide a mechanism for managing a component via a single file. However, anonymous components utilize a single view file and have no associated class. To define an anonymous component, you only need to place a Blade template within your `resources/views/components` directory. For example, assuming you have defined a component at `resources/view/components/alert.blade.php`:
+インラインコンポーネントと同様に、一つのファイルでコンポーネントを管理する仕組みを提供しているのが、無名コンポーネントです。違いは、無名コンポーネントは一つのビューファイルを使用し、関係するクラスはありません。無名コンポーネントを定義するには、`resources/views/components`ディレクトリの中にBladeテンプレートを設置する必要があります。ここでは`resources/view/components/alert.blade.php`にコンポーネントを定義すると仮定しましょう。
 
     <x-alert/>
 
-You may use the `.` character to indicate if a component is nested deeper inside the `components` directory. For example, assuming the component is defined at `resources/views/components/inputs/button.blade.php`, you may render it like so:
+`components`ディレクトリ下にネストしたサブディレクトリ中へコンポーネントを設置する場合は、`.`を使ってください。たとえば、`resources/views/components/inputs/button.blade.php`へ定義する場合、次のようになります。
 
     <x-inputs.button/>
 
-#### Data Properties / Attributes
+#### データプロパティ／属性
 
-Since anonymous components do not have any associated class, you may wonder how you may differentiate which data should be passed to the component as variables and which attributes should be placed in the component's [attribute bag](#managing-attributes).
+無名コンポーネントには関連するクラスがないため、どのデータが変数を通じてコンポーネントへ渡され、どの属性がコンポーネントの[属性バッグ](#managing-attributes)に入れられるのかの違いに迷うと思います。
 
-You may specify which attributes should be considered data variables using the `@props` directive at the top of your component's Blade template. All other attributes on the component will be available via the component's attribute bag:
+コンポーネントのBladeテンプレートの先頭で`@props`ディレクティブを使い、データ変数としてどの属性を取り扱うかを指定します。コンポーネント中の他の属性は、属性バッグを使い使用可能です。
 
     <!-- /resources/views/components/alert.blade.php -->
 
@@ -771,35 +771,35 @@ Bladeのサブビューがサブディレクトリへ設置されている場合
 
     Blade::include('includes.input', 'input');
 
-サブビューのエイリアスを設定したら、Bladeディレクティブとして、そのエイリアス名を使用することにより、レンダされます。
+サブビューのエイリアスを設定したら、Bladeディレクティブとして、そのエイリアス名を使用することにより、レンダーされます。
 
     @input(['type' => 'email'])
 
 <a name="rendering-views-for-collections"></a>
-### コレクションのレンダビュー
+### コレクションのレンダービュー
 
 Bladeの`@each`ディレクティブを使い、ループとビューの読み込みを組み合わせられます。
 
     @each('view.name', $jobs, 'job')
 
-最初の引数は配列かコレクションの各要素をレンダするための部分ビューです。第２引数は繰り返し処理する配列かコレクションで、第３引数はビューの中の繰り返し値が代入される変数名です。ですから、たとえば`jobs`配列を繰り返す場合なら、部分ビューの中で各ジョブには`job`変数としてアクセスしたいと通常は考えるでしょう。 現在の繰り返しのキーは、部分ビューの中の`key`変数で参照できます。
+最初の引数は配列かコレクションの各要素をレンダーするための部分ビューです。第２引数は繰り返し処理する配列かコレクションで、第３引数はビューの中の繰り返し値が代入される変数名です。ですから、たとえば`jobs`配列を繰り返す場合なら、部分ビューの中で各ジョブには`job`変数としてアクセスしたいと通常は考えるでしょう。 現在の繰り返しのキーは、部分ビューの中の`key`変数で参照できます。
 
-`@each`ディレクティブには第４引数を渡たせます。この引数は配列が空の場合にレンダされるビューを指定します。
+`@each`ディレクティブには第４引数を渡たせます。この引数は配列が空の場合にレンダーされるビューを指定します。
 
     @each('view.name', $jobs, 'job', 'view.empty')
 
-> {note} `@each`を使ってレンダされるビューは、親のビューから変数を継承しません。子ビューで親ビューの変数が必要な場合は、代わりに`@foreach`と`@include`を使用してください。
+> {note} `@each`を使ってレンダーされるビューは、親のビューから変数を継承しません。子ビューで親ビューの変数が必要な場合は、代わりに`@foreach`と`@include`を使用してください。
 
 <a name="stacks"></a>
 ## スタック
 
-Bladeはさらに、他のビューやレイアウトでレンダできるように、名前付きのスタックへ内容を退避できます。子ビューで必要なJavaScriptを指定する場合に、便利です。
+Bladeはさらに、他のビューやレイアウトでレンダーできるように、名前付きのスタックへ内容を退避できます。子ビューで必要なJavaScriptを指定する場合に、便利です。
 
     @push('scripts')
         <script src="/example.js"></script>
     @endpush
 
-必要なだけ何回もスタックをプッシュできます。スタックした内容をレンダするには、`@stack`ディレクティブにスタック名を指定してください。
+必要なだけ何回もスタックをプッシュできます。スタックした内容をレンダーするには、`@stack`ディレクティブにスタック名を指定してください。
 
     <head>
         <!-- Headの内容 -->
