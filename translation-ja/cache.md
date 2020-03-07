@@ -105,7 +105,7 @@ Redisの設定についての詳細は、[Laravelドキュメントページ](/d
 
     $value = Cache::store('file')->get('foo');
 
-    Cache::store('redis')->put('bar', 'baz', 600); // 10 Minutes
+    Cache::store('redis')->put('bar', 'baz', 600); // １０分間
 
 <a name="retrieving-items-from-the-cache"></a>
 ### キャッシュからアイテム取得

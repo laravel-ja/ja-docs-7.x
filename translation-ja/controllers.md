@@ -101,7 +101,7 @@
 
     php artisan make:controller ShowProfile --invokable
 
-> {tip} Controller stubs may be customized using [stub publishing](/docs/{{version}}/artisan#stub-customization)
+> {tip} [stubのリソース公開](/docs/{{version}}/artisan#stub-customization)を使用し、コントローラのスタブをカスタマイズできます。
 
 <a name="controller-middleware"></a>
 ## コントローラミドルウェア

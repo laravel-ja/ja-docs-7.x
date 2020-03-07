@@ -2,7 +2,7 @@
     - [リリースノート](/docs/{{version}}/releases)
     - [アップグレードガイド](/docs/{{version}}/upgrade)
     - [貢献ガイド](/docs/{{version}}/contributions)
-    - [API Documentation](/api/7.x)
+    - [APIドキュメント](/api/7.x)
 - ## 準備
     - [インストール](/docs/{{version}}/installation)
     - [設定](/docs/{{version}}/configuration)

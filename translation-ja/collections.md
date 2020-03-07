@@ -1805,7 +1805,7 @@ sliceメソッドはデフォルトでキー値を保持したまま返します
 <a name="method-sortdesc"></a>
 #### `sortDesc()` {#collection-method}
 
-This method has the same signature as the [`sort`](#method-sort) method, but will sort the collection in the opposite order:
+このメソッドの使い方は[`sort`](#method-sort)と同じで、コレクションを逆順にソートします
 
     $collection = collect([5, 3, 1, 2, 4]);
 

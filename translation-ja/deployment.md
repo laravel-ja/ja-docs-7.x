@@ -7,7 +7,7 @@
     - [オートローダー最適化](#autoloader-optimization)
     - [設定ロードの最適化](#optimizing-configuration-loading)
     - [ルートロードの最適化](#optimizing-route-loading)
-    - [Optimizing View Loading](#optimizing-view-loading)
+    - [ビューロードの最適化](#optimizing-view-loading)
 - [Forgeによるデプロイ](#deploying-with-forge)
 
 <a name="introduction"></a>
@@ -92,13 +92,13 @@ Nginxを実行しているサーバにアプリケーションをデプロイす
 > {note} この機能はPHPのシリアライゼーション機能を使用するため、アプリケーションの全ルートをキャッシュするには、コントローラベースのルート定義だけを使用してください。PHPはクロージャをシリアライズできません。
 
 <a name="optimizing-view-loading"></a>
-### Optimizing View Loading
+### ビューロードの最適化
 
-When deploying your application to production, you should make sure that you run the `view:cache` Artisan command during your deployment process:
+実機環境へアプリケーションをデプロイする場合は、その手順の中で`view:cache` Artisanコマンドを実行すべきでしょう。
 
     php artisan view:cache
 
-This command precompiles all your Blade views so they are not compiled on demand, improving the performance of each request that returns a view.
+このコマンドは全Bladeビューを事前にコンパイルし、要求ごとにコンパイルしなくて済むため、ビューを返すリクエストすべてでパフォーマンスが向上します。
 
 <a name="deploying-with-forge"></a>
 ## Forgeによるデプロイ

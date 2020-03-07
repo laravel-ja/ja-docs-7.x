@@ -271,7 +271,7 @@ Laravelでは、データベースを駆動するアプリケーションのテ�
         use RefreshDatabase;
 
         /**
-         * Test creating a new order.
+         * 新オーダー生成のテスト
          *
          * @return void
          */
