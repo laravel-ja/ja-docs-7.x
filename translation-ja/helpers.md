@@ -689,7 +689,7 @@ Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し�
 <a name="method-array-wrap"></a>
 #### `Arr::wrap()` {#collection-method}
 
-`Arr::wrap`メソッドは、指定した値を配列中にラップします。指定した値が配列中に存在している場合は、変更されません。
+`Arr::wrap`メソッドは、指定値を配列中にラップします。指定値が配列中に存在している場合は、変更されません。
 
     use Illuminate\Support\Arr;
 
@@ -918,7 +918,7 @@ NULL値を指定すると、空の配列が返ってきます。
 
     echo __('messages.welcome');
 
-指定した翻訳文字列や翻訳キーが存在しない場合、`__`関数は指定した値をそのまま返します。たとえば、上記の場合に翻訳キーが存在しなければ、`__`関数は`messages.welcome`を返します。
+指定した翻訳文字列や翻訳キーが存在しない場合、`__`関数は指定値をそのまま返します。たとえば、上記の場合に翻訳キーが存在しなければ、`__`関数は`messages.welcome`を返します。
 
 <a name="method-class-basename"></a>
 #### `class_basename()` {#collection-method}
@@ -952,7 +952,7 @@ NULL値を指定すると、空の配列が返ってきます。
 <a name="method-str-after"></a>
 #### `Str::after()` {#collection-method}
 
-`Str::after`関数は、指定した値に続く文字列をすべて返します。文字列中に指定値が存在しない場合は、文字列全体を返します。
+`Str::after`関数は、指定値に続く文字列をすべて返します。文字列中に指定値が存在しない場合は、文字列全体を返します。
 
     use Illuminate\Support\Str;
 
@@ -963,7 +963,7 @@ NULL値を指定すると、空の配列が返ってきます。
 <a name="method-str-after-last"></a>
 #### `Str::afterLast()` {#collection-method}
 
-`Str::afterLast`メソッドは、文字列で指定した値が現れる最後の場所から、後ろの部分を返します。文字列中に指定値が存在しない場合は、文字列全体を返します。
+`Str::afterLast`メソッドは、文字列で指定値が現れる最後の場所から、後ろの部分を返します。文字列中に指定値が存在しない場合は、文字列全体を返します。
 
     use Illuminate\Support\Str;
 
@@ -974,7 +974,7 @@ NULL値を指定すると、空の配列が返ってきます。
 <a name="method-str-before"></a>
 #### `Str::before()` {#collection-method}
 
-`Str::before`関数は、文字列中の指定した値より前の文字列を全部返します。
+`Str::before`関数は、文字列中の指定値より前の文字列を全部返します。
 
     use Illuminate\Support\Str;
 
@@ -985,7 +985,7 @@ NULL値を指定すると、空の配列が返ってきます。
 <a name="method-str-before-last"></a>
 #### `Str::beforeLast()` {#collection-method}
 
-`Str::beforeLast`メソッドは、文字列で指定した値が現れる最初の場所から、前の部分を返します。
+`Str::beforeLast`メソッドは、文字列で指定値が現れる最初の場所から、前の部分を返します。
 
     use Illuminate\Support\Str;
 
@@ -1007,7 +1007,7 @@ NULL値を指定すると、空の配列が返ってきます。
 <a name="method-str-contains"></a>
 #### `Str::contains()` {#collection-method}
 
-`Str::contains`メソッドは指定した文字列が、２つ目の文字列を含んでいるか調べます。（大文字小文字の区別あり）
+`Str::contains`メソッドは指定した文字列が、２つ目の文字列を含んでいるか判定します。（大文字小文字の区別あり）
 
     use Illuminate\Support\Str;
 
@@ -1026,7 +1026,7 @@ NULL値を指定すると、空の配列が返ってきます。
 <a name="method-str-contains-all"></a>
 #### `Str::containsAll()` {#collection-method}
 
-`Str::containsAll`メソッドは、指定した配列の値をすべて文字列が含んでいるか調べます。
+`Str::containsAll`メソッドは、指定した配列の値をすべて文字列が含んでいるか判定します。
 
     use Illuminate\Support\Str;
 
@@ -1037,7 +1037,7 @@ NULL値を指定すると、空の配列が返ってきます。
 <a name="method-ends-with"></a>
 #### `Str::endsWith()` {#collection-method}
 
-`Str::endsWith`メソッドは、最初の文字列が２つ目の引数の文字列で終わっているか調べます。
+`Str::endsWith`メソッドは、最初の文字列が２つ目の引数の文字列で終わっているか判定します。
 
     use Illuminate\Support\Str;
 
@@ -1046,7 +1046,7 @@ NULL値を指定すると、空の配列が返ってきます。
     // true
 
 
-もしくは値の配列を渡し、文字列が指定した値のいずれかで終わるかを判定できます。
+もしくは値の配列を渡し、文字列が指定値のいずれかで終わるかを判定できます。
 
     use Illuminate\Support\Str;
 
@@ -1279,7 +1279,7 @@ NULL値を指定すると、空の配列が返ってきます。
 <a name="method-starts-with"></a>
 #### `Str::startsWith()` {#collection-method}
 
-`Str::startsWith`メソッドは指定した文字列が、２番めの引数の文字列で始まっているか調べます。
+`Str::startsWith`メソッドは指定した文字列が、２番めの引数の文字列で始まっているか判定します。
 
     use Illuminate\Support\Str;
 
@@ -1348,14 +1348,14 @@ NULL値を指定すると、空の配列が返ってきます。
 指定した翻訳キーが存在しない場合、`trans_choice`関数は指定値をそのまま返します。上記の場合に翻訳キーが存在しなければ、`messages.welcome`が返ります。
 
 <a name="fluent-strings"></a>
-## Fluent Strings
+## Fluent文字列
 
-Fluent strings provide a more fluent, object-oriented interface for working with string values, allowing you to chain multiple string operations together using a more readable syntax compared to traditional string operations.
+Fluent文字列はより読み書きしやすい(fluent)、オブジェクト指向で、複数の文字列操作をチェーンできるインターフェイスを提供します。古典的な文字列操作に比較すると、複数の文字列操作を読みやすい文法で使用できます。
 
 <a name="method-fluent-str-after"></a>
 #### `after` {#collection-method}
 
-The `after` method returns everything after the given value in a string. The entire string will be returned if the value does not exist within the string:
+`after`関数は、指定値に続く文字列をすべて返します。文字列中に指定値が存在しない場合は、文字列全体を返します。
 
     use Illuminate\Support\Str;
 
@@ -1366,7 +1366,7 @@ The `after` method returns everything after the given value in a string. The ent
 <a name="method-fluent-str-after-last"></a>
 #### `afterLast` {#collection-method}
 
-The `afterLast` method returns everything after the last occurrence of the given value in a string. The entire string will be returned if the value does not exist within the string:
+`afterLast`メソッドは、文字列で指定値が最後に現れる場所から、後ろの部分を返します。文字列中に指定値が存在しない場合は、文字列全体を返します。
 
     use Illuminate\Support\Str;
 
@@ -1377,7 +1377,7 @@ The `afterLast` method returns everything after the last occurrence of the given
 <a name="method-fluent-str-append"></a>
 #### `append` {#collection-method}
 
-The `append` method appends the given values to the string:
+`append`メソッドは、指定値を文字列へ追加します。
 
     use Illuminate\Support\Str;
 
@@ -1388,7 +1388,7 @@ The `append` method appends the given values to the string:
 <a name="method-fluent-str-ascii"></a>
 #### `ascii` {#collection-method}
 
-The `ascii` method will attempt to transliterate the string into an ASCII value:
+`ascii`メソッドは、文字列をアスキー値への変換を試みます。
 
     use Illuminate\Support\Str;
 
@@ -1399,7 +1399,7 @@ The `ascii` method will attempt to transliterate the string into an ASCII value:
 <a name="method-fluent-str-basename"></a>
 #### `basename` {#collection-method}
 
-The `basename` method will return the trailing name component of the given string:
+`basename`メソッドは、文字列の最後の名前部分を返します。
 
     use Illuminate\Support\Str;
 
@@ -1407,7 +1407,7 @@ The `basename` method will return the trailing name component of the given strin
 
     // 'baz'
 
-If needed, you may provide an "extension" that will be removed from the trailing component:
+必要であれば、最後の部分から削除したい「拡張子」を指定できます。
 
     use Illuminate\Support\Str;
 
@@ -1418,7 +1418,7 @@ If needed, you may provide an "extension" that will be removed from the trailing
 <a name="method-fluent-str-before"></a>
 #### `before` {#collection-method}
 
-The `before` method returns everything before the given value in a string:
+`before`関数は、文字列中の指定値より前の文字列を全部返します
 
     use Illuminate\Support\Str;
 
@@ -1429,7 +1429,7 @@ The `before` method returns everything before the given value in a string:
 <a name="method-fluent-str-before-last"></a>
 #### `beforeLast` {#collection-method}
 
-The `beforeLast` method returns everything before the last occurrence of the given value in a string:
+`beforeLast`メソッドは、文字列中で最初に指定値が現れる場所から、前の部分を返します。
 
     use Illuminate\Support\Str;
 
@@ -1440,7 +1440,7 @@ The `beforeLast` method returns everything before the last occurrence of the giv
 <a name="method-fluent-str-camel"></a>
 #### `camel` {#collection-method}
 
-The `camel` method converts the given string to `camelCase`:
+`camel`メソッドは、文字列をキャメルケース（`camelCase`）へ変換します
 
     use Illuminate\Support\Str;
 
@@ -1451,7 +1451,7 @@ The `camel` method converts the given string to `camelCase`:
 <a name="method-fluent-str-contains"></a>
 #### `contains` {#collection-method}
 
-The `contains` method determines if the given string contains the given value (case sensitive):
+`contains`メソッドは、文字列が指定値を含んでいるか判定します。（大文字小文字の区別あり）
 
     use Illuminate\Support\Str;
 
@@ -1470,7 +1470,7 @@ The `contains` method determines if the given string contains the given value (c
 <a name="method-fluent-str-contains-all"></a>
 #### `containsAll` {#collection-method}
 
-The `containsAll` method determines if the given string contains all array values:
+`containsAll`メソッドは、指定した配列の値をすべて文字列が含んでいるか判定します。
 
     use Illuminate\Support\Str;
 
@@ -1481,7 +1481,7 @@ The `containsAll` method determines if the given string contains all array value
 <a name="method-fluent-str-dirname"></a>
 #### `dirname` {#collection-method}
 
-The `dirname` method returns the parent directory portion of the given string:
+`dirname`メソッドは文字列の親ディレクトリ名部分を返します。
 
     use Illuminate\Support\Str;
 
@@ -1489,7 +1489,7 @@ The `dirname` method returns the parent directory portion of the given string:
 
     // '/foo/bar'
 
-Optionally, You may specify how many directory levels you wish to trim from the string:
+オプションとして、削除したいディレクトリレベル数を指定できます。
 
     use Illuminate\Support\Str;
 
@@ -1500,7 +1500,7 @@ Optionally, You may specify how many directory levels you wish to trim from the 
 <a name="method-fluent-str-ends-with"></a>
 #### `endsWith` {#collection-method}
 
-The `endsWith` method determines if the given string ends with the given value:
+`endsWith`メソッドは、文字列が指定値で終わっているか判定します。
 
     use Illuminate\Support\Str;
 
@@ -1508,7 +1508,7 @@ The `endsWith` method determines if the given string ends with the given value:
 
     // true
 
-もしくは値の配列を渡し、文字列が指定した値のいずれかで終わるかを判定できます。
+もしくは値の配列を渡し、文字列が指定値のいずれかで終わるかを判定できます。
 
     use Illuminate\Support\Str;
 
@@ -1523,7 +1523,7 @@ The `endsWith` method determines if the given string ends with the given value:
 <a name="method-fluent-str-exactly"></a>
 #### `exactly` {#collection-method}
 
-The `exactly` method determines if the given string is an exact match with another string:
+`exactly`メソッドは、文字列と指定値が完全に一致することを判定します。
 
     use Illuminate\Support\Str;
 
@@ -1534,7 +1534,7 @@ The `exactly` method determines if the given string is an exact match with anoth
 <a name="method-fluent-str-explode"></a>
 #### `explode` {#collection-method}
 
-The `explode` method splits the string by the given delimiter and returns a collection containing each section of the split string:
+`explode`メソッドは文字列を指定デリミッタで分割し、分割した文字列を含むコレクションを返します。
 
     use Illuminate\Support\Str;
 
@@ -1545,7 +1545,7 @@ The `explode` method splits the string by the given delimiter and returns a coll
 <a name="method-fluent-str-finish"></a>
 #### `finish` {#collection-method}
 
-The `finish` method adds a single instance of the given value to a string if it does not already end with the value:
+`finish`メソッドは、文字列の最後が指定値で終了していない場合、その値を追加します。
 
     use Illuminate\Support\Str;
 
@@ -1560,7 +1560,7 @@ The `finish` method adds a single instance of the given value to a string if it 
 <a name="method-fluent-str-is"></a>
 #### `is` {#collection-method}
 
-The `is` method determines if a given string matches a given pattern. Asterisks may be used to indicate wildcards:
+`is`メソッドは、文字列が指定パターンに一致しているかを判定します。アスタリスクが使用されると、ワイルドカードとして利用されます。
 
     use Illuminate\Support\Str;
 
@@ -1575,7 +1575,7 @@ The `is` method determines if a given string matches a given pattern. Asterisks 
 <a name="method-fluent-str-is-ascii"></a>
 #### `isAscii` {#collection-method}
 
-The `isAscii` method determines if a given string is an ASCII string:
+`isAscii`メソッドは、文字列がASCII文字列であるか判定します。
 
     use Illuminate\Support\Str;
 
@@ -1590,7 +1590,7 @@ The `isAscii` method determines if a given string is an ASCII string:
 <a name="method-fluent-str-is-empty"></a>
 #### `isEmpty` {#collection-method}
 
-The `isEmpty` method determines if the given string is empty:
+`isEmpty`メソッドは、文字列が空であるか判定します。
 
     use Illuminate\Support\Str;
 
@@ -1605,7 +1605,7 @@ The `isEmpty` method determines if the given string is empty:
 <a name="method-fluent-str-kebab"></a>
 #### `kebab` {#collection-method}
 
-The `kebab` method converts the given string to `kebab-case`:
+`kebab`メソッドは、文字列をケバブケース（`kebab-case`）へ変換します。
 
     use Illuminate\Support\Str;
 
@@ -1616,7 +1616,7 @@ The `kebab` method converts the given string to `kebab-case`:
 <a name="method-fluent-str-length"></a>
 #### `length` {#collection-method}
 
-The `length` method returns the length of the given string:
+`length`メソッドは、文字列の長さを返します。
 
     use Illuminate\Support\Str;
 
@@ -1627,7 +1627,7 @@ The `length` method returns the length of the given string:
 <a name="method-fluent-str-limit"></a>
 #### `limit` {#collection-method}
 
-The `limit` method truncates the given string at the specified length:
+`limit`メソッドは、文字列を指定長で切り捨てます。
 
     use Illuminate\Support\Str;
 
@@ -1635,7 +1635,7 @@ The `limit` method truncates the given string at the specified length:
 
     // The quick brown fox...
 
-また、第３引数として、最長文字列数を超えた場合に末尾へ追加する、文字列を渡すこともできます。
+また、第２引数として、最長文字列数を超えた場合に末尾へ追加する、文字列を渡すこともできます。
 
     use Illuminate\Support\Str;
 
@@ -1646,7 +1646,7 @@ The `limit` method truncates the given string at the specified length:
 <a name="method-fluent-str-lower"></a>
 #### `lower` {#collection-method}
 
-The `lower` method converts the given string to lowercase:
+`lower`メソッドは、文字列を小文字に変換します。
 
     use Illuminate\Support\Str;
 
@@ -1657,7 +1657,7 @@ The `lower` method converts the given string to lowercase:
 <a name="method-fluent-str-match"></a>
 #### `match` {#collection-method}
 
-The `match` method will return the portion of a string that matches a given regular expression pattern:
+`match`メソッドは、指定した正規表現パターンに一致する部分文字列を返します。
 
     use Illuminate\Support\Str;
 
@@ -1672,7 +1672,7 @@ The `match` method will return the portion of a string that matches a given regu
 <a name="method-fluent-str-match-all"></a>
 #### `matchAll` {#collection-method}
 
-The `matchAll` method will return a collection containing the portions of a string that match a given regular expression pattern:
+`matchAll`メソッドは、指定した正規表現パターンに一致した部分文字列を含むコレクションを返します。
 
     use Illuminate\Support\Str;
 
@@ -1680,7 +1680,7 @@ The `matchAll` method will return a collection containing the portions of a stri
 
     // collect(['bar', 'bar'])
 
-If you specify a matching group within the expression, Laravel will return a collection of that group's matches:
+正規表現にマッチンググループを指定した場合は、そのグループに一致するコレクションを返します。
 
     use Illuminate\Support\Str;
 
@@ -1688,12 +1688,12 @@ If you specify a matching group within the expression, Laravel will return a col
 
     // collect(['un', 'ly']);
 
-If no matches are found, an empty collection will be returned.
+一致しなかった場合は、空のコレクションを返します。
 
 <a name="method-fluent-str-plural"></a>
 #### `plural` {#collection-method}
 
-The `plural` method converts a single word string to its plural form. This function currently only supports the English language:
+`plural`メソッドは、単語の単数形を複数形に変換します。この関数は現在英語のみをサポートしています。
 
     use Illuminate\Support\Str;
 
@@ -1720,7 +1720,7 @@ The `plural` method converts a single word string to its plural form. This funct
 <a name="method-fluent-str-prepend"></a>
 #### `prepend` {#collection-method}
 
-The `prepend` method prepends the given values onto the string:
+`prepend`メソッドは、指定値を文字列の先頭へ追加します。
 
     use Illuminate\Support\Str;
 
@@ -1731,7 +1731,7 @@ The `prepend` method prepends the given values onto the string:
 <a name="method-fluent-str-replace"></a>
 #### `replace` {#collection-method}
 
-The `replace` method replaces a given string within the string:
+`replace`メソッドは、文字列中の指定値を置き換えます。
 
     use Illuminate\Support\Str;
 
@@ -1742,7 +1742,7 @@ The `replace` method replaces a given string within the string:
 <a name="method-fluent-str-replace-array"></a>
 #### `replaceArray` {#collection-method}
 
-The `replaceArray` method replaces a given value in the string sequentially using an array:
+`replaceArray`メソッドは、配列を使用して文字列中の指定値を置き換えます。
 
     use Illuminate\Support\Str;
 
@@ -1755,7 +1755,7 @@ The `replaceArray` method replaces a given value in the string sequentially usin
 <a name="method-fluent-str-replace-first"></a>
 #### `replaceFirst` {#collection-method}
 
-The `replaceFirst` method replaces the first occurrence of a given value in a string:
+`replaceFirst`メソッドは、文字列中で最初に現れた指定値を置き換えます。
 
     use Illuminate\Support\Str;
 
@@ -1766,7 +1766,7 @@ The `replaceFirst` method replaces the first occurrence of a given value in a st
 <a name="method-fluent-str-replace-last"></a>
 #### `replaceLast` {#collection-method}
 
-The `replaceLast` method replaces the last occurrence of a given value in a string:
+`replaceLast`メソッドは文字列中で最後に現れた指定値を置き換えます。
 
     use Illuminate\Support\Str;
 
@@ -1777,7 +1777,7 @@ The `replaceLast` method replaces the last occurrence of a given value in a stri
 <a name="method-fluent-str-replace-matches"></a>
 #### `replaceMatches` {#collection-method}
 
-The `replaceMatches` method replaces all portions of a string matching a given pattern with the given replacement string:
+`replaceMatches`メソッドは、指定したパターンに一致する文字列をすべて置き換えます。
 
     use Illuminate\Support\Str;
 
@@ -1785,7 +1785,7 @@ The `replaceMatches` method replaces all portions of a string matching a given p
 
     // '15015551000'
 
-The `replaceMatches` method also accepts a Closure that will be invoked with each portion of the string matching the given party, allowing you to perform the replacement logic within the Closure and return the replaced value:
+replaceMatches`メソッドは、パターンが文字列と一致するたびに実行するクロージャを渡すこともでき、クロージャの中で置換ロジックを実行後、置換する値を返します。
 
     use Illuminate\Support\Str;
 
@@ -1798,7 +1798,7 @@ The `replaceMatches` method also accepts a Closure that will be invoked with eac
 <a name="method-fluent-str-start"></a>
 #### `start` {#collection-method}
 
-The `start` method adds a single instance of the given value to a string if it does not already start with the value:
+`start`メソッドは文字列が指定値から始まっていないとき、先頭にその文字列を追加します。
 
     use Illuminate\Support\Str;
 
@@ -1813,7 +1813,7 @@ The `start` method adds a single instance of the given value to a string if it d
 <a name="method-fluent-str-upper"></a>
 #### `upper` {#collection-method}
 
-The `upper` method converts the given string to uppercase:
+`upper`メソッドは、文字列を大文字に変換します。
 
     use Illuminate\Support\Str;
 
@@ -1824,7 +1824,7 @@ The `upper` method converts the given string to uppercase:
 <a name="method-fluent-str-title"></a>
 #### `title` {#collection-method}
 
-The `title` method converts the given string to `Title Case`:
+`title`メソッドは、文字列をタイトルケース（`Title Case`）へ変換します。
 
     use Illuminate\Support\Str;
 
@@ -1835,7 +1835,7 @@ The `title` method converts the given string to `Title Case`:
 <a name="method-fluent-str-singular"></a>
 #### `singular` {#collection-method}
 
-The `singular` method converts a string to its singular form. This function currently only supports the English language:
+`singular`メソッドは、単語を単数形に変換します。この関数は現在英語のみ対応しています。
 
     use Illuminate\Support\Str;
 
@@ -1850,7 +1850,7 @@ The `singular` method converts a string to its singular form. This function curr
 <a name="method-fluent-str-slug"></a>
 #### `slug` {#collection-method}
 
-The `slug` method generates a URL friendly "slug" from the given string:
+`slug`メソッドは、文字列をURLフレンドリーな「スラグ」へ変換します。
 
     use Illuminate\Support\Str;
 
@@ -1861,7 +1861,7 @@ The `slug` method generates a URL friendly "slug" from the given string:
 <a name="method-fluent-str-snake"></a>
 #### `snake` {#collection-method}
 
-The `snake` method converts the given string to `snake_case`:
+The `snake` method converts the given string to `snake`メソッドは、文字列をスネークケース（`snake_case`）へ変換します。
 
     use Illuminate\Support\Str;
 
@@ -1872,7 +1872,7 @@ The `snake` method converts the given string to `snake_case`:
 <a name="method-fluent-str-starts-with"></a>
 #### `startsWith` {#collection-method}
 
-The `startsWith` method determines if the given string begins with the given value:
+`startsWith`メソッドは、文字列が指定値から始まっているかを判定します。
 
     use Illuminate\Support\Str;
 
@@ -1883,7 +1883,7 @@ The `startsWith` method determines if the given string begins with the given val
 <a name="method-fluent-str-studly"></a>
 #### `studly` {#collection-method}
 
-The `studly` method converts the given string to `StudlyCase`:
+`studly`メソッドは、文字列をアッパーキャメルケース（`StudlyCase`）へ変換します。
 
     use Illuminate\Support\Str;
 
@@ -1894,7 +1894,7 @@ The `studly` method converts the given string to `StudlyCase`:
 <a name="method-fluent-str-substr"></a>
 #### `substr` {#collection-method}
 
-The `substr` method returns the portion of the string specified by the given start and length parameters:
+`substr`メソッドは、引数で指定された開始位置と長さの部分文字列を返します。
 
     use Illuminate\Support\Str;
 
@@ -1909,7 +1909,7 @@ The `substr` method returns the portion of the string specified by the given sta
 <a name="method-fluent-str-trim"></a>
 #### `trim` {#collection-method}
 
-The `trim` method trims the given string:
+`trim`メソッドは、文字列をトリムします。
 
     use Illuminate\Support\Str;
 
@@ -1924,7 +1924,7 @@ The `trim` method trims the given string:
 <a name="method-fluent-str-ucfirst"></a>
 #### `ucfirst` {#collection-method}
 
-The `ucfirst` method returns the given string with the first character capitalized:
+`ucfirst`メソッドは、文字列の最初の１文字目を大文字にします。
 
     use Illuminate\Support\Str;
 
@@ -1935,7 +1935,7 @@ The `ucfirst` method returns the given string with the first character capitaliz
 <a name="method-fluent-str-when-empty"></a>
 #### `whenEmpty` {#collection-method}
 
-The `whenEmpty` method invokes the given Closure if the string is empty. If the Closure returns a value, that value will also be returned by the `whenEmpty` method. If the Closure does not return a value, the fluent string instance will be returned:
+`whenEmpty`メソッドは、文字列が空の場合に、指定したクロージャを実行します。クロージャが値を返すと、それが`whenEmpty`の戻り値になります。クロージャが値を返さない場合は、Fluent文字列インスタンスを返します。
 
     use Illuminate\Support\Str;
 
@@ -1948,7 +1948,7 @@ The `whenEmpty` method invokes the given Closure if the string is empty. If the 
 <a name="method-fluent-str-words"></a>
 #### `words` {#collection-method}
 
-The `words` method limits the number of words in a string:
+`words`メソッドは、文字列をワード数で制限します。
 
     use Illuminate\Support\Str;
 
@@ -2099,7 +2099,7 @@ The `words` method limits the number of words in a string:
 <a name="method-bcrypt"></a>
 #### `bcrypt()` {#collection-method}
 
-`bcrypt`関数は指定した値をBcryptを使用し[ハッシュ](/docs/{{version}}/hashing)化します。`Hash`ファサードの代用として使用できます。
+`bcrypt`関数は指定値をBcryptを使用し[ハッシュ](/docs/{{version}}/hashing)化します。`Hash`ファサードの代用として使用できます。
 
     $password = bcrypt('my-secret-password');
 
@@ -2155,7 +2155,7 @@ The `words` method limits the number of words in a string:
 <a name="method-collect"></a>
 #### `collect()` {#collection-method}
 
-`collect`関数は、指定した値から[コレクション](/docs/{{version}}/collections)インスタンスを生成します。
+`collect`関数は、指定値から[コレクション](/docs/{{version}}/collections)インスタンスを生成します。
 
     $collection = collect(['taylor', 'abigail']);
 
