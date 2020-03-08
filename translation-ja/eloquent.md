@@ -24,7 +24,7 @@
     - [ローカルスコープ](#local-scopes)
 - [モデルの比較](#comparing-models)
 - [イベント](#events)
-    - [Using Closures](#events-using-closures)
+    - [クロージャの使用](#events-using-closures)
     - [オブザーバ](#observers)
 
 <a name="introduction"></a>
@@ -767,7 +767,7 @@ Eloquentの`all`メソッドはモデルテーブルの全レコードを結果�
 
 #### グローバルスコープの適用
 
-To assign a global scope to a model, you should override a given model's `booted` method and use the `addGlobalScope` method:
+モデルにグローバルスコープを適用するには、そのモデルの`booted`メソッドをオーバライドし、`addGlobalScope`メソッドを呼び出します。
 
     <?php
 
@@ -779,7 +779,7 @@ To assign a global scope to a model, you should override a given model's `booted
     class User extends Model
     {
         /**
-         * The "booted" method of the model.
+         * モデルの「初期起動」メソッド
          *
          * @return void
          */
@@ -807,7 +807,7 @@ Eloquentではクロージャを使ったグローバルスコープも定義で
     class User extends Model
     {
         /**
-         * The "booted" method of the model.
+         * モデルの「初期起動」メソッド
          *
          * @return void
          */
@@ -968,9 +968,9 @@ Eloquentモデルは多くのイベントを発行します。`creating`、`crea
 Eloquentイベントの定義とマップができたら、[イベントリスナ](/docs/{{version}}/events#defining-listeners)を使用し、イベントを処理できます。
 
 <a name="events-using-closures"></a>
-### Using Closures
+### クロージャの使用
 
-Instead of using custom event classes, you may register Closures that execute when various model events are fired. Typically, you should register these Closures in the `booted` method of your model:
+カスタムイベントクラスを使用する代わりに、さまざまなモデルイベントが発行されたときに実行されるクロージャを登録できます。通常はモデルの`booted`メソッドで、これらのクロージャを登録すべきでしょう。
 
     <?php
 
@@ -982,7 +982,7 @@ Instead of using custom event classes, you may register Closures that execute wh
     class User extends Model
     {
         /**
-         * The "booted" method of the model.
+         * モデルの「初期起動」メソッド
          *
          * @return void
          */

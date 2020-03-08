@@ -1058,7 +1058,7 @@ Eagerロードのクエリに追加の制約を指定する必要がある場合
 <a name="eager-loading"></a>
 ## Eagerロード
 
-When accessing Eloquent relationships as properties, the relationship data is "lazy loaded". This means the relationship data is not actually loaded until you first access the property. However, Eloquent can "eager load" relationships at the time you query the parent model. Eager loading alleviates the N + 1 query problem. To illustrate the N + 1 query problem, consider a `Book` model that is related to `Author`:
+プロパティとしてEloquentリレーションにアクセスする場合、そのリレーションデータは「遅延ロード」されます。つまり、そのプロパティへ最初にアクセスするまで、実際にはロードされません。しかし、Eloquentでは、親のモデルに対するクエリと同時にリレーションを「Eagerロード」可能です。EagerロードはN+1クエリ問題の解決策です。N+１クエリ問題を理解するために、`Author`と関連している`Book`モデルを考えてみてください。
 
     <?php
 

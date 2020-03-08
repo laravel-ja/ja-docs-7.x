@@ -43,7 +43,7 @@ LaravelはFrank de Jongeさんが作成した拝みたいほど素晴らしい�
 
     echo asset('storage/file.txt');
 
-You may configure additional symbolic links in your `filesystems` configuration file. Each of the configured links will be created when you run the `storage:link` command:
+`filesystems`設定ファイルで追加のシンボリックリンクを設定可能です。各設定リンクは`storage:link`コマンドを実行し、生成可能です。
 
     'links' => [
         public_path('storage') => storage_path('app/public'),
@@ -140,7 +140,7 @@ Laravelのファイルシステム統合はSFTPできちんと動作します。
     's3' => [
         'driver' => 's3',
 
-        // Other Disk Options...
+        // 他のディスクの設定…
 
         'cache' => [
             'store' => 'memcached',

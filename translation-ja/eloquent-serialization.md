@@ -170,12 +170,12 @@ EloquentモデルがJSONへ変換される場合、JSONオブジェクトへ属�
 <a name="date-serialization"></a>
 ## 日付のシリアライズ
 
-#### Customizing The Default Date Format
+#### デフォルト日付形式のカスタマイズ
 
-You may customize the default serialization format by overriding the `serializeDate` method:
+`serializeDate`メソッドをオーバーライドすることにより、デフォルトの日付位形式をカスタマイズできます。
 
     /**
-     * Prepare a date for array / JSON serialization.
+     * 配列／日付シリアライズのために日付を準備
      *
      * @param  \DateTimeInterface  $date
      * @return string
