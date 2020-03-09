@@ -189,7 +189,7 @@ LaravelはJSON APIとレスポンスをテストする数多くのヘルパを�
 
 > {tip} The `assertJson`メソッドはレスポンスを配列へ変換し、`PHPUnit::assertArraySubset`を使用しアプリケーションへ戻ってきたJSONレスポンスの中に、指定された配列が含まれているかを確認します。そのため、JSONレスポンスの中に他のプロパティが存在していても、このテストは指定した一部が残っている限り、テストはパスし続けます。
 
-In addition, JSON response data may be accessed as array variables on the response:
+付け加えて、JSONレスポンスのデータは、レスポンスの配列変数としてアクセスできます。
 
     $this->assertTrue($response['created']);
 
@@ -399,14 +399,14 @@ JSONレスポンスの特定パスに、指定したデータが含まれてい�
 <a name="assert-dont-see"></a>
 #### assertDontSee
 
-Assert that the given string is not contained within the response. This assertion will automatically escape the given string unless you pass a second argument of `false`:
+指定した文字列がレスポンスに含まれていないことを宣言。このアサートは第２引数に`false`を指定しない限り、自動的に指定した文字列をエスケープします。
 
     $response->assertDontSee($value, $escaped = true);
 
 <a name="assert-dont-see-text"></a>
 #### assertDontSeeText
 
-Assert that the given string is not contained within the response text. This assertion will automatically escape the given string unless you pass a second argument of `false`:
+指定した文字列がレスポンステキストに含まれていないことを宣言。このアサートは第２引数に`false`を指定しない限り、自動的に指定した文字列をエスケープします。
 
     $response->assertDontSeeText($value, $escaped = true);
 
@@ -546,28 +546,28 @@ Assert that the given string is not contained within the response text. This ass
 <a name="assert-see"></a>
 #### assertSee
 
-Assert that the given string is contained within the response. This assertion will automatically escape the given string unless you pass a second argument of `false`:
+指定した文字列がレスポンスに含まれていることを宣言。このアサートは第２引数に`false`を指定しない限り、自動的に指定した文字列をエスケープします。
 
     $response->assertSee($value, $escaped = true);
 
 <a name="assert-see-in-order"></a>
 #### assertSeeInOrder
 
-Assert that the given strings are contained in order within the response. This assertion will automatically escape the given strings unless you pass a second argument of `false`:
+指定した文字列が、順番通りにレスポンスへ含まれていることを宣言。このアサートは第２引数に`false`を指定しない限り、自動的に指定した文字列をエスケープします。
 
     $response->assertSeeInOrder(array $values, $escaped = true);
 
 <a name="assert-see-text"></a>
 #### assertSeeText
 
-Assert that the given string is contained within the response text. This assertion will automatically escape the given string unless you pass a second argument of `false`:
+指定した文字列がレスポンステキストに含まれていることを宣言。このアサートは第２引数に`false`を指定しない限り、自動的に指定した文字列をエスケープします。
 
     $response->assertSeeText($value, $escaped = true);
 
 <a name="assert-see-text-in-order"></a>
 #### assertSeeTextInOrder
 
-Assert that the given strings are contained in order within the response text. This assertion will automatically escape the given strings unless you pass a second argument of `false`:
+指定した文字列が、順番通りにレスポンステキストへ含まれていることを宣言このアサートは第２引数に`false`を指定しない限り、自動的に指定した文字列をエスケープします。
 
     $response->assertSeeTextInOrder(array $values, $escaped = true);
 
@@ -655,7 +655,7 @@ Assert that the given strings are contained in order within the response text. T
 
     $response->assertViewHas($key, $value = null);
 
-In addition, view data may be accessed as array variables on the response:
+ビューのデータは、レスポンスの配列変数としてアクセスできます。
 
     $this->assertEquals('Taylor', $response['name']);
 

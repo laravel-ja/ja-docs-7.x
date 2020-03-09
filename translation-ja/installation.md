@@ -42,7 +42,7 @@ Laravelは[Composer](https://getcomposer.org)を依存パッケージの管理�
 
     composer global require laravel/installer
 
-皆さんのシステムの、どこへlaravel実行ファイルが設置されても動作するように、Composerのシステム全体のvendor/binディレクトリを`$PATH`へ登録してください。このディレクトリはオペレーティングシステムにより場所が異なります。通常は、以下の場所です。
+皆さんのシステムのどこでlaravel実行ファイルが設置されても動作するように、Composerのシステム全体のvendor/binディレクトリを`$PATH`へ登録してください。このディレクトリはオペレーティングシステムにより場所が異なります。通常は、以下の場所です。
 
 <div class="content-list" markdown="1">
 - macOS： `$HOME/.composer/vendor/bin`

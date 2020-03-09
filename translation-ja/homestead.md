@@ -159,10 +159,10 @@ VirtualBox/VMwareとVagrantをインストールし終えたら、`laravel/homes
 
 Homesteadリポジトリをクローンしたら、`Homestead.yaml`設定ファイルを生成するために、`bash init.sh`コマンドをHomesteadディレクトリで実行します。
 
-    // Mac / Linux...
+    // Mac／Linux
     bash init.sh
 
-    // Windows...
+    // Windows
     init.bat
 
 <a name="configuring-homestead"></a>
@@ -257,11 +257,11 @@ Homesteadをプロジェクトに直接インストールするには、Composer
 
 Homesteadがインストールできたら、`Vagrantfile`と`Homestead.yaml`ファイルをプロジェクトルートへ生成するために`make`コマンドを使ってください。`make`コマンドは`Homestead.yaml`ファイルの`sites`と`folders`ディレクティブを自動的に設定します。
 
-Mac / Linux:
+Mac／Linux：
 
     php vendor/bin/homestead make
 
-Windows:
+Windows：
 
     vendor\bin\homestead make
 
