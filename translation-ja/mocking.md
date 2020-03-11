@@ -9,7 +9,7 @@
 - [Notification Fake](#notification-fake)
 - [Queue Fake](#queue-fake)
 - [Storage Fake](#storage-fake)
-- [Facades](#mocking-facades)
+- [ファサード](#mocking-facades)
 
 <a name="イントロダクション"></a>
 ## イントロダクション
@@ -256,7 +256,7 @@ Laravelのサービスコンテナにより、アプリケーションへ依存�
         {
             Notification::fake();
 
-            // Assert that no notifications were sent...
+            // 通知がまったく送られていないことをアサート
             Notification::assertNothingSent();
 
             // 注文の実行コード…
@@ -318,7 +318,7 @@ Laravelのサービスコンテナにより、アプリケーションへ依存�
         {
             Queue::fake();
 
-            // ジョブが投入されていないことをアサート
+            // ジョブがまったく投入されていないことをアサート
             Queue::assertNothingPushed();
 
             // 注文の実行コード…

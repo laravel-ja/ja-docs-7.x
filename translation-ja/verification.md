@@ -54,7 +54,7 @@
 [Routeミドルウェア](/docs/{{version}}/middleware)を指定したルートに対しメールアドレス確認済みのユーザーのみアクセスを許すために使用します。`Illuminate\Auth\Middleware\EnsureEmailIsVerified`で定義している`verified`ミドルウェアをLaravelは用意しています。このミドルウェアは、アプリケーションのHTTPカーネルで登録済みですので、ルート定義にこのミドルウェアを指定するだけです。
 
     Route::get('profile', function () {
-        // Only verified users may enter...
+        // 確認済みユーザーのときだけ実行されるコード…
     })->middleware('verified');
 
 <a name="verification-views"></a>

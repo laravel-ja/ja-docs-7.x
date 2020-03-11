@@ -40,7 +40,7 @@ Laravelのキューサービスは、Beanstalk、Amazon SQS、Redis、さらに�
 <a name="connections-vs-queues"></a>
 ### 接続 Vs. キュー
 
-Laravelのキューに取り掛かる前に、「接続」と「キュー」の区別を理解しておくことが重要です。`config/queue.php`設定ファイルの中には、`connections`設定オプションがあります。このオプションはAmazon SQS、Beanstalk、Redisなどのバックエンドサービスへの個々の接続を定義します。しかし、どんな指定されたキュー接続も、複数の「キュー」を持つことができます。「キュー」とはキュー済みのジョブのスタック、もしくは積み重ねのことです。
+Laravelのキューへ取り掛かる前に、「接続」と「キュー」の区別を理解しておくことが重要です。`config/queue.php`設定ファイルの中には、`connections`設定オプションがあります。このオプションはAmazon SQS、Beanstalk、Redisなどのバックエンドサービスへの個々の接続を定義します。しかし、どんな指定されたキュー接続も、複数の「キュー」を持つことができます。「キュー」とはキュー済みのジョブのスタック、もしくは積み重ねのことです。
 
 `queue`接続ファイルの`queue`属性を含んでいる、各接続設定例に注目してください。ジョブがディスパッチされ、指定された接続へ送られた時にのデフォルトキューです。言い換えれば、どのキューへディスパッチするのか明確に定義していないジョブをディスパッチすると、そのジョブは接続設定の`queue`属性で定義したキューへ送られます。
 
@@ -50,7 +50,7 @@ Laravelのキューに取り掛かる前に、「接続」と「キュー」の�
     // このジョブは"emails"キューへ送られる
     Job::dispatch()->onQueue('emails');
 
-あるアプリケーションでは複数のキューへジョブを送る必要はなく、代わりに１つのシンプルなキューが適しているでしょう。しかし、複数のキューへジョブを送ることは、優先順位づけしたい、もしくはジョブの処理を分割したいアプリケーションでは、とくに便利です。Laravelのキューワーカはプライオリティによりどのキューで処理するかを指定できるからです。たとえば、ジョブを`high`キューへ送れば、より高い処理プライオリティのワーカを実行できます。
+あるアプリケーションでは複数のキューへジョブを送る必要はなく、代わりに１つのシンプルなキューが適しているでしょう。しかし、複数のキューへジョブを送ることは優先順位づけしたい、もしくはジョブの処理を分割したいアプリケーションでとくに便利です。Laravelのキューワーカはプライオリティによりどのキューで処理するかを指定できるからです。たとえば、ジョブを`high`キューへ送れば、より高い処理プライオリティのワーカを実行できます。
 
     php artisan queue:work --queue=high,default
 
@@ -84,7 +84,7 @@ Redisキュー接続でRedisクラスタを使用している場合は、キュ�
 
 Redisキューを使用する場合、ワーカのループの繰り返しとRedisデータベースに対する再ポールの前に、ジョブを実行可能にするまでどの程度待つのかを指定する、`block_for`設定オプションを使うことができます。
 
-新しいジョブを得るため、Redisデータベースに連続してポールしてしまうより、キューの負荷にもとづいて、より効率的になるようにこの値を調整してください。たとえば、ジョブを実行可能にするまで、ドライバーが５秒間ブロックするように指示するには、値に`5`をセットします。
+新しいジョブを得るため、Redisデータベースに連続してポールしてしまうより、キューの負荷にもとづきより効率的になるよう、この値を調整してください。たとえば、ジョブを実行可能にするまで、ドライバーが５秒間ブロックするように指示するには、値に`5`をセットします。
 
     'redis' => [
         'driver' => 'redis',
@@ -242,11 +242,11 @@ handleメソッドの中でレート制限をする代わりに、レート制�
             Redis::throttle('key')
                     ->block(0)->allow(1)->every(5)
                     ->then(function () use ($job, $next) {
-                        // Lock obtained...
+                        // ロックを取得した場合の処理…
 
                         $next($job);
                     }, function () use ($job) {
-                        // Could not obtain lock...
+                        // ロックを取得できなかった処理…
 
                         $job->release(5);
                     });
@@ -298,7 +298,7 @@ handleメソッドの中でレート制限をする代わりに、レート制�
         }
     }
 
-If you would like to conditionally dispatch a job, you may use the `dispatchIf` and `dispatchUnless` methods:
+条件によりジョブをディスパッチする場合は、`dispatchIf`か`dispatchUnless`を使います。
 
     ProcessPodcast::dispatchIf($accountActive = true, $podcast);
 
@@ -336,15 +336,15 @@ If you would like to conditionally dispatch a job, you may use the `dispatchIf` 
 
 > {note} Amazon SQSキューサービスは、最大１５分の遅延時間です。
 
-#### Dispatching After The Response Is Sent To Browser
+#### レスポンスをブラウザへ送信後のディスパッチ
 
-Alternatively, the `dispatchAfterResponse` method delays dispatching a job until after the response is sent to the user's browser. This will still allow the user to begin using the application even though a queued job is still executing. This should typically only be used for jobs that take about a second, such as sending an email:
+別の方法として、ユーザーのブラウザにレスポンスを送り終えるまで、ジョブのディスパッチを遅らせる`dispatchAfterResponse`メソッドがあります。これによりキューされたジョブがまだ実行中であっても、ユーザーはアプリケーションをすぐ使い始めることができます。この方法は通常、メール送信のようなユーザーを数秒待たせるジョブにのみ使うべきでしょう。
 
     use App\Jobs\SendNotification;
 
     SendNotification::dispatchAfterResponse();
 
-You may `dispatch` a Closure and chain the `afterResponse` method onto the helper to execute a Closure after the response has been sent to the browser:
+`dispatch`でクロージャをディスパッチし、`afterResponse`メソッドをチェーンすることで、ブラウザにレスポンスを送り終えたらクロージャを実行することも可能です。
 
     use App\Mail\WelcomeMessage;
     use Illuminate\Support\Facades\Mail;
@@ -392,7 +392,7 @@ You may `dispatch` a Closure and chain the `afterResponse` method onto the helpe
         new ReleasePodcast
     ])->dispatch();
 
-In addition to chaining job class instances, you may also chain Closures:
+ジョブクラスインスタンスのチェーンだけでなく、クロージャもチェーンできます。
 
     ProcessPodcast::withChain([
         new OptimizePodcast,
@@ -536,9 +536,9 @@ In addition to chaining job class instances, you may also chain Closures:
 
 > {tip} キューイベントリスナでも、`retryUntil`メソッドを定義できます。
 
-#### Max Exceptions
+#### Max例外
 
-Sometimes you may wish to specify that a job may be attempted many times, but should fail if the retries are triggered by a given number of exceptions. To accomplish this, you may define a `maxExceptions` property on your job class:
+ジョブを何度も再試行するように指定している場合、指定した回数の例外が発生したことをきっかけにしてその再試行を失敗として取り扱いたい場合も起きると思います。そうするにはジョブクラスに`maxExceptions`プロパティを定義してください。
 
     <?php
 
@@ -554,7 +554,7 @@ Sometimes you may wish to specify that a job may be attempted many times, but sh
         public $tries = 25;
 
         /**
-         * The maximum number of exceptions to allow before failing.
+         * 失敗と判定するまで許す最大例外数
          *
          * @var int
          */
@@ -568,21 +568,21 @@ Sometimes you may wish to specify that a job may be attempted many times, but sh
         public function handle()
         {
             Redis::throttle('key')->allow(10)->every(60)->then(function () {
-                // Lock obtained, process the podcast...
+                // ロックが取得でき、ポッドキャストの処理を行う…
             }, function () {
-                // Unable to obtain lock...
+                // ロックが取得できなかった
                 return $this->release(10);
             });
         }
     }
 
-In this example, the job is released for ten seconds if the application is unable to obtain a Redis lock and will continue to be retried up to 25 times. However, the job will fail if three unhandled exceptions are thrown by the job.
+この例の場合、アプリケーションがRedisのロックを取得できない場合は、そのジョブは１０秒でリリースされます。そして、２５回再試行を継続します。しかし発生した例外を３回処理しなかった場合、ジョブは失敗します。
 
 #### タイムアウト
 
-> {note} The `timeout` feature is optimized for PHP 7.1+ and the `pcntl` PHP extension.
+> {note} `timeout`機能はPHP7.1以上で、`pcntl` PHP拡張に最適化しています。
 
-同様に、ジョブの最大実行秒数を指定するために、Artisanコマンドラインに`--timeout`スイッチを指定することができます。
+同様に、ジョブの最大実行秒数を指定するために、Artisanコマンドラインに`--timeout`スイッチを指定できます。
 
     php artisan queue:work --timeout=30
 
@@ -619,11 +619,11 @@ In this example, the job is released for ten seconds if the application is unabl
         return $this->release(10);
     });
 
-> {tip} 上記の例で`key`は、レート制限したいジョブのタイプを表す、一意の認識文字列です。たとえば、ジョブのクラス名と、（そのジョブに含まれているならば）EloquentモデルのIDを元に、制限できます。
+> {tip} 上記の例で`key`は、レート制限したいジョブのタイプを表す一意の認識文字列です。たとえば、ジョブのクラス名と（そのジョブに含まれているならば）EloquentモデルのIDを元に、制限できます。
 
 > {note} レート制限に引っかかったジョブをキューへ戻す(release)する場合も、ジョブの総試行回数(attempts)は増加します。
 
-もしくは、ジョブを同時に処理するワーカの最大数を指定することができます。これは、一度に一つのジョブが更新すべきリソースを変更するキュージョブを使用する場合に、役立ちます。`funnel`メソッドの使用例として、一度に１ワーカのみにより処理される、特定のタイプのジョブを制限してみましょう。
+もしくは、ジョブを同時に処理するワーカの最大数を指定可能です。これは、一度に一つのジョブが更新すべきリソースを変更するキュージョブを使用する場合に、役立ちます。`funnel`メソッドの使用例として、一度に１ワーカのみにより処理される、特定のタイプのジョブを制限してみましょう。
 
     Redis::funnel('key')->limit(1)->then(function () {
         // ジョブのロジック処理…
@@ -686,7 +686,7 @@ Laravelには、キューに投入された新しいジョブを処理する、�
 
 #### キューされたすべてのジョブを処理し、終了する
 
-`--stop-when-empty`オプションは、すべてのジョブを処理してから終了するように、ワーカへ指示するために使用します。このオプションは、LaravelキューがDockerコンテナ中で動作していて、キューが空になった後にコンテナをシャットダウンしたい場合に便利です。
+`--stop-when-empty`オプションは、すべてのジョブを処理してから終了するように、ワーカへ指示するために使用します。このオプションは、LaravelキューがDockerコンテナ中で動作していて、キューが空になった後でコンテナをシャットダウンしたい場合に便利です。
 
     php artisan queue:work --stop-when-empty
 
@@ -767,7 +767,7 @@ Supervisorの設定ファイルは、通常`/etc/supervisor/conf.d`ディレク�
     stdout_logfile=/home/forge/app.com/worker.log
     stopwaitsecs=3600
 
-この例の`numprocs`ディレクティブは、Supervisorに全部で８つのqueue:workプロセスを実行・監視し、落ちている時は自動的に再起動するように指示しています。`command`ディレクティブの`queue:work sqs`の部分を変更し、希望のキュー接続に合わせてください。
+この例の`numprocs`ディレクティブは、Supervisorに全部で８つのqueue:workプロセスを実行・監視し、落ちている時は自動的に再起動するよう指示しています。`command`ディレクティブの`queue:work sqs`の部分を変更し、希望のキュー接続に合わせてください。
 
 > {note} 一番時間がかかるジョブが消費する秒数より大きな値を`stopwaitsecs`へ必ず指定してください。そうしないと、Supervisorは処理が終了する前に、そのジョブをキルしてしまうでしょう。
 
@@ -915,7 +915,7 @@ Supervisorの詳細情報は、[Supervisorドキュメント](http://supervisord
 
     php artisan queue:failed
 
-`queue:failed`コマンドはジョブID、接続、キュー、失敗した時間をリスト表示します。失敗したジョブをジョブIDで指定することでリトライできます。たとえば、IDが`5`の失敗したジョブを再試行するため、以下のコマンドを実行します。
+`queue:failed`コマンドはジョブID、接続、キュー、失敗した時間をリスト表示します。失敗したジョブをジョブIDで指定すると、リトライ可能です。たとえば、IDが`5`の失敗したジョブを再試行するには、以下のコマンドを実行します。
 
     php artisan queue:retry 5
 
@@ -934,7 +934,7 @@ Supervisorの詳細情報は、[Supervisorドキュメント](http://supervisord
 <a name="ignoring-missing-models"></a>
 ### 不明なモデルの無視
 
-Eloquentモデルをジョブで取り扱う場合は自動的に、キューに積む前にシリアライズし、ジョブを処理するときにリストアされます。しかし、ジョブがワーカにより処理されるのを待っている間にモデルが削除されると、そのジョブは`ModelNotFoundException`により失敗します。
+Eloquentモデルをジョブで取り扱う場合は自動的にキューへ積む前にシリアライズし、ジョブを処理するときにリストアされます。しかし、ジョブがワーカにより処理されるのを待っている間にモデルが削除されると、そのジョブは`ModelNotFoundException`により失敗します。
 
 利便性のため、ジョブの`deleteWhenMissingModels`プロパティを`true`に指定すれば、モデルが見つからない場合自動的に削除できます。
 

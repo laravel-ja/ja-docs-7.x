@@ -117,7 +117,7 @@ Laravelは入力されたデータに対するバリデーションのさまざ�
         'body' => ['required'],
     ]);
 
-You may use the `validateWithBag` method to validate a request and store any error messages within a [named error bag](#named-error-bags):
+`validateWithBag`メソッドを使用し、リクエストのバリデートを行い、エラーメッセージを[名前付きエラーバッグ](#named-error-bags)へ保存することもできます。
 
     $validatedData = $request->validateWithBag('post', [
         'title' => ['required', 'unique:posts', 'max:255'],
@@ -411,7 +411,7 @@ Laravelは`TrimStrings`と`ConvertEmptyStringsToNull`ミドルウェアをアプ
         'body' => 'required',
     ])->validate();
 
-You may use the `validateWithBag` method to store the error messages in a [named error bag](#named-error-bags) if validation fails:
+`validateWithBag`メソッドを使用しリクエストのバリデートを行った結果、失敗した場合に、エラーメッセージを[名前付きエラーバッグ](#named-error-bags)へ保存することもできます。
 
     Validator::make($request->all(), [
         'title' => 'required|unique:posts|max:255',
@@ -985,7 +985,7 @@ MIMEタイプと対応する拡張子の完全なリストは、[https://svn.apa
 
 フィールドが指定した正規表現と一致しないことをバリデートします。
 
-Internally, this rule uses the PHP `preg_match` function. The pattern specified should obey the same formatting required by `preg_match` and thus also include valid delimiters. For example: `'email' => 'not_regex:/^.+$/i'`.
+このルールは内部でPHPの`preg_match`関数を使用しています。パターンは有効なデリミタを使用していることも含め、`preg_match`が求めているフォーマットにしたがって指定する必要があります。たとえば：`'email' => 'not_regex:/^.+$/i'`
 
 **注目：** `regex`と`not_regex`パターンを使用する場合はルールをパイプ（縦棒）で区切らず、ルールの配列で指定する必要があります。とくに正規表現に縦棒を含んでいる場合に該当します。
 
@@ -1016,7 +1016,7 @@ Internally, this rule uses the PHP `preg_match` function. The pattern specified 
 
 フィールドが指定された正規表現にマッチすることをバリデートします。
 
-Internally, this rule uses the PHP `preg_match` function. The pattern specified should obey the same formatting required by `preg_match` and thus also include valid delimiters. For example: `'email' => 'regex:/^.+@.+$/i'`.
+このルールは内部でPHPの`preg_match`関数を使用しています。パターンは有効なデリミタを使用していることも含め、`preg_match`が求めているフォーマットにしたがって指定する必要があります。たとえば：`'email' => 'regex:/^.+@.+$/i'`
 
 **注目：** `regex`と`not_regex`パターンを使用する場合はルールをパイプ（縦棒）で区切らず、ルールの配列で指定する必要があります。とくに正規表現に縦棒を含んでいる場合に該当します。
 
@@ -1186,9 +1186,9 @@ uniqueチェックで指定したIDを除外したい場合があります。た
 <a name="conditionally-adding-rules"></a>
 ## 条件付きでルールを追加する
 
-#### Skipping Validation When Fields Have Certain Values
+#### フィールドが特定値を持つ場合にバリデーションを飛ばす
 
-You may occasionally wish to not validate a given field if another field has a given value. You may accomplish this using the `exclude_if` validation rule. In this example, the `appointment_date` and `doctor_name` fields will not be validated if the `has_appointment` field has a value of `false`:
+他のフィールドに指定値が入力されている場合は、バリデーションを飛ばしたい状況がときどき起きるでしょう。`exclude_if`バリデーションルールを使ってください。`appointment_date`と`doctor_name`フィールドは、`has_appointment`フィールドが`false`値の場合バリデートされません。
 
     $v = Validator::make($data, [
         'has_appointment' => 'required|bool',
@@ -1196,7 +1196,7 @@ You may occasionally wish to not validate a given field if another field has a g
         'doctor_name' => 'exclude_if:has_appointment,false|required|string',
     ]);
 
-Alternatively, you may use the `exclude_unless` rule to not validate a given field unless another field has a given value:
+もしくは逆に`exclude_unless`ルールを使い、他のフィールドに指定値が入力されていない場合は、バリデーションを行わないことも可能です。
 
     $v = Validator::make($data, [
         'has_appointment' => 'required|bool',

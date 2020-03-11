@@ -11,7 +11,7 @@
     - [ルート](#routes)
     - [翻訳](#translations)
     - [ビュー](#views)
-    - [View Components](#view-components)
+    - [ビューコンポーネント](#view-components)
 - [コマンド](#commands)
 - [公開アセット](#public-assets)
 - [ファイルグループのリソース公開](#publishing-file-groups)
@@ -257,9 +257,9 @@ Laravelアプリケーションの`config/app.php`設定ファイルには、Lar
 これで皆さんのパッケージのユーザーが、Laravelの`vendor::publish` Artisanコマンドを実行すると、パッケージのビューは指定されたリソース公開場所へコピーされます。
 
 <a name="view-components"></a>
-### View Components
+### ビューコンポーネント
 
-If your package contains [view components](/docs/{{version}}/blade#components), you may use the `loadViewComponentsAs` method to inform Laravel how to load them. The `loadViewComponentsAs` method accepts two arguments: the tag prefix for your view components and an array of your view components class. For example, if your package's prefix is `courier` and you have `Alert` and `Button` view components, you would add the following to your service provider's `boot` method:
+パッケージに[ビューコンポーネント](/docs/{{version}}/blade#components)を含める場合、Laravelへロード方法を知らせるために`loadViewComponentsAs`メソッドを使用してください。`loadViewComponentsAs`メソッドは２つの引数を取ります。ビューコンポーネントのタグプレフィックスとビューコンポーネントクラスの配列です。たとえばパッケージのプレフィックスが`courier`で、`Alert`と`Button`コンポーネントを持っている場合、サービスプロバイダの`boot`メソッドへ次のように追加します。
 
     /**
      * 全アプリケーションサービスの初期起動
@@ -274,7 +274,7 @@ If your package contains [view components](/docs/{{version}}/blade#components), 
         ]);
     }
 
-Once your view components are registered in a service provider, you may reference them in your view like so:
+ビューコンポーネントをサービスプロバイダ中で登録したら、以下のようにビューの中で参照します。
 
     <x-courier-alert />
 

@@ -193,7 +193,7 @@ Laravelのルーティングコンポーネントは、`/`を除くすべての�
 
     Route::get('user/profile', 'UserProfileController@show')->name('profile');
 
-> {note} Route names should always be unique.
+> {note} ルート名は常に一意にしてください。
 
 #### 名前付きルートへのURLを生成する
 
@@ -329,17 +329,17 @@ Laravelはタイプヒントされた変数名とルートセグメント名が�
 
 `$user`変数が`App\User` Eloquentモデルとしてタイプヒントされており、変数名が`{user}` URIセグメントと一致しているため、Laravelは、リクエストされたURIの対応する値に一致するIDを持つ、モデルインスタンスを自動的に注入します。一致するモデルインスタンスがデータベースへ存在しない場合、404 HTTPレスポンスが自動的に生成されます。
 
-#### Customizing The Key
+#### キーのカスタマイズ
 
-Sometimes you may wish to resolve Eloquent models using a column other than `id`. To do so, you may specify the column in the route parameter definition:
+`id`以外のカラムを使用するEloquentモデルでも暗黙の結合を使いたい場合があるでしょう。それには、ルートパラメータ定義でカラムを指定してください。
 
     Route::get('api/posts/{post:slug}', function (App\Post $post) {
         return $post;
     });
 
-#### Custom Keys & Scoping
+#### カスタムキーと取得
 
-Sometimes, when implicitly binding multiple Eloquent models in a single route definition, you may wish to scope the second Eloquent model such that it must be a child of the first Eloquent model. For example, consider this situation that retrieves a blog post by slug for a specific user:
+一つの定義中に複数のEloquentモデルを暗黙的に結合し、２つ目のEloquentモデルが最初のEloquentモデルの子である必要がある場合などでは、その２つ目のモデルを取得したいと思うでしょう。例として、特定のユーザーのブログポストをスラグで取得する場合を想像してください。
 
     use App\Post;
     use App\User;
@@ -348,11 +348,11 @@ Sometimes, when implicitly binding multiple Eloquent models in a single route de
         return $post;
     });
 
-When using a custom keyed implicit binding as a nested route parameter, Laravel will automatically scope the query to retrieve the nested model by its parent using conventions to guess the relationship name on the parent. In this case, it will be assumed that the `User` model has a relationship named `posts` (the plural of the route parameter name) which can be used to retrieve the `Post` model.
+カスタムなキーを付けた暗黙の結合をネストしたルートパラメータで使用するとき、親で定義されるリレーションは慣習にしたがい名付けられているだろうとLaravelは推測し、ネストしたモデルへのクエリを自動的に制約します。この場合、`User`モデルには`Post`モデルを取得するために`posts`（ルートパラメータ名の複数形）という名前のリレーションがあると想定します。
 
-#### Customizing The Default Key Name
+#### デフォルトキー名のカスタマイズ
 
-If you would like model binding to use a default database column other than `id` when retrieving a given model class, you may override the `getRouteKeyName` method on the Eloquent model:
+特定のモデルの取得時に、`id`以外のデフォルトデータベースカラム名を使用しモデル結合したい場合は、そのEloquentモデルの`getRouteKeyName`メソッドをオーバーライドしてください。
 
     /**
      * モデルのルートキーの取得
@@ -516,6 +516,6 @@ HTMLフォームは`PUT`、`PATCH`、`DELETE`アクションをサポートし�
 <a name="cors"></a>
 ## Cross-Origin Resource Sharing (CORS)
 
-Laravel can automatically respond to CORS OPTIONS requests with values that you configure. All CORS settings may be configured in your `cors` configuration file and OPTIONS requests will automatically be handled by the `HandleCors` middleware that is included by default in your global middleware stack.
+Laravelは指定値に従い自動的にCORSオプションリクエストへ対応します。CORSの設定はすべて`cors`設定ファイルで行われ、オプションリクエストはグローバルミドルウェアスタックにデフォルトで含まれる`HandleCors`ミドルウェアにより自動的に処理されます。
 
-> {tip} For more information on CORS and CORS headers, please consult the [MDN web documentation on CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#The_HTTP_response_headers).
+> {tip} CORSとそのヘッダの詳細は、[CROSに関するMDN Webドキュメンテーション](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#The_HTTP_response_headers)で調べてください。

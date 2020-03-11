@@ -486,13 +486,13 @@ Laravelはデータベースレベルの整合性を強制するために、テ�
         $table->foreign('user_id')->references('id')->on('users');
     });
 
-Since this syntax is rather verbose, Laravel provides additional, terser methods that use convention to provide a better developer experience. For example, the example above you could be written like so:
+この書き方はやや複雑です。より良い開発イクスピアリエンスを提供するため、Laravelは便利に使用できる追加の簡潔なメソッドを提供しています。　
 
     Schema::table('posts', function (Blueprint $table) {
         $table->foreignId('user_id')->constrained();
     });
 
-The `foreignId` method is an alias for `unsignedBigInteger` while the `constrained` method will use convention to determine the table and column name being referenced.
+`foreignId`メソッドは`unsignedBigInteger`のエイリアスです。一方の`constrained`メソッドは制約するテーブルとカラム名を`foreignId`で指定したカラム名を参考にし、便利に決定します。
 
 さらに束縛に対して「デリート時(on delete)」と「更新時(on update)」に対する処理をオプションとして指定できます。
 

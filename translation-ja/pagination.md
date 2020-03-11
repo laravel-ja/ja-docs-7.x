@@ -114,7 +114,7 @@ Elqouentモデルをページづけするときにも、`simplePaginate`メソ�
 
     {{ $users->appends(['sort' => 'votes'])->links() }}
 
-If you wish to append all current query string values to the pagination links you may use the `withQueryString` method:
+現在のクエリ文字列値をすべてペジネーションリンクへ追加する場合は、`withQueryString`メソッドを使います。
 
     {{ $users->withQueryString()->links() }}
 

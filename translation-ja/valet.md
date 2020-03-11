@@ -164,7 +164,7 @@ Valetはローカルサイトをモバイルでテストしたり、チームメ
 
 サイトを共有するには、ターミナルでサイトのディレクトリに移動し、`valet share`コマンドを実行します。公開用のURLはクリップボードにコピーされますので、ブラウザに直接ペーストしてください。これだけでブラウザで閲覧したり、チームでシェアできます。
 
-To stop sharing your site, hit `Control + C` to cancel the process.
+サイトの共有を停止するには、`Control + C`でプロセスを停止してください。
 
 > {tip} 共有コマンドには、`valet share --region=eu`のようなオプションのパラメータを渡せます。詳しい情報は、[ngrokのドキュメント](https://ngrok.com/docs)をご覧ください。
 

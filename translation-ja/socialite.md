@@ -130,7 +130,7 @@ Socialiteを使用する前に、アプリケーションで使用するOAuthサ
 
     // OAuth Twoプロバイダ
     $token = $user->token;
-    $refreshToken = $user->refreshToken; // not always provided
+    $refreshToken = $user->refreshToken; // 常に提供されているとは限らない
     $expiresIn = $user->expiresIn;
 
     // OAuth Oneプロバイダ

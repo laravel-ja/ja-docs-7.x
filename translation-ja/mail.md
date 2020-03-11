@@ -1,7 +1,7 @@
 # メール
 
 - [イントロダクション](#introduction)
-    - [Configuration](#configuration)
+    - [設定](#configuration)
     - [ドライバの動作要件](#driver-prerequisites)
 - [Mailable概論](#generating-mailables)
 - [Mailableプログラミング](#writing-mailables)
@@ -18,7 +18,7 @@
 - [メール送信](#sending-mail)
     - [キュー使用メール](#queueing-mail)
 - [Mailableのレンダーリング](#rendering-mailables)
-    - [Previewing Mailables In The Browser](#previewing-mailables-in-the-browser)
+    - [Mailablesをブラウザでプレビュー](#previewing-mailables-in-the-browser)
 - [Mailableのローカライズ](#localizing-mailables)
 - [メールとローカル開発](#mail-and-local-development)
 - [イベント](#events)
@@ -29,9 +29,9 @@
 Laravelは人気の高い[SwiftMailer](https://swiftmailer.symfony.com/)ライブラリーにより、クリーンでシンプルなAPIを提供しています。SMTP、Mailgun、Postmark、Amazon SES、`sendmail`ドライバーを提供しており、皆さんが選んだローカルやクラウドベースのサービスを使い、素早くメール送信が開始できるように用意しています。
 
 <a name="configuration"></a>
-### Configuration
+### 設定
 
-Laravel's email services may be configured via the `mail` configuration file. Each mailer configured within this file may have its own options and even its own unique "transport", allowing your application to use different email services to send certain email messages. For example, your application might use Postmark to send transactional mail while using Amazon SES to send bulk mail.
+Laravelのメールサービスは、`mail`設定ファイルで設定されています。各メーラーはこのファイルの中でオプションや、独自の「トランスポート」でさえも設定しています。これにより、アプリケーションが特定のメッセージを送るため、異なったメールサービスを利用できるようになっています。たとえばアプリケーションで業務メールはPostmarkを使い、一方でバルクメールはAmazon SESと使い分けることができます。
 
 <a name="driver-prerequisites"></a>
 ### ドライバの動作要件
@@ -57,7 +57,7 @@ Mailgunドライバを使用する場合、最初にGuzzleをインストール�
         'endpoint' => 'api.eu.mailgun.net',
     ],
 
-#### Postmark Driver
+#### Postmarkドライバ
 
 Postmarkドライバを使用する場合は、ComposerでPostmarkのSwiftMailerトランスポータをインストールしてください。
 
@@ -548,9 +548,9 @@ LaravelのMarkdownコンポーネントの完全に新しいテーマを作成�
         ->bcc($evenMoreUsers)
         ->send(new OrderShipped($order));
 
-#### Sending Mail Via A Specific Mailer
+#### 特定のメーラーでメールを送信
 
-By default, Laravel will use the mailer configured as the `default` mailer in your `mail` configuration file. However, you may use the `mailer` method to send a message using a specific mailer configuration:
+Laravelは`mail`設定ファイルの`default`メーラーとして設定されているメーラーをデフォルトで使用します。しかし、特定のメール設定を使用してメッセージを遅るために`mailer`メソッドが使用できます。
 
     Mail::mailer('postmark')
             ->to($request->user())
@@ -566,7 +566,7 @@ By default, Laravel will use the mailer configured as the `default` mailer in yo
     return (new App\Mail\InvoicePaid($invoice))->render();
 
 <a name="previewing-mailables-in-the-browser"></a>
-### Previewing Mailables In The Browser
+### Mailablesをブラウザでプレビュー
 
 mailableのテンプレートをデザインしているとき、Bladeテンプレートのようにブラウザでレンダーし、簡単にレビューできると便利です。そのため、Laravelでは、ルートのクロージャやコントローラから直接mailableを返すことができます。mailableが返されるとレンダーされ、ブラウザに表示されますので、実際のメールアドレスへ送る必要はなく、素早くレビューできます。
 

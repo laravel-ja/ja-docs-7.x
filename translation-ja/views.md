@@ -4,7 +4,7 @@
 - [ビューにデータを渡す](#passing-data-to-views)
     - [全ビュー間のデータ共有](#sharing-data-with-all-views)
 - [ビューコンポーザ](#view-composers)
-- [Optimizing Views](#optimizing-views)
+- [ビューの最適化](#optimizing-views)
 
 <a name="creating-views"></a>
 ## ビューの作成
@@ -217,20 +217,20 @@
     View::creator('profile', 'App\Http\View\Creators\ProfileCreator');
 
 <a name="optimizing-views"></a>
-## Optimizing Views
+## ビューの最適化
 
-By default, views are compiled on demand. When a request is executed that renders a view, Laravel will determine if a compiled version of the view exists. If the file exists, Laravel will then determine if the uncompiled view has been modified more recently than the compiled view. If the compiled view either does not exist, or the uncompiled view has been modified, Laravel will recompile the view.
+デフォルトでビューは必要時にコンパイルされます。ビューをレンダーするリクエストを受け取ると、Laravelはコンパイル済みのビューがすでに存在するか確認します。存在する場合、コンパイル時より後にビューが更新されているか確認します。コンパイル済みビューが存在しないか、ビューが更新されている場合、Laravelはそのビューをコンパイルします。
 
-Compiling views during the request negatively impacts performance, so Laravel provides the `view:cache` Artisan command to precompile all of the views utilized by your application. For increased performance, you may wish to run this command as part of your deployment process:
+リクエスト中にビューをコンパイルするとパフォーマンスに悪い影響が起きます。そのため、アプリケーションで使用しているすべてのビューを事前にコンパイルする`view:cache` Artisanコマンドを用意してあります。パフォーマンスを上げるには、デプロイ過程の一部としてこのコマンドを実行してください。
 
     php artisan view:cache
 
-You may use the `view:clear` command to clear the view cache:
+ビューキャッシュを消去するには、`view:clear`コマンドを使います。
 
     php artisan view:clear
 
-Typically, you can assume that views will **never** be modified in your production environment. Therefore, you can usually disable the file modification checks Laravel makes to determine if views are expired by modifying the `expires` option within your `view` configuration file:
+通常、実働(production)環境でビューは**決して**変更されないと仮定して良いでしょう。そのため、ビューが期限切れかLaravelが行うファイルの変更チェックは、通常無効にできます。`view`設定ファイルの`expires`オプションを変更してください。
 
     'expires' => env('APP_ENV') !== 'production',
 
-> {note} You must run `php artisan view:cache` during your deployment process to disable checking for expired views.
+> {note} ビューの期限切れチェックを無効にするには、開発プロセス中に`php artisan view:cache`を必ず実行してください。

@@ -514,9 +514,9 @@ WHEREの結合にチェーンで`or`節をクエリに追加できます。`orWh
     )
 
 <a name="subquery-where-clauses"></a>
-### Subquery Where Clauses
+### サブクエリWHERE節
 
-Sometimes you may need to construct a where clause that compares the results of a subquery to a given value. You may accomplish this by passing a Closure and a value to the `where` method. For example, the following query will retrieve all users who have a recent "membership" of a given type;
+ときにより、サブクエリの結果と指定値を比較するWHERE節の制約が必要になります。それにはクロージャと値を`where`メソッドに渡してください。例として、以下のクエリでは指定した最新の「メンバーシップ」を持つ全ユーザーを取得しています。
 
     use App\User;
 
@@ -705,7 +705,7 @@ JSON配列を長さでクエリするには、`whereJsonLength`を使います�
 <a name="updating-json-columns"></a>
 ### JSONカラムの更新
 
-When updating a JSON column, you should use `->` syntax to access the appropriate key in the JSON object. This operation is supported on MySQL 5.7+ and PostgreSQL 9.5+:
+JSONカラムを更新する場合は、JSONオブジェクト中の適切なキーへアクセスするために、`->`記法を使用してください。この操作子は、MySQL5.7以上とPostgreSQL9.5以上でサポートしています。
 
     $affected = DB::table('users')
                   ->where('id', 1)

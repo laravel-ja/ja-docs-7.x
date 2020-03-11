@@ -34,9 +34,9 @@ Laravelはユニットテストも考慮して構築されています。実際�
     // Unitディレクトリにテストを生成する
     php artisan make:test UserTest --unit
 
-> {tip} Test stubs may be customized using [stub publishing](/docs/{{version}}/artisan#stub-customization)
+> {tip} [stubのリソース公開](/docs/{{version}}/artisan#stub-customization) を使って、Testスタブをカスタマイズできます。
 
-Once the test has been generated, you may define test methods as you normally would using PHPUnit. To run your tests, execute the `phpunit` or `artisan test` command from your terminal:
+テストを生成したら、PHPUnitを使用するときと同じようにテストメソッドを定義してください。テストを実行するには、ターミナルで`phpunit`か`artisan test`コマンドを実行します。
 
     <?php
 
@@ -60,12 +60,12 @@ Once the test has been generated, you may define test methods as you normally wo
 > {note} テストクラスに独自の`setUp`メソッドを定義する場合は、親のクラスの`parent::setUp()`／`parent::tearDown()`を確実に呼び出してください。
 
 <a name="artisan-test-runner"></a>
-### Artisan Test Runner
+### Artisanテストランナー
 
-In addition to the `phpunit` command, you may use the `test` Artisan command to run your tests. The Artisan test runner provides more information regarding the test that is currently running and will automatically stop on the first test failure:
+テスト実行には`phpunit`コマンドに加え、`test` Artisanコマンドも使用できます。Artisanテストランナーは現在実行中のテストに関するより詳しい情報を提供し、テストに失敗した最初の時点で自動的に停止します。
 
     php artisan test
 
-Any arguments that can be passed to the `phpunit` command may also be passed to the Artisan `test` command:
+`phpunit`コマンドで使用できる引数はすべてArtisan `test`コマンドにも渡せます。
 
     php artisan test --group=feature
