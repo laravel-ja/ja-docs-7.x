@@ -37,6 +37,7 @@ Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し�
 [Arr::forget](#method-array-forget)
 [Arr::get](#method-array-get)
 [Arr::has](#method-array-has)
+[Arr::hasAny](#method-array-hasany)
 [Arr::isAssoc](#method-array-isassoc)
 [Arr::last](#method-array-last)
 [Arr::only](#method-array-only)
@@ -435,6 +436,27 @@ Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し�
     // true
 
     $contains = Arr::has($array, ['product.price', 'product.discount']);
+
+    // false
+
+<a name="method-array-hasany"></a>
+#### `Arr::hasAny()` {#collection-method}
+
+`Arr::hasAny`メソッドは「ドット」記法を使い、配列中に一連のアイテムが存在するかを調べます。
+
+    use Illuminate\Support\Arr;
+
+    $array = ['product' => ['name' => 'Desk', 'price' => 100]];
+
+    $contains = Arr::hasAny($array, 'product.name');
+
+    // true
+
+    $contains = Arr::hasAny($array, ['product.name', 'product.discount']);
+
+    // true
+
+    $contains = Arr::hasAny($array, ['category', 'product.discount']);
 
     // false
 

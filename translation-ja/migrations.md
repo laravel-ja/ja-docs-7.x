@@ -256,8 +256,8 @@ Laravelの`Schema`[ファサード](/docs/{{version}}/facades)は、テーブル
 `$table->set('flavors', ['strawberry', 'vanilla']);`  |  SETカラム
 `$table->smallIncrements('id');`  |  符号なしSMALLINTを使用した自動増分ID（主キー）
 `$table->smallInteger('votes');`  |  SMALLINTカラム
-`$table->softDeletes(0);`  |  ソフトデリートのためにNULL値可能で有効（全体）桁数指定の`deleted_at` TIMESTAMPカラム追加
-`$table->softDeletesTz(0);`  |  ソフトデリートのためにNULL値可能でタイムゾーン付き、有効（全体）桁数指定の`deleted_at` TIMESTAMPカラム追加
+`$table->softDeletes('deleted_at', 0);`  |  ソフトデリートのためにNULL値可能で有効（全体）桁数指定の`deleted_at` TIMESTAMPカラム追加
+`$table->softDeletesTz('deleted_at', 0);`  |  ソフトデリートのためにNULL値可能でタイムゾーン付き、有効（全体）桁数指定の`deleted_at` TIMESTAMPカラム追加
 `$table->string('name', 100);`  |  文字長を指定したVARCHARカラム
 `$table->text('description');`  |  TEXTカラム
 `$table->time('sunrise', 0);`  |  有効（全体）桁数指定のTIMEカラム

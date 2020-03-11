@@ -163,7 +163,7 @@ Airlockはこの機能の実現のためにトークンは一切使用しませ�
 
 別のサブドメイン上のSPAからの認証でアプリケーションにトラブルが起きているのであれば、CORS(Cross-Origin Resource Sharing)かセッションクッキーの設定を間違えたのでしょう。
 
-アプリケーションのCORS設定で、`Access-Control-Allow-Credentials`ヘッダが`True`の値を返していることを確認してください。アプリケーションのCORS設定は、`cors`設定ファイルで指定できます。
+アプリケーションのCORS設定で、`Access-Control-Allow-Credentials`ヘッダに`True`の値を返すため、アプリケーションの`cors`設定ファイル中の`supports_credentials`オプションを`true`にしてください。
 
 さらに、グローバル`axios`インスタンス上で、`withCredentials`オプションを有効にしているかも確認してください。通常、これは`resources/js/bootstrap.js`ファイルで実行されるべきです。
 

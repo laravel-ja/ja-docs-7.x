@@ -6,22 +6,23 @@
 ## High Impact Changes
 
 <div class="content-list" markdown="1">
-- [Symfony 5 Related Upgrades](#symfony-5-related-upgrades)
 - [Authentication Scaffolding](#authentication-scaffolding)
 - [Date Serialization](#date-serialization)
+- [Symfony 5 Related Upgrades](#symfony-5-related-upgrades)
 </div>
 
 <a name="medium-impact-changes"></a>
 ## Medium Impact Changes
 
 <div class="content-list" markdown="1">
-- [Unique Route Names](#unique-route-names)
-- [CORS Support](#cors-support)
-- [The `Blade::component` Method](#the-blade-component-method)
 - [Blade Components & "Blade X"](#blade-components-and-blade-x)
+- [CORS Support](#cors-support)
 - [Factory Types](#factory-types)
-- [The `different` Validation Rule](#the-different-rule)
+- [Markdown Mail Template Updates](#markdown-mail-template-updates)
+- [The `Blade::component` Method](#the-blade-component-method)
 - [The `assertSee` Assertion](#assert-see)
+- [The `different` Validation Rule](#the-different-rule)
+- [Unique Route Names](#unique-route-names)
 </div>
 
 <a name="upgrade-7.0"></a>
@@ -55,6 +56,7 @@ The following first-party packages have new major releases to support Laravel 7.
 - [Horizon v4.0](https://github.com/laravel/horizon/blob/master/UPGRADE.md)
 - [Nova v3.0](https://nova.laravel.com/releases)
 - [Scout v8.0](https://github.com/laravel/scout/blob/master/UPGRADE.md)
+- [Telescope v3.0](https://github.com/laravel/telescope/releases)
 - UI v2.0 (No changes necessary)
 
 Finally, examine any other third-party packages consumed by your application and verify you are using the proper version for Laravel 7 support.
@@ -193,11 +195,16 @@ The Zend Diactoros library for generating PSR-7 responses has been deprecated. I
 
 In order to support multiple mailers, the default `mail` configuration file has changed in Laravel 7.x to include an array of `mailers`. However, in order to preserve backwards compatibility, the Laravel 6.x format of this configuration file is still supported. So, no changes are **required** when upgrading to Laravel 7.x; however, you may wish to [examine the new `mail` configuration file](https://github.com/laravel/laravel/blob/develop/config/mail.php) structure and update your file to reflect the changes.
 
+<a name="markdown-mail-template-updates"></a>
 #### Markdown Mail Template Updates
 
-**Likelihood Of Impact: Low**
+**Likelihood Of Impact: Medium**
 
 The default Markdown mail templates have been refreshed with a more professional and appealing design. In addition, the undocumented `promotion` Markdown mail component has been removed.
+
+Because indentitation has special meaning within Markdown, Markdown mail templates expect unindented HTML. If you've previously published Laravel's default mail templates, you'll need to re-publish your mail templates or manually unindent them:
+
+    php artisan vendor:publish --tag=laravel-mail --force
 
 ### Queue
 
@@ -259,6 +266,13 @@ The `array` session driver data is now persistent for the current request. Previ
 **Likelihood Of Impact: Medium**
 
 The `assertSee` and `assertDontSee` assertions on the `TestResponse` class will now automatically escape values. If you are manually escaping any values passed to these assertions you should no longer do so. If you need to assert unescaped values, you may pass `false` as the second argument to the method.
+
+<a name="assert-see"></a>
+#### The `TestResponse` Class
+
+**Likelihood Of Impact: Low**
+
+The `Illuminate\Foundation\Testing\TestResponse` class has been renamed to `Illuminate\Testing\TestResponse`. If you're extending this class, make sure to update the namespace.
 
 ### Validation
 

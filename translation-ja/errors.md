@@ -36,10 +36,10 @@ local環境では`APP_DEBUG`環境変数を`true`に設定すべきでしょう�
      *
      * ここは例外をFlareやSentry、Bugsnagなどへ送るために適した場所
      *
-     * @param  \Exception  $exception
+     * @param  \Throwable  $exception
      * @return void
      */
-    public function report(Exception $exception)
+    public function report(Throwable $exception)
     {
         if ($exception instanceof CustomException) {
             //
@@ -74,7 +74,7 @@ Laravelは可能である場合、文脈上のデータとしてすべての例�
     {
         try {
             // 値の確認…
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             report($e);
 
             return false;
@@ -107,10 +107,10 @@ Laravelは可能である場合、文脈上のデータとしてすべての例�
      * HTTPレスポンスへ例外をレンダー
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Exception  $exception
+     * @param  \Throwable  $exception
      * @return \Illuminate\Http\Response
      */
-    public function render($request, Exception $exception)
+    public function render($request, Throwable $exception)
     {
         if ($exception instanceof CustomException) {
             return response()->view('errors.custom', [], 500);

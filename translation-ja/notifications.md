@@ -13,6 +13,7 @@
     - [送信者のカスタマイズ](#customizing-the-sender)
     - [受信者のカスタマイズ](#customizing-the-recipient)
     - [件名のカスタマイズ](#customizing-the-subject)
+    - [Mailerのカスタマイズ](#customizing-the-mailer)
     - [テンプレートのカスタマイズ](#customizing-the-templates)
     - [メール通知のプレビュー](#previewing-mail-notifications)
 - [Markdownメール通知](#markdown-mail-notifications)
@@ -305,6 +306,24 @@ Laravelの各通知は、（通常、`app/Notifications`ディレクトリに設
     {
         return (new MailMessage)
                     ->subject('Notification Subject')
+                    ->line('...');
+    }
+
+<a name="customizing-the-mailer"></a>
+### Mailerのカスタマイズ
+
+デフォルトのメール通知は、`config/mail.php`設定ファイルで定義されているデフォルトドライバにより送信されます。しかし、`mailer`メソッドをメッセージ組立時に呼び出せば、実行時に異なるメイラーを指定できます。
+
+    /**
+     * 通知のメール表現を取得
+     *
+     * @param  mixed  $notifiable
+     * @return \Illuminate\Notifications\Messages\MailMessage
+     */
+    public function toMail($notifiable)
+    {
+        return (new MailMessage)
+                    ->mailer('postmark')
                     ->line('...');
     }
 

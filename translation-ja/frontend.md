@@ -95,7 +95,7 @@ Vueコンポーネントの記述を学ぶことに興味があれば、Vueフ�
 
 JavaScriptアプリケーションでReactを使用するほうが好みであれば、VueスカフォールドをReactスカフォールドへ簡単に切り替えられます。
 
-    composer require laravel/ui --dev
+    composer require laravel/ui
 
     // 基本的なスカフォールドを生成
     php artisan ui react
