@@ -36,7 +36,7 @@ Laravel7は、Laravel6.xで行われた向上に加え、以降の変更で構�
 
 Laravel Airlock（エアーロック）はSPA（Single Page Applications）のための、シンプルでトークンベースのAPIを使った羽のように軽い認証システムです。Airlockはアプリケーションのユーザーのアカウントごとに、複数のAPIトークンを生成できます。これらのトークンには、実行可能なアクションを限定するアビリティ・スコープを与えられます。
 
-For more information on Laravel Airlock, consult the [Airlock documentation](/docs/{{version}}/airlock).
+Airlockの詳細は、[Airlockのドキュメント](/docs/{{version}}/airlock)をご覧ください。
 
 ### カスタムEloquentキャスト
 
