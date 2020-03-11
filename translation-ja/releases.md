@@ -7,9 +7,9 @@
 <a name="versioning-scheme"></a>
 ## バージョニング規約
 
-Laravel and its other first-party packages follow [Semantic Versioning](https://semver.org). Major framework releases are released every six months (~February and ~August), while minor and patch releases may be released as often as every week. Minor and patch releases should **never** contain breaking changes.
+Laravelとファーストパーティパッケージは、[セマンティックバージョニング](https://semver.org)にしたがっています。メジャーなフレームのリリースは、２月と８月の半年ごとにリリースされます。マイナーとパッチリリースはより細かく毎週リリースされます。マイナーとパッチリリースは、**決して**ブレーキングチェンジを含みません
 
-When referencing the Laravel framework or its components from your application or package, you should always use a version constraint such as `^7.0`, since major releases of Laravel do include breaking changes. However, we strive to always ensure you may update to a new major release in one day or less.
+皆さんのアプリケーションやパッケージからLaravelフレームワークかコンポーネントを参照する場合は、Laravelのメジャーリリースはブレーキングチェンジを含まないわけですから、`^7.0`のようにバージョンを常に指定してください。しかし、新しいメジャーリリースへ１日以内でアップデートできるように、私たちは常に努力しています。
 
 <a name="support-policy"></a>
 ## サポートポリシー
@@ -23,28 +23,28 @@ Laravel6のようなLTSリリースでは、バグフィックスは２年間、
 | 5.7 | ２０１８年９月４日 | ２０１９年３月４日 | ２０１９年９月４日 |
 | 5.8 | ２０１９年２月２６日 | ２０１９年８月２６日 | ２０２０年２月２６日 |
 | 6 (LTS) | ２０１９年９月３日 | ２０２１年９月３日 | ２０２２年９月３日 |
-| 7 | March 3rd, 2020 | September 3rd, 2020 | March 3rd, 2021 |
+| 7 | ２０２０年３月３日 | ２０２０年９月３日 | ２０２１年３月３日 |
 
 <a name="laravel-7"></a>
 ## Laravel 7
 
-Laravel 7 continues the improvements made in Laravel 6.x by introducing Laravel Airlock, routing speed improvements, custom Eloquent casts, Blade component tags, fluent string operations, a developer focused HTTP client, first-party CORS support, improved scoping for route model binding, stub customization, database queue improvements, multiple mail drivers, query-time casts, a new `artisan test` command, and a variety of other bug fixes and usability improvements.
+Laravel7は、Laravel6.xで行われた向上に加え、以降の変更で構成されています。Laravel Airlockの導入、ルーティングスピードの向上、カスタムEloquentキャスト、Bladeコンポーネントタグ、Fluentな文字列操作、開発者に焦点を当てたHTTPクライアント、ファーストパーティCORSサポート、ルートモデル結合の制約の向上、スタブのカスタマイズ、ならびに多くのバグフィックスとユーザービリティの向上です
 
 ### Laravel Airlock
 
-_Laravel Airlock was built by [Taylor Otwell](https://github.com/taylorotwell)_.
+**Laravel Airlockは[Taylor Otwell](https://github.com/taylorotwell)により構築されました。**
 
-Laravel Airlock provides a featherweight authentication system for SPAs (single page applications), mobile applications, and simple, token based APIs. Airlock allows each user of your application to generate multiple API tokens for their account. These tokens may be granted abilities / scopes which specify which actions the tokens are allowed to perform.
+Laravel Airlock（エアーロック）はSPA（Single Page Applications）のための、シンプルでトークンベースのAPIを使った羽のように軽い認証システムです。Airlockはアプリケーションのユーザーのアカウントごとに、複数のAPIトークンを生成できます。これらのトークンには、実行可能なアクションを限定するアビリティ・スコープを与えられます。
 
 For more information on Laravel Airlock, consult the [Airlock documentation](/docs/{{version}}/airlock).
 
-### Custom Eloquent Casts
+### カスタムEloquentキャスト
 
-_Custom Eloquent casts was contributed by [Taylor Otwell](https://github.com/taylorotwell)_.
+**カスタムEloquentキャストは[Taylor Otwell](https://github.com/taylorotwell)により構築されました。**
 
-Laravel has a variety of built-in, helpful cast types; however, you may occasionally need to define your own cast types. You may now accomplish this by defining a class that implements the `CastsAttributes` interface.
+Laravelには多様な利便性のあるキャストタイプが用意されています。しかし、自分自身でキャストタイプを定義する必要が起きることもまれにあります。これを行うには、`CastsAttributes`インターフェイスを実装したクラスを定義してください。
 
-Classes that implement this interface must define a `get` and `set` methods. The `get` method is responsible for transforming a raw value from the database into a cast value, while the `set` method should transform a cast value into a raw value that can be stored in the database. As an example, we will re-implement the built-in `json` cast type as a custom cast type:
+このインターフェイスを実装するクラスでは、`get`と`set`メソッドを定義します。`get`メソッドはデータベースにある元の値をキャストした値へ変換することに責任を持ちます。一方の`set`メソッドはキャストされている値をデータベースに保存できる元の値に変換します。例として、組み込み済みの`json`キャストタイプをカスタムキャストタイプとして再実装してみましょう。
 
     <?php
 
@@ -55,7 +55,7 @@ Classes that implement this interface must define a `get` and `set` methods. The
     class Json implements CastsAttributes
     {
         /**
-         * Cast the given value.
+         * 指定された値をキャストする
          *
          * @param  \Illuminate\Database\Eloquent\Model  $model
          * @param  string  $key
@@ -69,7 +69,7 @@ Classes that implement this interface must define a `get` and `set` methods. The
         }
 
         /**
-         * Prepare the given value for storage.
+         * 指定された値を保存用に準備
          *
          * @param  \Illuminate\Database\Eloquent\Model  $model
          * @param  string  $key
@@ -83,7 +83,7 @@ Classes that implement this interface must define a `get` and `set` methods. The
         }
     }
 
-Once you have defined a custom cast type, you may attach it to a model attribute using its class name:
+カスタムキャストタイプが定義できたら、クラス名を使いモデル属性へ指定します。
 
     <?php
 
@@ -95,7 +95,7 @@ Once you have defined a custom cast type, you may attach it to a model attribute
     class User extends Model
     {
         /**
-         * The attributes that should be cast to native types.
+         * ネイティブなタイプへキャストする属性
          *
          * @var array
          */
@@ -104,17 +104,17 @@ Once you have defined a custom cast type, you may attach it to a model attribute
         ];
     }
 
-To learn how to write custom Eloquent casts, including custom casts that cast to value objects, please consult the [Eloquent documentation](/docs/{{version}}/eloquent-mutators#custom-casts).
+カスタムEloquentキャストの書き方は、[Eloquentドキュメント](/docs/{{version}}/eloquent-mutators#custom-casts)で調べてください。
 
-### Blade Component Tags & Improvements
+### Bladeコンポーネントタグと向上
 
-_Blade component tags were contributed by [Spatie](https://spatie.be/), [Marcel Pociot](https://twitter.com/marcelpociot), [Caleb Porzio](https://twitter.com/calebporzio), [Dries Vints](https://twitter.com/driesvints), and [Taylor Otwell](https://github.com/taylorotwell)_.
+**Bladeコンポーネントタグは[Spatie](https://spatie.be/)、[Marcel Pociot](https://twitter.com/marcelpociot)、[Caleb Porzio](https://twitter.com/calebporzio)、[Dries Vints](https://twitter.com/driesvints)、[Taylor Otwell](https://github.com/taylorotwell)から貢献を受けました。**
 
-> {tip} Blade components have been overhauled to allow tag based rendering, attribute management, component classes, inline view components, and more. Since the overhaul of Blade components is so extensive, please consult the [full Blade component documentation](/docs/{{version}}/blade#components) to learn about this feature.
+> {tip} Bladeコンポーネントはタグベースのレンダリング、属性管理、コンポーネントクラス、インラインビューコンポーネントなどを実現するためにオーバーホールされました。Bladeコンポーネントのオーバーホールは広範囲に及んでいるため、この機能を学ぶために[Bladeコンポーネント全体](/docs/{{version}}/blade#components)を確認してください。
 
-In summary, a component may now have an associated class which specifies the data it accepts. All public properties and methods defined on the component class will automatically be made available to the component view. Any additional HTML attributes specified on the component may be managed using the automatically included `$attribute` variable, which is an attribute bag instance.
+要約すれば、コンポーネントは、受け取るデータを指定する関連付けしたクラスが持てるようになりました。コンポーネントクラス上にあるパブリックのプロパティとメソッドはすべて自動的にコンポーネントビューで利用できます。コンポーネント上で指定された、追加のHTML属性は属性バッグインスタンスである`$attribute`変数で自動的に管理できます。
 
-In this example, we will assume that an `App\View\Components\Alert` component has been defined like so:
+たとえば、`App\View\Components\Alert`コンポーネントが定義されていると仮定しましょう。
 
     <?php
 
@@ -125,14 +125,14 @@ In this example, we will assume that an `App\View\Components\Alert` component ha
     class Alert extends Component
     {
         /**
-         * The alert type.
+         * alertタイプ
          *
          * @var string
          */
         public $type;
 
         /**
-         * Create the component instance.
+         * コンポーネントインスタンスの生成
          *
          * @param  string  $type
          * @return void
@@ -143,7 +143,7 @@ In this example, we will assume that an `App\View\Components\Alert` component ha
         }
 
         /**
-         * Get the class for the given alert type.
+         * 指定されたalertタイプに対するクラスを取得
          *
          * @return string
          */
@@ -153,7 +153,7 @@ In this example, we will assume that an `App\View\Components\Alert` component ha
         }
 
         /**
-         * Get the view / contents that represent the component.
+         * コンポーネントを表すビュー／コンテンツを取得
          *
          * @return \Illuminate\View\View|string
          */
@@ -163,7 +163,7 @@ In this example, we will assume that an `App\View\Components\Alert` component ha
         }
     }
 
-And, assuming the component's Blade template has been defined like so:
+そして、関連するコンポーネントBladeテンプレートを以下のように定義してあるとしましょう。
 
     <!-- /resources/views/components/alert.blade.php -->
 
@@ -173,25 +173,25 @@ And, assuming the component's Blade template has been defined like so:
         {{ $slot }}
     </div>
 
-The component may be rendered in another Blade view using the component's tag:
+このコンポーネントは他のBladeビューでコンポーネントタグを使用し、レンダーされるでしょう。
 
     <x-alert type="error" class="mb-4">
         <x-slot name="heading">
-            Alert content...
+            Alertコンテント…
         </x-slot>
 
-        Default slot content...
+        デフォルトスロットの内容…
     </x-alert>
 
-As mentioned, this is just a very small sample of the functionality of the Blade component overhaul in Laravel 7 and does not demonstrate anonymous components, inline view components, and a variety of other features. Please consult the [full Blade component documentation](/docs/{{version}}/blade#components) to learn about this feature.
+紹介したのはLaravel7で行ったBladeコンポーネントのオーバーホールの小さなサンプルであり、無名コンポーネント、インラインビューコンポーネントや他の数々の機能はデモンストレートしていません。この機能を学ぶには、どうぞ[Bladeコンポーネントの完全なドキュメント](/docs/{{version}}/blade#components)を調べてください。
 
-> {note} The previous `@component` syntax for Blade components has not and will not be removed.
+> {note} 以前の`@component` Bladeコンポーネント記法は残っていますし、削除予定もありません。
 
-### HTTP Client
+### HTTPクライアント
 
-_The HTTP client is a wrapper of Guzzle and was contributed by [Adam Wathan](https://twitter.com/adamwathan), [Jason McCreary](https://twitter.com/gonedark), and [Taylor Otwell](https://github.com/taylorotwell)_.
+**HTTPクライアントはGuzzleのラッパーであり、[Adam Wathan](https://twitter.com/adamwathan)、[Jason McCreary](https://twitter.com/gonedark)、[Taylor Otwell](https://github.com/taylorotwell)から貢献を受けました。**
 
-Laravel now provides an expressive, minimal API around the [Guzzle HTTP client](http://docs.guzzlephp.org/en/stable/), allowing you to quickly make outgoing HTTP requests to communicate with other web applications. Laravel's wrapper around Guzzle is focused on its most common use cases and a wonderful developer experience. For example, the client makes it a breeze to `POST` and interface with JSON data:
+他のWebアプリケーションと連携を取る、送信HTTPリクエストを簡単に作成できるよう、Laravelは小さくて読み書きしやすい[Guzzle HTTPクライアント](http://docs.guzzlephp.org/en/stable/)のAPIを提供しています。LaravelのGuzzleラッパーはもっとも繁用されるユースケースと開発者が素晴らしい体験をできることに重点を置いています。例として、クライアントでJSONデータを送る`POST`を簡単に作ってみましょう。
 
     use Illuminate\Support\Facades\Http;
 
@@ -204,52 +204,52 @@ Laravel now provides an expressive, minimal API around the [Guzzle HTTP client](
 
     return $response['id'];
 
-In addition, the HTTP client provides fantastic, ergonomic testing functionality:
+さらに、このHTTPクライアントは豊富な素晴らしいテスト機能を備えています。
 
     Http::fake([
-        // Stub a JSON response for GitHub endpoints...
+        // GitHubエンドポイントに対するJSONレスポンスをスタブ
         'github.com/*' => Http::response(['foo' => 'bar'], 200, ['Headers']),
 
-        // Stub a string response for Google endpoints...
+        // Googleエンドポイントに対する文字列レスポンスをスタブ
         'google.com/*' => Http::response('Hello World', 200, ['Headers']),
 
-        // Stub a series of responses for Facebook endpoints...
+        // GitHubエンドポイントに対して一連のレスポンスをスタブ
         'facebook.com/*' => Http::sequence()
                                 ->push('Hello World', 200)
                                 ->push(['foo' => 'bar'], 200)
                                 ->pushStatus(404),
     ]);
 
-To learn more about all of the features of the HTTP client, please consult the [HTTP client documentation](/docs/{{version}}/http-client).
+HTTPクライアントの機能すべてについて学習するには、[HTTPクライアントドキュメント](/docs/{{version}}/http-client)を調べてください。
 
-### Fluent String Operations
+### Fluent文字列操作
 
-_Fluent string operations were contributed by [Taylor Otwell](https://twitter.com/taylorotwell)_.
+**Fluent文字列操作は、[Taylor Otwell](https://twitter.com/taylorotwell)から貢献を受けました。**
 
-You are likely familiar with Laravel's existing `Illuminate\Support\Str` class, which provides a variety of helpful string manipulation functions. Laravel 7 now offers a more object-oriented, fluent string manipulation library built on top of these functions. You may create a fluent `Illuminate\Support\Stringable` object using the `Str::of` method. A variety of methods may then be chained onto the object to manipulate the string:
+Laravelにもともとある`Illuminate\Support\Str`クラスには皆さん慣れているでしょう。役に立つ、さまざまな文字列操作機能を提供しています。Laravel7ではよりオブジェクト指向で読み書きしやすい(Fluent)文字列操作ライブラリをこうした機能上に構築しました。Fluentな`Illuminate\Support\Stringable`オブジェクトは、`Str::of`メソッドで生成できます。数多くのメソッドを文字列操作のためにオブジェクトへチェーン可能です。
 
     return (string) Str::of('  Laravel Framework 6.x ')
                         ->trim()
                         ->replace('6.x', '7.x')
                         ->slug();
 
-For more information on the methods available via fluent string manipulation, please consult its [full documentation](/docs/{{version}}/helpers#fluent-strings).
+Fluentな文字列操作により使用できるメソッドの情報は、[ドキュメント全体](/docs/{{version}}/helpers#fluent-strings)をお読みください。
 
-### Route Model Binding Improvements
+### ルートモデル結合の向上
 
-_Route model binding improvements were contributed by [Taylor Otwell](https://twitter.com/taylorotwell)_.
+**ルートモデル結合の向上は、[Taylor Otwell](https://twitter.com/taylorotwell)から貢献を受けました。**
 
-#### Key Customization
+#### キーのカスタマイズ
 
-Sometimes you may wish to resolve Eloquent models using a column other than `id`. To do so, Laravel 7 allows you to specify the column in the route parameter definition:
+ときに`id`以外のカラムを使いEloquentモデルを解決したい場合もあります。そのためLaravel７ではルートパラメータ定義の中でカラムを指定できるようにしました。
 
     Route::get('api/posts/{post:slug}', function (App\Post $post) {
         return $post;
     });
 
-#### Automatic Scoping
+#### 自動制約
 
-Sometimes, when implicitly binding multiple Eloquent models in a single route definition, you may wish to scope the second Eloquent model such that it must be a child of the first Eloquent model. For example, consider this situation that retrieves a blog post by slug for a specific user:
+一つの定義中に複数のEloquentモデルを暗黙的に結合し、２つ目のEloquentモデルが最初のEloquentモデルの子である必要がある場合などでは、その２つ目のモデルを取得したいと思うでしょう。例として、特定のユーザーのブログポストをスラグで取得する場合を想像してください。
 
     use App\Post;
     use App\User;
@@ -258,41 +258,41 @@ Sometimes, when implicitly binding multiple Eloquent models in a single route de
         return $post;
     });
 
-When using a custom keyed implicit binding as a nested route parameter, Laravel 7 will automatically scope the query to retrieve the nested model by its parent using conventions to guess the relationship name on the parent. In this case, it will be assumed that the `User` model has a relationship named `posts` (the plural of the route parameter name) which can be used to retrieve the `Post` model.
+カスタムなキーを付けた暗黙の結合をネストしたルートパラメータで使用するとき、親で定義されるリレーションは慣習にしたがい名付けられているだろうとLaravel7は推測し、ネストしたモデルへのクエリを自動的に制約します。この場合、`User`モデルには`Post`モデルを取得するために`posts`（ルートパラメータ名の複数形）という名前のリレーションがあると想定します。
 
-For more information on route model binding, please consult the [routing documentation](/docs/{{version}}/routing#route-model-binding).
+ルートモデル結合の詳細情報は、[ルートのドキュメント](/docs/{{version}}/routing#route-model-binding)をご覧ください。
 
-### Multiple Mail Drivers
+### 複数メールドライバ
 
-_Multiple mail driver support was contributed by [Taylor Otwell](https://twitter.com/taylorotwell)_.
+**複数メールドライバのサポートは、[Taylor Otwell](https://twitter.com/taylorotwell)から貢献を受けました。**
 
-Laravel 7 allows the configuration of multiple "mailers" for a single application. Each mailer configured within the `mail` configuration file may have its own options and even its own unique "transport", allowing your application to use different email services to send certain email messages. For example, your application might use Postmark to send transactional mail while using Amazon SES to send bulk mail.
+Laravel7では１つのアプリケーションで複数の「メーラー」を設定できるようになりました。各メーラーはこのファイルの中でオプションや、独自の「トランスポート」でさえも設定しています。これにより、アプリケーションが特定のメッセージを送るため、異なったメールサービスを利用できるようになっています。たとえばアプリケーションで業務メールはPostmarkを使い、一方でバルクメールはAmazon SESと使い分けることができます。
 
-By default, Laravel will use the mailer configured as the `default` mailer in your `mail` configuration file. However, you may use the `mailer` method to send a message using a specific mailer configuration:
+Laravelは`mail`設定ファイルの`default`メーラーとして設定されているメーラーをデフォルトで使用します。しかし、特定のメール設定を使用してメッセージを遅るために`mailer`メソッドが使用できます。
 
     Mail::mailer('postmark')
             ->to($request->user())
             ->send(new OrderShipped($order));
 
-### Route Caching Speed Improvements
+### ルートキャッシュスピードの向上
 
-_The route caching speed improvements were contributed by upstream [Symfony](https://symfony.com) contributors and [Dries Vints](https://twitter.com/driesvints)_.
+**ルートキャッシュスピードの向上はアップストリームの[Symfony](https://symfony.com)貢献者達と[Dries Vints](https://twitter.com/driesvints)から貢献を受けました。**
 
-Laravel 7 includes a new method of matching compiled, cached routes that have been cached using the `route:cache` Artisan command. On large applications (for example, applications with 800 or more routes), these improvements can result in a **2x speed improvement** in requests per second on a simple "Hello World" benchmark. No changes to your application are required.
+Laravel7にはマッチングコンパイラの新しいメソッドや、`route:cache` Artisanコマンドによるルートのキャッシュが含まれています。大きなアプリケーション（たとえば８００以上のルートを持つアプリケーション）においてシンプルな"Hello World"ベンチマークでは、**２倍のスピード向上**という結果が出せます。アプリケーションに特別な変更は必要ありません。
 
-### CORS Support
+### CORSサポート
 
-_CORS support was contributed by [Barry vd. Heuvel](https://twitter.com/barryvdh)_.
+**CORSのサポートは[Barry vd. Heuvel](https://twitter.com/barryvdh)から貢献を受けました。**
 
-Laravel 7 includes first-party support for configuring Cross-Origin Resource Sharing (CORS) `OPTIONS` request responses by integrating the popular Laravel CORS package written by Barry vd. Heuvel. A new `cors` configuration is included in the [default Laravel application skeleton](https://github.com/laravel/laravel/blob/develop/config/cors.php).
+Laravel7では、Barry vd. Heuvelが書いた人気のLaravel CORSパッケージを統合し、Cross-Origin Resource Sharing (CORS) `OPTIONS`リクエストに対するファーストパーティサポートを提供しています。新しい`cors`設定は[デフォルトLaravelアプリケーションスケルトン](https://github.com/laravel/laravel/blob/develop/config/cors.php)に含まれています。
 
-For more information on CORS support in Laravel 7.x, please consult the [CORS documentation](/docs/{{version}}/routing#cors).
+Laravel7.xにおけるCORSサポートの詳細は、[CORSのドキュメント](/docs/{{version}}/routing#cors)を調べてください。
 
-### Query Time Casts
+### クエリ時間キャスト
 
-_Query time casting was contributed by [Matt Barlow](https://github.com/mpbarlow)_.
+**クエリ時間キャストは[Matt Barlow](https://github.com/mpbarlow)から貢献を受けました。**
 
-Sometimes you may need to apply casts while executing a query, such as when selecting a raw value from a table. For example, consider the following query:
+テーブルから元の値でセレクトするときのように、クエリ実行時にキャストを適用する必要が稀に起きます。例として以下のクエリを考えてください。
 
     use App\Post;
     use App\User;
@@ -303,7 +303,7 @@ Sometimes you may need to apply casts while executing a query, such as when sele
                 ->whereColumn('user_id', 'users.id')
     ])->get();
 
-The `last_posted_at` attribute on the results of this query will be a raw string. It would be convenient if we could apply a `date` cast to this attribute when executing the query. To accomplish this, we may use the `withCasts` method provided by Laravel 7:
+テーブルから元の値でセレクトするときのように、クエリ実行時にキャストを適用する必要が稀に起きます。例として以下のクエリを考えてください。これを行うにはLaravel7で提供している`withCasts`メソッドを使ってください。
 
     $users = User::select([
         'users.*',
@@ -313,17 +313,17 @@ The `last_posted_at` attribute on the results of this query will be a raw string
         'last_posted_at' => 'date'
     ])->get();
 
-### MySQL 8+ Database Queue Improvements
+### MySQL8以上でのデータベースキューの向上
 
-_MySQL database queue improvements were contributed by [Mohamed Said](https://github.com/themsaid)_.
+**MySQLデータベースキューの向上は[Mohamed Said](https://github.com/themsaid)から貢献を受けました。**
 
-In previous releases of Laravel, the `database` queue was not considered robust enough for production usage, due to deadlocks. However, Laravel 7 provides improvements to applications using MySQL 8+ as their database backed queue. By using the `FOR UPDATE SKIP LOCKED` clause and other SQL enhancements, the `database` driver may now safely be used in higher volume production applications.
+Laravelの以前のリリースでは、`database`キューは実機環境での使用に対して十分堅牢に考えられていないため、デッドロックを起こしていました。しかしながら、Laravel7ではMySQL8以上で裏打ちされたキューにより、このデータベースを使用したアプリケーションで改善されました。`FOR UPDATE SKIP LOCKED`節とその他のSQLの改善を利用し、高ボリュームの実働アプリケーションでも`database`ドライバーは安全に使えるようになりました。
 
-### Artisan `test` Command
+### Artisan `test`コマンド
 
-_The `test` command was contributed by [Nuno Maduro](https://twitter.com/enunomaduro)_.
+**`test`コマンドは、[Nuno Maduro](https://twitter.com/enunomaduro)から貢献を受けました。**
 
-In addition to the `phpunit` command, you may now use the `test` Artisan command to run your tests. The Artisan test runner provides beautiful console UX and more information regarding the test that is currently running. In addition, the runner will automatically stop on the first test failure:
+テスト実行では`phpunit`コマンドに加え、`test` Artisanコマンドも使用できます。Artisanテストランナーは美しいコンソールUXと現在実行中のテストに関するより詳しい情報を提供します。さらにテストに失敗した最初の時点で自動的に停止します。
 
     php artisan test
 
@@ -331,37 +331,37 @@ In addition to the `phpunit` command, you may now use the `test` Artisan command
 <img src="https://res.cloudinary.com/dtfbvvkyp/image/upload/v1582142435/Screen_Shot_2020-02-19_at_2.00.01_PM.png">
 </p>
 
-Any arguments that can be passed to the `phpunit` command may also be passed to the Artisan `test` command:
+`phpunit`コマンドで使用できる引数はすべてArtisan `test`コマンドにも渡せます。
 
     php artisan test --group=feature
 
-### Markdown Mail Template Improvements
+### Markdownメールテンプレートの向上
 
-_Markdown mail template improvements were contributed by [Taylor Otwell](https://twitter.com/taylorotwell)_.
+**Markdownメールテンプレートの向上は[Taylor Otwell](https://twitter.com/taylorotwell)から貢献を受けました。**
 
-The default Markdown mail template has received a fresh, more modern design based on the Tailwind CSS color palette. Of course, this template can be published and customized according to your application's needs:
+デフォルトMarkdownメールテンプレートはTailwind CSSカラーパレットを基盤としたよりモダンなデザインに一新されました。もちろん、このテンプレートはリソース公開し、アプリケーションのニーズに合わせてカスタマイズできます。
 
 <p align="center">
 <img src="https://res.cloudinary.com/dtfbvvkyp/image/upload/v1582142674/Screen_Shot_2020-02-19_at_2.04.11_PM.png">
 </p>
 
-For more information on Markdown mail, please consult the [mail documentation](/docs/{{version}}/mail#markdown-mailables).
+Markdownメールのより詳しい情報は、[メールドキュメント](/docs/{{version}}/mail#markdown-mailables)をご覧ください。
 
-### Stub Customization
+### スタブのカスタマイズ
 
-_Stub customization was contributed by [Taylor Otwell](https://twitter.com/taylorotwell)_.
+**Stubのカスタマイズは[Taylor Otwell](https://twitter.com/taylorotwell)から貢献を受けました。**
 
-The Artisan console's `make` commands are used to create a variety of classes, such as controllers, jobs, migrations, and tests. These classes are generated using "stub" files that are populated with values based on your input. However, you may sometimes wish to make small changes to files generated by Artisan. To accomplish this, Laravel 7 provides the `stub:publish` command to publish the most common stubs for customization:
+Artisanコンソールの`make`コマンドは、コントローラ、マイグレーション、テストのような数多くのクラスを生成するために使われます。これらのクラスは皆さんの入力を元にして、「スタブ」ファイルへ値を埋め込み生成されます。場合により、Aritsanが生成するファイルを少し変更したい場合もあるでしょう。このためLaravel７は`stub:publish`コマンドで、カスタマイズのためにもっとも一般的なスタブをリソース公開できるようになりました。
 
     php artisan stub:publish
 
-The published stubs will be located within a `stubs` directory in the root of your application. Any changes you make to these stubs will be reflected when you generate their corresponding classes using Artisan `make` commands.
+リソース公開されたスタブはアプリケーションのルート下の`stubs`ディレクトリの中に保存されます。そうしたスタブに加えた変更は、名前に対応するArtisan `make`コマンドを使用して生成するときに反映されます。
 
-### Queue `maxExceptions` Configuration
+### キューの`maxExceptions`設定
 
-_The `maxExceptions` property was contributed by [Mohamed Said](https://twitter.com/themsaid)_.
+**`maxExceptions`プロパティは[Mohamed Said](https://twitter.com/themsaid)から貢献を受けました。**
 
-Sometimes you may wish to specify that a job may be attempted many times, but should fail if the retries are triggered by a given number of exceptions. In Laravel 7, you may define a `maxExceptions` property on your job class:
+ジョブを何度も再試行するように指定している場合、指定した回数の例外が発生したことをきっかけにしてその再試行を失敗として取り扱いたい場合も起きると思います。Laravel7では、ジョブクラスに`maxExceptions`プロパティを定義してください。
 
     <?php
 
@@ -370,33 +370,33 @@ Sometimes you may wish to specify that a job may be attempted many times, but sh
     class ProcessPodcast implements ShouldQueue
     {
         /**
-         * The number of times the job may be attempted.
+         * 最大試行回数
          *
          * @var int
          */
         public $tries = 25;
 
         /**
-         * The maximum number of exceptions to allow before failing.
+         * 失敗と判定するまで許す最大例外数
          *
          * @var int
          */
         public $maxExceptions = 3;
 
         /**
-         * Execute the job.
+         * ジョブの実行
          *
          * @return void
          */
         public function handle()
         {
             Redis::throttle('key')->allow(10)->every(60)->then(function () {
-                // Lock obtained, process the podcast...
+                // ロックが取得でき、ポッドキャストの処理を行う…
             }, function () {
-                // Unable to obtain lock...
+                // ロックが取得できなかった…場合の処理を行う…
                 return $this->release(10);
             });
         }
     }
 
-In this example, the job is released for ten seconds if the application is unable to obtain a Redis lock and will continue to be retried up to 25 times. However, the job will fail if three unhandled exceptions are thrown by the job.
+この例の場合、アプリケーションがRedisのロックを取得できない場合は、そのジョブは１０秒でリリースされます。そして、２５回再試行を継続します。しかし発生した例外を３回処理しなかった場合、ジョブは失敗します。
