@@ -1,55 +1,55 @@
 # アップグレードガイド
 
-- [Upgrading To 7.0 From 6.x](#upgrade-7.0)
+- [6.xから7.0へのアップグレード](#upgrade-7.0)
 
 <a name="high-impact-changes"></a>
 ## 重要度の高い変更
 
 <div class="content-list" markdown="1">
-- [Authentication Scaffolding](#authentication-scaffolding)
-- [Date Serialization](#date-serialization)
-- [Symfony 5 Related Upgrades](#symfony-5-related-upgrades)
+- [認証スカフォールド](#authentication-scaffolding)
+- [データシリアライズ](#date-serialization)
+- [Symfony5へのアップグレード](#symfony-5-related-upgrades)
 </div>
 
 <a name="medium-impact-changes"></a>
 ## 重要度が中程度の変更
 
 <div class="content-list" markdown="1">
-- [Blade Components & "Blade X"](#blade-components-and-blade-x)
-- [CORS Support](#cors-support)
-- [Factory Types](#factory-types)
-- [Markdown Mail Template Updates](#markdown-mail-template-updates)
-- [The `Blade::component` Method](#the-blade-component-method)
-- [The `assertSee` Assertion](#assert-see)
-- [The `different` Validation Rule](#the-different-rule)
-- [Unique Route Names](#unique-route-names)
+- [Bladeコンポーネントと"Blade x"](#blade-components-and-blade-x)
+- [CORSサポート](#cors-support)
+- [Factoryタイプ](#factory-types)
+- [Markdownメールテンプレートアップデート](#markdown-mail-template-updates)
+- [`Blade::component` メソッド](#the-blade-component-method)
+- [`assertSee`アサーション](#assert-see)
+- [`different`バリデーションルール](#the-different-rule)
+- [一意のルート名](#unique-route-names)
 </div>
 
 <a name="upgrade-7.0"></a>
-## Upgrading To 7.0 From 6.x
+## 6.xから7.0へのアップグレード
 
-#### Estimated Upgrade Time: 15 Minutes
+#### アップグレード見積もり時間：１５分
 
 > {note} 私達は、互換性を失う可能性がある変更を全部ドキュメントにしようとしています。しかし、変更点のいくつかは、フレームワークの明確ではない部分で行われているため、一部の変更が実際にアプリケーションに影響を与えてしまう可能性があります。
 
-### Symfony 5 Required
+### Symfony5要件
 
 **影響の可能性： 高い**
 
-Laravel 7 upgraded its underlying Symfony components to the 5.x series, which is now also the new minimum compatible version.
+Laravel7は裏で動作しているSymfonyコンポーネントを5.xへアップグレードしました。新しい最低限のコンパチブルバージョンもこれになりました。
 
-### PHP 7.2.5 Required
+### PHP 7.2.5要件
 
 **影響の可能性： 低い**
 
-The new minimum PHP version is now 7.2.5.
+新しいPHPの最低動作バージョンは7.2.5になりました。
 
 <a name="updating-dependencies"></a>
 ### 依存パッケージのアップデート
 
-Update your `laravel/framework` dependency to `^7.0` in your `composer.json` file. In addition, update your `nunomaduro/collision` dependency to `^4.1`, `phpunit/phpunit` dependency to `^8.5`, `laravel/tinker` dependency to `^2.0`, and `facade/ignition` to `^2.0`.
+`composer.json`中の依存パッケージ指定で、`laravel/framework`を`^7.0`へアップデートしてください。さらに、`nunomaduro/collision`は`^4.1`、`laravel/tinker`は`^2.0`、`facade/ignition`は`^2.0`へアップデートしてください。
 
-The following first-party packages have new major releases to support Laravel 7. If there are any, read through their individual upgrade guides before upgrading:
+以下のファーストパーティ製パッケージは、Laravel7に対応する新しいメジャーリリースを出しました。どれか使用しているのであれば、それぞれのアップグレードガイドをLaravel7へのアップグレードの前にお読みください。
 
 - [Browser Kit Testing v6.0](https://github.com/laravel/browser-kit-testing/blob/master/UPGRADE.md)
 - [Envoy v2.0](https://github.com/laravel/envoy/blob/master/UPGRADE.md)
@@ -59,60 +59,60 @@ The following first-party packages have new major releases to support Laravel 7.
 - [Telescope v3.0](https://github.com/laravel/telescope/releases)
 - UI v2.0 (No changes necessary)
 
-Finally, examine any other third-party packages consumed by your application and verify you are using the proper version for Laravel 7 support.
+最後に、皆さんのアプリケーションで使用する他のサードパーティ製パッケージを調べ、Laravel7に対応するバージョンを使用していることを確認してください。
 
 <a name="symfony-5-related-upgrades"></a>
-### Symfony 5 Related Upgrades
+### Symfony5へのアップグレード
 
 **影響の可能性： 高い**
 
-Laravel 7 utilizes the 5.x series of the Symfony components. Some minor changes to your application are required to accommodate this upgrade.
+Laravel7は、Symfonyコンポーネントの5.xシリーズを活用しています。このアップグレードを含め、いくつか細かいアプリケーションの修正が必要となります。
 
-First, the `report` and `render` methods of your application's `App\Exceptions\Handler` class should accept instances of the `Throwable` interface instead of `Exception` instances:
+最初に、アプリケーションの`App\Exceptions\Handler`クラスの`report`と`render`メソッドは、`Exception`インスタンスに代え`Throwable`インターフェイスのインスタンスを受け取る必要があります。
 
     use Throwable;
 
     public function report(Throwable $exception);
     public function render($request, Throwable $exception);
 
-Next, please update your `session` configuration file's `secure` option to have a fallback value of `null` and the `same_site` option to have a fallback value of `lax`:
+次に、`session`設定ファイルの`secure`オプションをフォールバック値の`null`へ、`same_site`オプションをフォールバック値の`lax`へ変更してください。
 
     'secure' => env('SESSION_SECURE_COOKIE', null),
 
     'same_site' => 'lax',
 
-### Authentication
+### 認証
 
 <a name="authentication-scaffolding"></a>
-#### Scaffolding
+#### スカフォールド
 
 **影響の可能性： 高い**
 
-All authentication scaffolding has been moved to the `laravel/ui` repository. If you are using Laravel's authentication scaffolding, you should install the `^2.0` release of this package and the package should be installed in all environments. If you were previously including this package in the `require-dev` portion of your application's `composer.json` file, you should move it to the `require` section:
+すべての認証スカフォールドは`laravel/ui`リポジトリへ移動済みです。Laravelの認証スカフォールドを使用する場合は、このパッケージの`^2.0`リリースをインストールしてください。すべての環境でこのパッケージをインストールしてください。アプリケーションの`composer.json`ファイル中で以前にこのパッケージを`require-dev`で依存指定していた時は、`require`に移動する必要があります。
 
     composer require laravel/ui "^2.0"
 
-#### The `TokenRepositoryInterface`
+#### `TokenRepositoryInterface`
 
 **影響の可能性： 低い**
 
-A `recentlyCreatedToken` method has been added to the `Illuminate\Auth\Passwords\TokenRepositoryInterface` interface. If you are writing a custom implementation of this interface, you should add this method to your implementation.
+`Illuminate\Auth\Passwords\TokenRepositoryInterface`インターフェイスへ`recentlyCreatedToken`メソッドを追加しました。このインターフェイスのカスタム実装を書いているときは、このメソッドを追加実装してください。
 
 ### Blade
 
 <a name="the-blade-component-method"></a>
-#### The `component` Method
+#### `component`メソッド
 
 **影響の可能性： 中程度**
 
-The `Blade::component` method has been renamed to `Blade::aliasComponent`. Please update your calls to this method accordingly.
+`Blade::component`メソッドは`Blade::aliasComponent`へ名前を変えました。このメソッドの呼び出しを対応するように変更してください。
 
 <a name="blade-components-and-blade-x"></a>
-#### Blade Components & "Blade X"
+#### Bladeコンポーネントと"Blade x"
 
 **影響の可能性： 中程度**
 
-Laravel 7 includes first-party support for Blade "tag components". If you wish to disable Blade's built-in tag component functionality, you may call the `withoutComponentTags` method from the `boot` method of your `AppServiceProvider`:
+Laravel7はBlade「タグコンポーネント」のファーストパーティサポートを含んでいます。Bladeの組み込みタグコンポーネント機能を無効にしたい場合は、`AppServiceProvider`の`boot`メソッドで`withoutComponentTags`メソッドを呼び出してください。
 
     use Illuminate\Support\Facades\Blade;
 
@@ -120,31 +120,31 @@ Laravel 7 includes first-party support for Blade "tag components". If you wish t
 
 ### Eloquent
 
-#### The `addHidden` / `addVisible` Methods
+#### `addHidden`／`addVisible`メソッド
 
 **影響の可能性： 低い**
 
-The undocumented `addHidden` and `addVisible` methods have been removed. Instead, please use the `makeHidden` and `makeVisible` methods.
+ドキュメントに乗せなくなっていた`addHidden`と`addVisible`メソッドは削除しました。代わりに`makeHidden`と`makeVisible`メソッドを使用してください。
 
-#### The `booting` / `booted` Methods
+#### `booting`／`booted`メソッド
 
 **影響の可能性： 低い**
 
-The `booting` and `booted` methods have been added to Eloquent to provide a place to conveniently define any logic that should execute during the model "boot" process. If you already have model methods with these names, you will need to rename your methods so they do not conflict with the newly added methods.
+モデルの「起動(boot)」処理中で実行すべきロジックを便利に定義できる箇所を提供するため、`booting`と`booted`メソッドがEloquentへ追加されました。この名前のモデルメソッドをすでに使っている場合は、今回追加した新しいメソッドと衝突するため、リネームが必要になります。
 
 <a name="date-serialization"></a>
-#### Date Serialization
+#### データシリアライズ
 
 **影響の可能性： 高い**
 
-Laravel 7 uses a new date serialization format when using the `toArray` or `toJson` method on Eloquent models. To format dates for serialization, the framework now uses Carbon's `toJSON` method, which produces an ISO-8601 compatible date including timezone information and fractional seconds. In addition, this change provides better support and integration with client-side date parsing libraries.
+Laravel7はEloquentモデル上で`toArray`か`toJson`メソッド使用時に、新しい日付シリアライズ形式を使用しています。シリアライズの日付形式にするため、Carbonの`toJson`メソッドを使用するようになりました。これはタイムゾーンと秒の小数部を含んだISO-8601準拠の日付です。さらにこの変更により、クライアントサイドの日付パースライブラリの統合とより良いサポートが実現できました。
 
-Previously, dates would be serialized to a format like the following: `2019-12-02 20:01:00`. Dates serialized using the new format will appear like: `2019-12-02T20:01:00.283041Z`.
+以前のシリアライズされた日付形式は`2019-12-02 20:01:00`でした。新しいシリアライズ済み日付形式は`2019-12-02T20:01:00.283041Z`のようになります。
 
-If you would like to keep using the previous behavior you can override the `serializeDate` method on your model:
+以前の振る舞いのままが好ましい場合は、モデルの`serializeDate`メソッドをオーバーライドしてください。
 
     /**
-     * Prepare a date for array / JSON serialization.
+     * 配列／JSONシリアライズのためデータを準備する
      *
      * @param  \DateTimeInterface  $date
      * @return string
@@ -154,136 +154,136 @@ If you would like to keep using the previous behavior you can override the `seri
         return $date->format('Y-m-d H:i:s');
     }
 
-> {tip} This change only affects serialization of models and model collections to arrays and JSON. This change has no effect on how dates are stored in your database.
+> {tip} この変更はモデルとモデルコレクションの、配列とJSONへのシリアライズにだけ影響を及ぼします。この変更はデータベースに日付を保存する方法にはまったく影響しません。
 
 <a name="factory-types"></a>
-#### Factory Types
+#### Factoryタイプ
 
 **影響の可能性： 中程度**
 
-Laravel 7 removes the "factory types" feature. This feature has been undocumented since October 2016. If you are still using this feature, you should upgrade to [factory states](/docs/{{version}}/database-testing#factory-states), which provide more flexibility.
+Laravel7では「ファクトリタイプ」機能を削除しました。この機能は２０１６年１０月からドキュメントに記載していません。まだこの機能を利用している場合はより柔軟性が高い[ファクトリステート](/docs/{{version}}/database-testing#factory-states)へアップグレードしてください。
 
-#### The `getOriginal` Method
-
-**影響の可能性： 低い**
-
-The `$model->getOriginal()` method will now respect any casts defined on the model. Previously, this method returned the uncast, raw attributes. If you would like to continue retrieving the raw, uncast values, you may use the `getRawOriginal` method instead.
-
-#### Route Binding
+#### `getOriginal`メソッド
 
 **影響の可能性： 低い**
 
-The `resolveRouteBinding` method of the `Illuminate\Contracts\Routing\UrlRoutable` interface now accepts a `$field` argument. If you were implementing this interface by hand, you should update your implementation.
+`$model->getOriginal()`メソッドはモデルで定義されるキャストを反映するようにしました。以前のこのメソッドはキャストせず、元の値をそのまま返していました。元のままのキャストしない値を続けて取得したい場合は、代わりに`getRawOriginal`メソッドを使ってください。
 
-In addition, the `resolveRouteBinding` method of the `Illuminate\Database\Eloquent\Model` class also now accepts a `$field` parameter. If you were overriding this method, you should update your method to accept this argument.
+#### ルート結合
 
-Finally, the `resolveRouteBinding` method of the `Illuminate\Http\Resources\DelegatesToResources` trait also now accepts a `$field` parameter. If you were overriding this method, you should update your method to accept this argument.
+**影響の可能性： 低い**
+
+`Illuminate\Contracts\Routing\UrlRoutable`インターフェイスの`resolveRouteBinding`メソッドは、`$field`引数を取るようになりました。このインターフェイスを実装している場合は変更してください。
+
+さらに`Illuminate\Database\Eloquent\Model`クラスの`resolveRouteBinding`メソッドも`$field`引数を取るようになりました。このメソッドをオーバーライドしている場合は、この引数を受け取るように変更する必要があります。
+
+最後に、`Illuminate\Http\Resources\DelegatesToResources`トレイトの`resolveRouteBinding`メソッドでも`$field`引数を取るようになりました。このメソッドをオーバーライドしている場合は、この引数を受け取るように変更する必要があります。
 
 ### HTTP
 
-#### PSR-7 Compatibility
+#### PSR-7コンパチビリティ
 
 **影響の可能性： 低い**
 
-The Zend Diactoros library for generating PSR-7 responses has been deprecated. If you are using this package for PSR-7 compatibility, please install the `nyholm/psr7` Composer package instead. In addition, please install the `^2.0` release of the `symfony/psr-http-message-bridge` Composer package.
+PSR-7レスポンスを生成するためのZend Diactorosライブラリが非推奨となりました。このパッケージをPSR-7互換性のために使用している場合は、代わりに`nyholm/psr7` Composerパッケージをインストールしてください。さらに、`symfony/psr-http-message-bridge` Composerパッケージの`^2.0`リリースもインストールしてください。
 
 ### メール
 
-#### Configuration File Changes
+#### 設定ファイルの変更
 
 **影響の可能性： 状況による**
 
-In order to support multiple mailers, the default `mail` configuration file has changed in Laravel 7.x to include an array of `mailers`. However, in order to preserve backwards compatibility, the Laravel 6.x format of this configuration file is still supported. So, no changes are **required** when upgrading to Laravel 7.x; however, you may wish to [examine the new `mail` configuration file](https://github.com/laravel/laravel/blob/develop/config/mail.php) structure and update your file to reflect the changes.
+複数のメイラーをサポートするために、Laravel7.xではデフォルトの`mail`設定ファイルを変更し、`mailers`の配列を含むようにしました。しかしながら、後方互換性のためにこのファイルのLaravel6.x形式もまだサポートしています。7.xへアップグレードするには変更は**必要**ありませんが、[新しい`mail`設定ファイルを確認し](https://github.com/laravel/laravel/blob/develop/config/mail.php)、変更を反映するほうを皆さん選ばれるでしょう。
 
 <a name="markdown-mail-template-updates"></a>
-#### Markdown Mail Template Updates
+#### Markdownメールテンプレートアップデート
 
-**Likelihood Of Impact: Medium**
+**影響の可能性： 中程度**
 
-The default Markdown mail templates have been refreshed with a more professional and appealing design. In addition, the undocumented `promotion` Markdown mail component has been removed.
+デフォルトMarkdownテンプレートが、よりプロフェッショナルな見かけの良いデザインに刷新されました。さらに、ドキュメントに記載されていない`promotion` Markdownメールコンポーネントが削除されました。
 
-Because indentitation has special meaning within Markdown, Markdown mail templates expect unindented HTML. If you've previously published Laravel's default mail templates, you'll need to re-publish your mail templates or manually unindent them:
+Markdownではインデントが特別な意味を持っているため、MarkdownメールではHTMLがインデントされていないことが期待されています。Laravelのデフォルトメールテンプレートを以前にリソース公開していた場合は、メールテンプレートを再リソース公開するか、自分でアンインデントしてください。
 
     php artisan vendor:publish --tag=laravel-mail --force
 
-### Queue
+### キュー
 
-#### Deprecated `--daemon` Flag Removed
-
-**影響の可能性： 低い**
-
-The deprecated `--daemon` flag on the `queue:work` command has been removed. This flag is no longer necessary as the worker runs as a daemon by default.
-
-### Resources
-
-#### The `Illuminate\Http\Resources\Json\Resource` Class
+#### 非推奨の`--daemon`フラグの削除
 
 **影響の可能性： 低い**
 
-The deprecated `Illuminate\Http\Resources\Json\Resource` class has been removed. Your resources should extend the `Illuminate\Http\Resources\Json\JsonResource` class instead.
+`queue:work`コマンドの`--daemon`フラグは削除されました。デフォルトでデーモンとしてワーカが実行されるため、このフラグは必要なくなっていました。
 
-### Routing
+### リソース
 
-#### The Router `getRoutes` Method
+#### `Illuminate\Http\Resources\Json\Resource`クラス
 
 **影響の可能性： 低い**
 
-The router's `getRoutes` method now returns an instance of `Illuminate\Routing\RouteCollectionInterface` instead of `Illuminate\Routing\RouteCollection`.
+非推奨だった`Illuminate\Http\Resources\Json\Resource`クラスは削除されました。代わりにリソースは`Illuminate\Http\Resources\Json\JsonResource`を拡張子てください。
+
+### ルート
+
+#### ルータの`getRoutes`メソッド
+
+**影響の可能性： 低い**
+
+ルータの`getRoutes`メソッドは`Illuminate\Routing\RouteCollection`のインスタンスの代わりに、`Illuminate\Routing\RouteCollectionInterface`のインスタンスを返すようになりました。
 
 <a name="unique-route-names"></a>
-#### Unique Route Names
+#### 一意のルート名
 
 **影響の可能性： 中程度**
 
-Even though never officially documented, previous Laravel releases allow you to define two different routes with the same name. In Laravel 7 this is no longer possible and you should always provide unique names for your routes. Routes with duplicate names can cause unexpected behavior in multiple areas of the framework.
+公式にはドキュメントに載せていませんが、以前のLaravelリリースでは異なった２つのルートを同じ名前で定義できていました。Laravel7ではこれはできなくなり、いつでもルートに一意の名前を指定する必要があります。重複する名前を持つルートはフレームワークの複数のエリアで、予期せぬ振る舞いを引き起こす可能性があります。
 
 <a name="cors-support"></a>
-#### CORS Support
+#### CORSサポート
 
 **影響の可能性： 中程度**
 
-Cross-Origin Resource Sharing (CORS) support is now integrated by default. If you are using any third-party CORS libraries you are now advised to use the [new `cors` configuration file](https://github.com/laravel/laravel/blob/develop/config/cors.php).
+Cross-Origin Resource Sharing (CORS)がデフォルトで統合されました。もしサードパーティ製ライブラリを使用していた場合は、[新しい`cors`設定ファイル](https://github.com/laravel/laravel/blob/develop/config/cors.php)を使用することを勧めます。
 
-Next, install the underlying CORS library as a dependency of your application:
+次に、アプリケーションの依存パッケージへ、Laravelの後ろで動作するCORSライブラリをインストールします。
 
     composer require fruitcake/laravel-cors
 
-Finally, add the `\Fruitcake\Cors\HandleCors::class` middleware to your `App\Http\Kernel` global middleware list.
+最後に、`App\Http\Kernel`グローバルミドルウェアへ`\Fruitcake\Cors\HandleCors::class`ミドルウェアを追加します。
 
-### Session
+### セッション
 
-#### The `array` Session Driver
+#### `array`セッションドライバ
 
 **影響の可能性： 低い**
 
-The `array` session driver data is now persistent for the current request. Previously, data stored in the `array` session could not be retrieved even during the current request.
+`array`セッションドライバのデータは、現在のリクエスト中維持するようになりました。以前は、`array`セッションに保存したデータは、現在のリクエスト中でさえ取得できませんでした。
 
-### Testing
+### テスト
 
 <a name="assert-see"></a>
-#### The `assertSee` Assertion
+#### `assertSee`アサーション
 
 **影響の可能性： 中程度**
 
-The `assertSee` and `assertDontSee` assertions on the `TestResponse` class will now automatically escape values. If you are manually escaping any values passed to these assertions you should no longer do so. If you need to assert unescaped values, you may pass `false` as the second argument to the method.
+`TestResponse`クラスの`assertSee`と `assertDontSee`アサーションは、自動的に値をエスケープするようになりました。これらのアサーションに渡す値を今まで自分でエスケープしていたのであれば、これからはそうしてはいけません。エスケープしない値でアサートする必要がある場合は、メソッドの第２引数に`false`を指定してください。
 
 <a name="assert-see"></a>
-#### The `TestResponse` Class
+#### `TestResponse`クラス
 
-**Likelihood Of Impact: Low**
+**影響の可能性： 低い**
 
-The `Illuminate\Foundation\Testing\TestResponse` class has been renamed to `Illuminate\Testing\TestResponse`. If you're extending this class, make sure to update the namespace.
+`Illuminate\Foundation\Testing\TestResponse`クラスは`Illuminate\Testing\TestResponse`へリネームされました。もしこのクラスを拡張していた場合は、名前空間を確実に変更してください。
 
 ### バリデーション
 
 <a name="the-different-rule"></a>
-#### The `different` Rule
+#### `different`ルール
 
 **影響の可能性： 中程度**
 
-The `different` rule will now fail if one of the specified parameters is missing from the request.
+`different`ルールは、リクエストに指定したパラメータのうちの１つが足りないければ失敗するようになりました。
 
 <a name="miscellaneous"></a>
 ### その他
 
-We also encourage you to view the changes in the `laravel/laravel` [GitHub repository](https://github.com/laravel/laravel). While many of these changes are not required, you may wish to keep these files in sync with your application. Some of these changes will be covered in this upgrade guide, but others, such as changes to configuration files or comments, will not be. You can easily view the changes with the [GitHub comparison tool](https://github.com/laravel/laravel/compare/6.x...master) and choose which updates are important to you.
+`laravel/laravel`の[GitHubリポジトリ](https://github.com/laravel/laravel)で、変更を確認することを推奨します。これらの変更は必須でありませんが、皆さんのアプリケーションではファイルの同期を保つほうが良いでしょう。変更のいくつかは、このアップグレードガイドで取り扱っていますが、設定ファイルやコメントなどの変更は取り扱っていません。変更は簡単に[GitHubの比較ツール](https://github.com/laravel/laravel/compare/6.x...master)で閲覧でき、みなさんにとって重要な変更を選択できます。
