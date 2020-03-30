@@ -42,6 +42,7 @@
     - [払い戻し](#refunding-charges)
 - [インボイス](#invoices)
     - [インボイスPDF生成](#generating-invoice-pdfs)
+- [課金失敗の処理](#handling-failed-payments)
 - [堅牢な顧客認証 (SCA)](#strong-customer-authentication)
     - [支払い要求の追加確認](#payments-requiring-additional-confirmation)
     - [非セッション確立時の支払い通知](#off-session-payment-notifications)
@@ -781,6 +782,12 @@ Webhookの確認を有効にするには、`.env`ファイル中の`STRIPE_WEBHO
         'custom_option' => $value,
     ]);
 
+裏で動作する顧客やユーザーがなくても、`charge`メソッドは使用できます。
+
+    use App\User;
+
+    $stripeCharge = (new User)->charge(100, $paymentMethod);
+
 課金に失敗すると、`charge`メソッドは例外を投げます。課金に成功すれば、メソッドは`Laravel\Cashier\Payment`のインスタンスを返します。
 
     try {
@@ -852,19 +859,12 @@ Stripeでの課金を払い戻す必要がある場合は、`refund`メソッド
         ]);
     });
 
-<a name="strong-customer-authentication"></a>
-## 堅牢な顧客認証
+<a name="handling-failed-payments"></a>
+## 課金失敗の処理
 
-皆さんのビジネスがヨーロッパを基盤とするものであるなら、堅牢な顧客認証 (SCA)規制を守る必要があります。これらのレギュレーションは支払い詐欺を防ぐためにEUにより２０１９年９月に課せられたものです。幸運なことに、StripeとCashierはSCA準拠のアプリケーション構築のために準備をしてきました。
+サブスクリプションへの支払い、もしくは一回のみの課金は失敗することがあります。これが発生したことを知らせるため、Cashierは`IncompletePayment`例外を投げます。この例外を補足した後の処理方法は、２つの選択肢があります。
 
-> {note} 始める前に、[StripeのPSD2とSCAのガイド](https://stripe.com/en-be/guides/strong-customer-authentication)と、[新SCA APIのドキュメント](https://stripe.com/docs/strong-customer-authentication)を確認してください。
-
-<a name="payments-requiring-additional-confirmation"></a>
-### 支払い要求の追加確認
-
-SCA規制は支払いの確認と処理を行うため、頻繁に追加の検証を要求しています。これが起きるとCashierは`IncompletePayment`例外を投げ、この追加の検証が必要であるとあなたに知らせます。この例外を捉えたら、処理の方法は２つあります。
-
-最初の方法は、その顧客をCashierに含まれている支払い確認専門ページへリダイレクトする方法です。このページに紐つけたルートは、Cashierのサービスプロバイダで登録済みです。そのため、`IncompletePayment`例外を捉えたら、支払い確認ページへリダイレクトします。
+最初の方法は、その顧客をCashierに含まれている支払い確認専門ページへリダイレクトする方法です。このページに紐つけたルートは、Cashierのサービスプロバイダで登録済みです。`IncompletePayment`例外を捉えたら、支払い確認ページへリダイレクトします。
 
     use Laravel\Cashier\Exceptions\IncompletePayment;
 
@@ -878,11 +878,30 @@ SCA規制は支払いの確認と処理を行うため、頻繁に追加の検�
         );
     }
 
-支払い確認ページで顧客はクレジットカード情報の入力を再度促され、「３Dセキュア」のような追加のアクションがStripeにより実行されます。支払いが確認されたら、上記のように`redirect`引数で指定されたURLへユーザーはリダイレクトされます。
+支払い確認ページで顧客はクレジットカード情報の入力を再度促され、「３Dセキュア」のような追加のアクションがStripeにより実行されます。支払いが確認されたら、上記のように`redirect`引数で指定されたURLへユーザーはリダイレクトされます。支払いを確認したら、そのユーザーは上記のように`redirect`パラメータで指定されたURLへリダイレクトされます。リダイレクトにはURLへ`message`（文字列）と`success`（整数）クエリ文字列値が追加されます。
 
 別の方法として、Stripeに支払いの処理を任せることもできます。この場合、支払い確認ページへリダイレクトする代わりに、Stripeダッシュボードで[Stripeの自動支払いメール](https://dashboard.stripe.com/account/billing/automatic)を瀬一定する必要があります。しかしながら、`IncompletePayment`例外を捉えたら、支払い確認方法の詳細がメールで送られることをユーザーへ知らせる必要があります。
 
-不完全な支払いの例外は、`Billable`のユーザーに対する`charge`、`invoiceFor`、`invoice`メソッドで投げられる可能性があります。スクリプションが処理される時、`SubscriptionBuilder`の`create`メソッドと、`Subscription`モデルの`incrementAndInvoice`、`swapAndInvoice`メソッドは、例外を投げるでしょう。
+不完全な支払いの例外は、`Billable`のユーザーに対する`charge`、`invoiceFor`、`invoice`メソッドで投げられる可能性があります。スクリプションが処理される時、`SubscriptionBuilder`の`create`メソッドと、`Subscription`モデルの`incrementAndInvoice`、`swapAndInvoice`メソッドは、例外を発生させる可能性があります。
+
+`IncompletePayment`を拡張している支払い例外は現在２タイプ存在します。必要に応じユーザーエクスペリエンスをカスタマイズするために、これらを別々に補足できます。
+
+<div class="content-list" markdown="1">
+- `PaymentActionRequired`： これはStripeが支払いの確認と処理のために、追加の確認を要求していることを示します。
+- `PaymentFailure`： これは利用可能な資金が無いなど、様々な理由で支払いが失敗したことを示します。
+</div>
+
+<a name="strong-customer-authentication"></a>
+## 堅牢な顧客認証 (SCA)
+
+皆さんのビジネスがヨーロッパを基盤とするものであるなら、堅牢な顧客認証 (SCA)規制を守る必要があります。これらのレギュレーションは支払い詐欺を防ぐためにEUにより２０１９年９月に課せられたものです。幸運なことに、StripeとCashierはSCA準拠のアプリケーション構築のために準備をしてきました。
+
+> {note} 始める前に、[StripeのPSD2とSCAのガイド](https://stripe.com/en-be/guides/strong-customer-authentication)と、[新SCA APIのドキュメント](https://stripe.com/docs/strong-customer-authentication)を確認してください。
+
+<a name="payments-requiring-additional-confirmation"></a>
+### 支払い要求の追加確認
+
+SCA規制は支払いの確認と処理を行うため、頻繁に追加の検証を要求しています。これが起きるとCashierは`PaymentActionRequired`例外を投げ、この追加の検証が必要であるとあなたに知らせます。この例外をどのように処理するかは、[失敗した支払いの処理方法のセクション](#handling-failed-payments)をお読みください。
 
 #### 不十分と期日超過の状態
 

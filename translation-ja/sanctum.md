@@ -66,6 +66,10 @@ SPAの認証のためにAirlockを活用しようと計画している場合は�
         \Illuminate\Routing\Middleware\SubstituteBindings::class,
     ],
 
+#### Migration Customization
+
+If you are not going to use Sanctum's default migrations, you should call the `Sanctum::ignoreMigrations` method in the `register` method of your `AppServiceProvider`. You may export the default migrations using `php artisan vendor:publish --tag=sanctum-migrations`.
+
 <a name="api-token-authentication"></a>
 ## APIトークン認証
 
@@ -138,6 +142,8 @@ Airlockにより認証されたリクエストを処理するとき、そのト�
 Laravelが提供するAPIを使用し通信する必要があるシングルページアプリケーション(SPA)へ、シンプルな認証方法を提供するためです。こうしたSPAはLaravelアプリケーションと同じリポジトリにあっても、もしくはVue CLIを使用して生成したSPAのように、まったく別のリポジトリに存在していてもかまいません。
 
 Airlockはこの機能の実現のためにトークンは一切使用しません。Laravelへ組み込まれているクッキーベースのセッション認証サービスを使用します。これにより、XSSによる認証情報リークに対する保護と同時に、CSRF保護・セッションの認証を提供しています。皆さんのSPAのフロントエンドから送信されるリクエストに対し、Airlockはクッキーだけを使用して認証を確立しようとします。
+
+> {note} In order to authenticate, your SPA and API must share the same top-level domain. However, they may be placed on different subdomains.
 
 <a name="spa-configuration"></a>
 ### 設定

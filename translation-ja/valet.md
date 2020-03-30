@@ -42,6 +42,7 @@ Valetは以下をサポートしていますが、これらに限定されませ
 - [Contao](https://contao.org/en/)
 - [Craft](https://craftcms.com)
 - [Drupal](https://www.drupal.org/)
+- [ExpressionEngine](https://www.expressionengine.com/)
 - [Jigsaw](https://jigsaw.tighten.co)
 - [Joomla](https://www.joomla.org/)
 - [Katana](https://github.com/themsaid/katana)

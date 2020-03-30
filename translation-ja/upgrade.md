@@ -68,18 +68,18 @@ Laravel7は裏で動作しているSymfonyコンポーネントを5.xへアッ�
 
 Laravel7は、Symfonyコンポーネントの5.xシリーズを活用しています。このアップグレードを含め、いくつか細かいアプリケーションの修正が必要となります。
 
-最初に、アプリケーションの`App\Exceptions\Handler`クラスの`report`と`render`メソッドは、`Exception`インスタンスに代え`Throwable`インターフェイスのインスタンスを受け取る必要があります。
+最初に、アプリケーションの`App\Exceptions\Handler`クラスの`report`と`render`、`shouldReport`、`renderForConsole`メソッドは、`Exception`インスタンスに代え`Throwable`インターフェイスのインスタンスを受け取る必要があります。
 
     use Throwable;
 
     public function report(Throwable $exception);
+    public function shouldReport(Throwable $exception);
     public function render($request, Throwable $exception);
+    public function renderForConsole($output, Throwable $exception);
 
-次に、`session`設定ファイルの`secure`オプションをフォールバック値の`null`へ、`same_site`オプションをフォールバック値の`lax`へ変更してください。
+次に、`session`設定ファイルの`secure`オプションをフォールバック値の`null`へ変更してください。
 
     'secure' => env('SESSION_SECURE_COOKIE', null),
-
-    'same_site' => 'lax',
 
 ### 認証
 
@@ -139,9 +139,11 @@ Laravel7はBlade「タグコンポーネント」のファーストパーティ�
 
 Laravel7はEloquentモデル上で`toArray`か`toJson`メソッド使用時に、新しい日付シリアライズ形式を使用しています。シリアライズの日付形式にするため、Carbonの`toJson`メソッドを使用するようになりました。これはタイムゾーンと秒の小数部を含んだISO-8601準拠の日付です。さらにこの変更により、クライアントサイドの日付パースライブラリの統合とより良いサポートが実現できました。
 
-以前のシリアライズされた日付形式は`2019-12-02 20:01:00`でした。新しいシリアライズ済み日付形式は`2019-12-02T20:01:00.283041Z`のようになります。
+以前のシリアライズされた日付形式は`2019-12-02 20:01:00`でした。新しいシリアライズ済み日付形式は`2019-12-02T20:01:00.283041Z`のようになります。ISO-8601日付は常にUTCで表現されることに注意してください。
 
 以前の振る舞いのままが好ましい場合は、モデルの`serializeDate`メソッドをオーバーライドしてください。
+
+    use DateTimeInterface;
 
     /**
      * 配列／JSONシリアライズのためデータを準備する
@@ -242,7 +244,7 @@ Markdownではインデントが特別な意味を持っているため、Markdo
 
 **影響の可能性： 中程度**
 
-Cross-Origin Resource Sharing (CORS)がデフォルトで統合されました。もしサードパーティ製ライブラリを使用していた場合は、[新しい`cors`設定ファイル](https://github.com/laravel/laravel/blob/develop/config/cors.php)を使用することを勧めます。
+Cross-Origin Resource Sharing (CORS)がデフォルトで統合されました。もしサードパーティ製ライブラリを使用していた場合は、[新しい`cors`設定ファイル](https://github.com/laravel/laravel/blob/master/config/cors.php)を使用することを勧めます。
 
 次に、アプリケーションの依存パッケージへ、Laravelの後ろで動作するCORSライブラリをインストールします。
 
@@ -267,12 +269,19 @@ Cross-Origin Resource Sharing (CORS)がデフォルトで統合されました�
 
 `TestResponse`クラスの`assertSee`と `assertDontSee`アサーションは、自動的に値をエスケープするようになりました。これらのアサーションに渡す値を今まで自分でエスケープしていたのであれば、これからはそうしてはいけません。エスケープしない値でアサートする必要がある場合は、メソッドの第２引数に`false`を指定してください。
 
-<a name="assert-see"></a>
+<a name="test-response"></a>
 #### `TestResponse`クラス
 
 **影響の可能性： 低い**
 
 `Illuminate\Foundation\Testing\TestResponse`クラスは`Illuminate\Testing\TestResponse`へリネームされました。もしこのクラスを拡張していた場合は、名前空間を確実に変更してください。
+
+<a name="assert-class"></a>
+#### The `Assert` Class
+
+**影響の可能性： 低い**
+
+`Illuminate\Foundation\Testing\Assert`クラスは`Illuminate\Testing\Assert`へリネームされました。このクラスを使用していた場合は、名前空間部分を変更してください。
 
 ### バリデーション
 

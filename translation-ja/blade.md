@@ -369,7 +369,7 @@ Blade（およびLaravelの`e`ヘルパ）はデフォルトで、HTMLエンテ�
 `$loop->first`  |  ループの最初の繰り返しか判定
 `$loop->last`  |  ループの最後の繰り返しか判定
 `$loop->even`  |  これは偶数回目の繰り返しか判定
-`$loop->odd`  |  これは気数回目の繰り返しか判定
+`$loop->odd`  |  これは奇数回目の繰り返しか判定
 `$loop->depth`  |  現在のループのネストレベル
 `$loop->parent`  |  ループがネストしている場合、親のループ変数
 
@@ -467,7 +467,7 @@ HTMLフォームでは、`PUT`、`PATCH`、`DELETE`リクエストを作成で�
      */
     public function boot()
     {
-        Blade::component(AlertComponent::class, 'package-alert');
+        Blade::component('package-alert', AlertComponent::class);
     }
 
 コンポーネントを登録したら、そのタグエイリアスを使用してレンダーします。
@@ -547,6 +547,26 @@ HTML属性を使い、Bladeコンポーネントへデータを渡すことが�
     <div class="alert alert-{{ $type }}">
         {{ $message }}
     </div>
+
+#### キャスト
+
+コンポーネントのコンストラクタ引数はキャメルケース（`camelCase`）を使用し、HTML属性の中で引数名を参照するときはケバブケース（`kebab-case`）を使用します。たとえば、以下のようなコンポーネントコンストラクタがあったとしましょう。
+
+    /**
+     * コンポーネントインスタンスの生成
+     *
+     * @param  string  $alertType
+     * @param  string  $message
+     * @return void
+     */
+    public function __construct($alertType)
+    {
+        $this->alertType = $alertType;
+    }
+
+`$alertType`引数は以下のように指定します。
+
+    <x-alert alert-type="danger" />
 
 #### コンポーネントメソッド
 

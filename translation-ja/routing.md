@@ -410,9 +410,10 @@ Laravelはタイプヒントされた変数名とルートセグメント名が�
      * 結合値のモデル取得
      *
      * @param  mixed  $value
+     * @param  string|null  $field
      * @return \Illuminate\Database\Eloquent\Model|null
      */
-    public function resolveRouteBinding($value)
+    public function resolveRouteBinding($value, $field = null)
     {
         return $this->where('name', $value)->firstOrFail();
     }

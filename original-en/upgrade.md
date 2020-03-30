@@ -68,18 +68,18 @@ Finally, examine any other third-party packages consumed by your application and
 
 Laravel 7 utilizes the 5.x series of the Symfony components. Some minor changes to your application are required to accommodate this upgrade.
 
-First, the `report` and `render` methods of your application's `App\Exceptions\Handler` class should accept instances of the `Throwable` interface instead of `Exception` instances:
+First, the `report`, `render`, `shouldReport`, and `renderForConsole` methods of your application's `App\Exceptions\Handler` class should accept instances of the `Throwable` interface instead of `Exception` instances:
 
     use Throwable;
 
     public function report(Throwable $exception);
+    public function shouldReport(Throwable $exception);
     public function render($request, Throwable $exception);
+    public function renderForConsole($output, Throwable $exception);
 
-Next, please update your `session` configuration file's `secure` option to have a fallback value of `null` and the `same_site` option to have a fallback value of `lax`:
+Next, please update your `session` configuration file's `secure` option to have a fallback value of `null`:
 
     'secure' => env('SESSION_SECURE_COOKIE', null),
-
-    'same_site' => 'lax',
 
 ### Authentication
 
@@ -139,9 +139,11 @@ The `booting` and `booted` methods have been added to Eloquent to provide a plac
 
 Laravel 7 uses a new date serialization format when using the `toArray` or `toJson` method on Eloquent models. To format dates for serialization, the framework now uses Carbon's `toJSON` method, which produces an ISO-8601 compatible date including timezone information and fractional seconds. In addition, this change provides better support and integration with client-side date parsing libraries.
 
-Previously, dates would be serialized to a format like the following: `2019-12-02 20:01:00`. Dates serialized using the new format will appear like: `2019-12-02T20:01:00.283041Z`.
+Previously, dates would be serialized to a format like the following: `2019-12-02 20:01:00`. Dates serialized using the new format will appear like: `2019-12-02T20:01:00.283041Z`. Please note that ISO-8601 dates are always expressed in UTC.
 
 If you would like to keep using the previous behavior you can override the `serializeDate` method on your model:
+
+    use DateTimeInterface;
 
     /**
      * Prepare a date for array / JSON serialization.
@@ -202,7 +204,7 @@ In order to support multiple mailers, the default `mail` configuration file has 
 
 The default Markdown mail templates have been refreshed with a more professional and appealing design. In addition, the undocumented `promotion` Markdown mail component has been removed.
 
-Because indentitation has special meaning within Markdown, Markdown mail templates expect unindented HTML. If you've previously published Laravel's default mail templates, you'll need to re-publish your mail templates or manually unindent them:
+Because indentation has special meaning within Markdown, Markdown mail templates expect unindented HTML. If you've previously published Laravel's default mail templates, you'll need to re-publish your mail templates or manually unindent them:
 
     php artisan vendor:publish --tag=laravel-mail --force
 
@@ -242,7 +244,7 @@ Even though never officially documented, previous Laravel releases allow you to 
 
 **Likelihood Of Impact: Medium**
 
-Cross-Origin Resource Sharing (CORS) support is now integrated by default. If you are using any third-party CORS libraries you are now advised to use the [new `cors` configuration file](https://github.com/laravel/laravel/blob/develop/config/cors.php).
+Cross-Origin Resource Sharing (CORS) support is now integrated by default. If you are using any third-party CORS libraries you are now advised to use the [new `cors` configuration file](https://github.com/laravel/laravel/blob/master/config/cors.php).
 
 Next, install the underlying CORS library as a dependency of your application:
 
@@ -267,12 +269,19 @@ The `array` session driver data is now persistent for the current request. Previ
 
 The `assertSee` and `assertDontSee` assertions on the `TestResponse` class will now automatically escape values. If you are manually escaping any values passed to these assertions you should no longer do so. If you need to assert unescaped values, you may pass `false` as the second argument to the method.
 
-<a name="assert-see"></a>
+<a name="test-response"></a>
 #### The `TestResponse` Class
 
 **Likelihood Of Impact: Low**
 
 The `Illuminate\Foundation\Testing\TestResponse` class has been renamed to `Illuminate\Testing\TestResponse`. If you're extending this class, make sure to update the namespace.
+
+<a name="assert-class"></a>
+#### The `Assert` Class
+
+**Likelihood Of Impact: Low**
+
+The `Illuminate\Foundation\Testing\Assert` class has been renamed to `Illuminate\Testing\Assert`. If you're using this class, make sure to update the namespace.
 
 ### Validation
 

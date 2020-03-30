@@ -41,4 +41,8 @@ Laravelで`expectsQuestion`メソッドを使用すれば、コンソールコ�
              ->assertExitCode(0);
     }
 
+"yes"／"no"形態の答えを確認したいコマンドを書いている場合は、`expectsConfirmation`メソッドが役に立ちます。
 
+    $this->artisan('module:import')
+        ->expectsConfirmation('Do you really wish to run this command?', 'no')
+        ->assertExitCode(1);

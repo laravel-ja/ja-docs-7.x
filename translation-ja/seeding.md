@@ -9,14 +9,14 @@
 <a name="introduction"></a>
 ## イントロダクション
 
-シーダ（初期値設定）クラスを使用し、テストデーターをデーターベースに設定するシンプルな方法もLaravelには備わっています。全シーダクラスは`database/seeds`に保存します。シーダクラスには好きな名前を付けられます。しかし`UsersTableSeeder`などのような分かりやすい規則に従ったほうが良いでしょう。デフォルトとして`DatabaseSeeder`クラスが定義されています。このクラスから`call`メソッドを使い他の初期値設定クラスを呼び出すことで、シーディングの順番をコントロールできます。
+シーダ（初期値設定）クラスを使用し、テストデーターをデーターベースに設定するシンプルな方法もLaravelには備わっています。全シーダクラスは`database/seeds`に保存します。シーダクラスには好きな名前を付けられます。しかし`UserSeeder`などのような分かりやすい規則に従ったほうが良いでしょう。デフォルトとして`DatabaseSeeder`クラスが定義されています。このクラスから`call`メソッドを使い他の初期値設定クラスを呼び出すことで、シーディングの順番をコントロールできます。
 
 <a name="writing-seeders"></a>
 ## シーダクラス定義
 
 シーダを生成するには、`make:seeder` [Artisanコマンド](/docs/{{version}}/artisan)を実行します。フレームワークが生成するシーダはすべて`database/seeds`ディレクトリに設置されます。
 
-    php artisan make:seeder UsersTableSeeder
+    php artisan make:seeder UserSeeder
 
 シーダクラスはデフォルトで`run`メソッドだけを含んでいます。このメソッドは`db:seed` [Artisanコマンド](/docs/{{version}}/artisan)が実行された時に呼びだされます。`run`メソッドの中でデータベースに何でも好きなデーターを挿入できます。[クエリビルダ](/docs/{{version}}/queries)でデータを挿入することも、もしくは[Eloquentモデルファクトリ](/docs/{{version}}/database-testing#writing-factories)を使うこともできます。
 
@@ -82,9 +82,9 @@
     public function run()
     {
         $this->call([
-            UsersTableSeeder::class,
-            PostsTableSeeder::class,
-            CommentsTableSeeder::class,
+            UserSeeder::class,
+            PostSeeder::class,
+            CommentSeeder::class,
         ]);
     }
 
@@ -99,7 +99,7 @@
 
     php artisan db:seed
 
-    php artisan db:seed --class=UsersTableSeeder
+    php artisan db:seed --class=UserSeeder
 
 もしくはテーブルをすべてドロップし、マイグレーションを再実行する`migrate:fresh`コマンドを使っても、データベースに初期値を設定できます。このコマンドはデータベースを完全に作成し直したい場合に便利です。
 

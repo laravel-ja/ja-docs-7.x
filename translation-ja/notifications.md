@@ -571,7 +571,21 @@ LaravelのMarkdownコンポーネントの完全に新しいテーマを作成�
                     ->onConnection('sqs')
                     ->onQueue('broadcasts');
 
-> {tip} 指定したデータに付け加え、ブロードキャスト通知は、通知のクラス名を含んだ`type`フィールドも付加します。
+#### 通知タイプのカスタマイズ
+
+データの指定に付け加え、すべてのブロードキャストは通知の完全なクラス名を含む`type`フィールドを持っています。JavaScriptクライアントへ提供される通知`type`をカスタマイズしたい場合は、通知クラスで`broadcastType`メソッドを定義してください。
+
+    use Illuminate\Notifications\Messages\BroadcastMessage;
+
+    /**
+     * ブロードキャストする通知のタイプ
+     *
+     * @return string
+     */
+    public function broadcastType()
+    {
+        return 'broadcast.message';
+    }
 
 <a name="listening-for-notifications"></a>
 ### 通知のリッスン

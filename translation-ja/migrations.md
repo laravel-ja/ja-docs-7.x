@@ -486,7 +486,7 @@ Laravelはデータベースレベルの整合性を強制するために、テ�
         $table->foreign('user_id')->references('id')->on('users');
     });
 
-この書き方はやや複雑です。より良い開発イクスピアリエンスを提供するため、Laravelは便利に使用できる追加の簡潔なメソッドを提供しています。　
+この書き方はやや複雑です。より良い開発イクスピアリエンスを提供するため、Laravelはさらに便利に使用できる簡潔なメソッドを提供しています。上の例は、次のように書き換えられます。
 
     Schema::table('posts', function (Blueprint $table) {
         $table->foreignId('user_id')->constrained();
@@ -514,4 +514,4 @@ Laravelはデータベースレベルの整合性を強制するために、テ�
 
     Schema::disableForeignKeyConstraints();
 
-> {note} デフォルト状態では、SQLiteは外部キー制約が利用できません。SQLiteを使用する場合は、マイグレーションで外部キーを作成する前に、確実に[外部キーサポートを有効](/docs/{{version}}/database#configuration)にしてください。
+> {note} デフォルト状態では、SQLiteは外部キー制約が利用できません。SQLiteを使用する場合は、マイグレーションで外部キーを作成する前に、確実に[外部キーサポートを有効](/docs/{{version}}/database#configuration)にしてください。さらに、SQLiteはテーブル生成時のみ外部キーをサポートしており、[テーブル変更時](https://www.sqlite.org/omitted.html)ではありません。

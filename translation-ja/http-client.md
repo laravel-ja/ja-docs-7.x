@@ -5,8 +5,10 @@
     - [リクエストデータ](#request-data)
     - [ヘッダ](#headers)
     - [認証](#authentication)
+    - [タイムアウト](#timeout)
     - [リトライ](#retries)
     - [エラー処理](#error-handling)
+    - [Guzzleオプション](#guzzle-options)
 - [テスト](#testing)
     - [レスポンスのFake](#faking-responses)
     - [レスポンスの調査](#inspecting-requests)
@@ -109,6 +111,15 @@
 
     $response = Http::withToken('token')->post(...);
 
+<a name="timeout"></a>
+### タイムアウト
+
+`timeout`メソッドはレスポンスを待つ最大秒数を指定するために使用します。
+
+    $response = Http::timeout(3)->get(...);
+
+指定したタイムアウト時間が過ぎたら、`Illuminate\Http\Client\ConnectionExceptionのインスタンスが投げられます。
+
 <a name="retries"></a>
 ### リトライ
 
@@ -148,6 +159,15 @@ Guzzleのデフォルト動作と異なり、LaravelのHTTPクライアントラ
 `throw`メソッドはエラーが起きていない場合にレスポンスインスタンスを返すため、別の操作を続けて記述できます。
 
     return Http::post(...)->throw()->json();
+
+<a name="guzzle-options"></a>
+### Guzzleオプション
+
+`withOptions`メソッドを使用し、[Guzzleリクエストオプション](http://docs.guzzlephp.org/en/stable/request-options.html)を追加指定できます。`withOptions`メソッドはキー／値ペアの配列を引数に取ります。
+
+    $response = Http::withOptions([
+        'debug' => true,
+    ])->get('http://test.com/users');
 
 <a name="testing"></a>
 ## テスト

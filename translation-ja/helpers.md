@@ -26,12 +26,14 @@ Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し�
 
 <div class="collection-method-list" markdown="1">
 
+[Arr::accessible](#method-array-accessible)
 [Arr::add](#method-array-add)
 [Arr::collapse](#method-array-collapse)
 [Arr::crossJoin](#method-array-crossjoin)
 [Arr::divide](#method-array-divide)
 [Arr::dot](#method-array-dot)
 [Arr::except](#method-array-except)
+[Arr::exists](#method-array-exists)
 [Arr::first](#method-array-first)
 [Arr::flatten](#method-array-flatten)
 [Arr::forget](#method-array-forget)
@@ -44,8 +46,8 @@ Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し�
 [Arr::pluck](#method-array-pluck)
 [Arr::prepend](#method-array-prepend)
 [Arr::pull](#method-array-pull)
-[Arr::random](#method-array-random)
 [Arr::query](#method-array-query)
+[Arr::random](#method-array-random)
 [Arr::set](#method-array-set)
 [Arr::shuffle](#method-array-shuffle)
 [Arr::sort](#method-array-sort)
@@ -86,15 +88,19 @@ Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し�
 [Str::afterLast](#method-str-after-last)
 [Str::before](#method-str-before)
 [Str::beforeLast](#method-str-before-last)
+[Str::between](#method-str-between)
 [Str::camel](#method-camel-case)
 [Str::contains](#method-str-contains)
 [Str::containsAll](#method-str-contains-all)
 [Str::endsWith](#method-ends-with)
 [Str::finish](#method-str-finish)
 [Str::is](#method-str-is)
+[Str::isAscii](#method-str-is-ascii)
 [Str::isUuid](#method-str-is-uuid)
 [Str::kebab](#method-kebab-case)
+[Str::length](#method-str-length)
 [Str::limit](#method-str-limit)
+[Str::lower](#method-str-lower)
 [Str::orderedUuid](#method-str-ordered-uuid)
 [Str::plural](#method-str-plural)
 [Str::random](#method-str-random)
@@ -107,8 +113,10 @@ Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し�
 [Str::start](#method-str-start)
 [Str::startsWith](#method-starts-with)
 [Str::studly](#method-studly-case)
+[Str::substr](#method-str-substr)
 [Str::title](#method-title-case)
 [Str::ucfirst](#method-str-ucfirst)
+[Str::upper](#method-str-upper)
 [Str::uuid](#method-str-uuid)
 [Str::words](#method-str-words)
 [trans](#method-trans)
@@ -255,10 +263,34 @@ Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し�
 <a name="arrays"></a>
 ## 配列とオブジェクト
 
-<a name="method-array-add"></a>
-#### `Arr::add()` {#collection-method .first-collection-method}
+<a name="method-array-accessible"></a>
+#### `Arr::accessible()` {#collection-method .first-collection-method}
 
-`Arr::add`メソッドは指定されたキー／値のペアをそのキーが存在していない場合と`null`がセットされている場合に、配列に追加します。
+`Arr::accessible`メソッドは指定値が配列アクセス可能であるかをチェックします。
+
+    use Illuminate\Support\Arr;
+    use Illuminate\Support\Collection;
+
+    $isAccessible = Arr::accessible(['a' => 1, 'b' => 2]);
+
+    // true
+
+    $isAccessible = Arr::accessible(new Collection);
+
+    // true
+
+    $isAccessible = Arr::accessible('abc');
+
+    // false
+
+    $isAccessible = Arr::accessible(new stdClass);
+
+    // false
+
+<a name="method-array-add"></a>
+#### `Arr::add()` {#collection-method}
+
+`Arr::add`メソッドは指定キー／値のペアをそのキーが存在していない場合と`null`がセットされている場合に、配列に追加します。
 
     use Illuminate\Support\Arr;
 
@@ -285,7 +317,7 @@ Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し�
 <a name="method-array-crossjoin"></a>
 #### `Arr::crossJoin()` {#collection-method}
 
-`Arr::crossJoin`メソッドは指定した配列をクロス結合し、可能性があるすべての順列の直積集合を返します。
+`Arr::crossJoin`メソッドは指定配列をクロス結合し、可能性があるすべての順列の直積集合を返します。
 
     use Illuminate\Support\Arr;
 
@@ -344,7 +376,7 @@ Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し�
 <a name="method-array-except"></a>
 #### `Arr::except()` {#collection-method}
 
-`Arr::except`メソッドは指定されたキー／値ペアを配列から削除します。
+`Arr::except`メソッドは指定キー／値ペアを配列から削除します。
 
     use Illuminate\Support\Arr;
 
@@ -354,10 +386,27 @@ Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し�
 
     // ['name' => 'Desk']
 
+<a name="method-array-exists"></a>
+#### `Arr::exists()` {#collection-method}
+
+`Arr::exists`メソッドは指定キーが指定配列に存在するかをチェックします。
+
+    use Illuminate\Support\Arr;
+
+    $array = ['name' => 'John Doe', 'age' => 17];
+
+    $exists = Arr::exists($array, 'name');
+
+    // true
+
+    $exists = Arr::exists($array, 'salary');
+
+    // false
+
 <a name="method-array-first"></a>
 #### `Arr::first()` {#collection-method}
 
-`Arr::first`メソッドは指定されたテストにパスした最初の要素を返します。
+`Arr::first`メソッドは指定したテストにパスした最初の要素を返します。
 
     use Illuminate\Support\Arr;
 
@@ -369,7 +418,7 @@ Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し�
 
     // 200
 
-デフォルト値を３つ目の引数で指定することもできます。この値はテストでどの値もテストへパスしない場合に返されます。
+デフォルト値を３つ目の引数で指定することもできます。この値はどの値もテストへパスしない場合に返されます。
 
     use Illuminate\Support\Arr;
 
@@ -391,7 +440,7 @@ Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し�
 <a name="method-array-forget"></a>
 #### `Arr::forget()` {#collection-method}
 
-`Arr::forget`メソッドは「ドット記法」で指定されたキーと値のペアを深くネストされた配列から取り除きます。
+`Arr::forget`メソッドは「ドット記法」で指定キー／値のペアを深くネストされた配列から取り除きます。
 
     use Illuminate\Support\Arr;
 
@@ -404,7 +453,7 @@ Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し�
 <a name="method-array-get"></a>
 #### `Arr::get()` {#collection-method}
 
-`Arr::get`メソッドは指定された値を「ドット」記法で指定された値を深くネストされた配列から取得します。
+`Arr::get`メソッドは「ドット」記法で指定した値を深くネストされた配列から取得します。
 
     use Illuminate\Support\Arr;
 
@@ -414,7 +463,7 @@ Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し�
 
     // 100
 
-`Arr::get`メソッドは、指定したキーが存在しない場合に返されるデフォルト値も指定できます。
+`Arr::get`メソッドは、指定キーが存在しない場合に返すデフォルト値も指定できます。
 
     use Illuminate\Support\Arr;
 
@@ -425,7 +474,7 @@ Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し�
 <a name="method-array-has"></a>
 #### `Arr::has()` {#collection-method}
 
-`Arr::has`メソッドは、「ドット」記法で指定されたアイテムが配列に存在するかをチェックします。
+`Arr::has`メソッドは、「ドット」記法で指定したアイテムが配列に存在するかをチェックします。
 
     use Illuminate\Support\Arr;
 
@@ -463,7 +512,7 @@ Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し�
 <a name="method-array-isassoc"></a>
 #### `Arr::isAssoc()` {#collection-method}
 
-`Arr::isAssoc`は指定された配列が、連想配列の場合に`true`を返します。０から始まる連続した数値キーを持たない場合に「連想」配列であると判断します。
+`Arr::isAssoc`は指定配列が、連想配列の場合に`true`を返します。０から始まる連続した数値キーを持たない場合に「連想」配列であると判断します。
 
     use Illuminate\Support\Arr;
 
@@ -499,7 +548,7 @@ Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し�
 <a name="method-array-only"></a>
 #### `Arr::only()` {#collection-method}
 
-`Arr::only`メソッドは配列中の指定されたキー／値ペアのアイテムのみを返します。
+`Arr::only`メソッドは配列中に存在する、指定したキー／値ペアのアイテムのみを返します。
 
     use Illuminate\Support\Arr;
 
@@ -559,7 +608,7 @@ Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し�
 <a name="method-array-pull"></a>
 #### `Arr::pull()` {#collection-method}
 
-`Arr::pull`メソッドは配列から指定されたキー／値ペアを取得し、同時に削除します。
+`Arr::pull`メソッドは配列から指定キー／値ペアを取得し、同時に削除します。
 
     use Illuminate\Support\Arr;
 
@@ -576,6 +625,19 @@ Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し�
     use Illuminate\Support\Arr;
 
     $value = Arr::pull($array, $key, $default);
+
+<a name="method-array-query"></a>
+#### `Arr::query()` {#collection-method}
+
+`Arr::query`メソッドは配列をクエリ文字列へ変換します。
+
+    use Illuminate\Support\Arr;
+
+    $array = ['name' => 'Taylor', 'order' => ['column' => 'created_at', 'direction' => 'desc']];
+
+    Arr::query($array);
+
+    // name=Taylor&order[column]=created_at&order[direction]=desc
 
 <a name="method-array-random"></a>
 #### `Arr::random()` {#collection-method}
@@ -597,19 +659,6 @@ Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し�
     $items = Arr::random($array, 2);
 
     // [2, 5] - (retrieved randomly)
-
-<a name="method-array-query"></a>
-#### `Arr::query()` {#collection-method}
-
-`Arr::query`メソッドは、配列をクエリ文字列へ変換します。
-
-    use Illuminate\Support\Arr;
-
-    $array = ['name' => 'Taylor', 'order' => ['column' => 'created_at', 'direction' => 'desc']];
-
-    Arr::query($array);
-
-    // name=Taylor&order[column]=created_at&order[direction]=desc
 
 <a name="method-array-set"></a>
 #### `Arr::set()` {#collection-method}
@@ -945,7 +994,7 @@ NULL値を指定すると、空の配列が返ってきます。
 <a name="method-class-basename"></a>
 #### `class_basename()` {#collection-method}
 
-`class_basename`関数は指定されたクラス名から名前空間を除いた、クラス名だけを取得します。
+`class_basename`関数は、指定クラスの名前から名前空間を取り除いて返します。
 
     $class = class_basename('Foo\Bar\Baz');
 
@@ -963,7 +1012,7 @@ NULL値を指定すると、空の配列が返ってきます。
 <a name="method-preg-replace-array"></a>
 #### `preg_replace_array()` {#collection-method}
 
-`preg_replace_array`関数は、指定したパターンを順番に配列中の値に置き換えます。
+`preg_replace_array`関数は、指定パターンを順番に配列中の値に置き換えます。
 
     $string = 'The event will take place between :start and :end';
 
@@ -1015,6 +1064,17 @@ NULL値を指定すると、空の配列が返ってきます。
 
     // 'This '
 
+<a name="method-str-between"></a>
+#### `Str::between()` {#collection-method}
+
+`Str::between`メソッドは、２つの値間の部分文字列を返します。
+
+    use Illuminate\Support\Str;
+
+    $slice = Str::between('This is my name', 'This', 'name');
+
+    // ' is my '
+
 <a name="method-camel-case"></a>
 #### `Str::camel()` {#collection-method}
 
@@ -1029,7 +1089,7 @@ NULL値を指定すると、空の配列が返ってきます。
 <a name="method-str-contains"></a>
 #### `Str::contains()` {#collection-method}
 
-`Str::contains`メソッドは指定した文字列が、２つ目の文字列を含んでいるか判定します。（大文字小文字の区別あり）
+`Str::contains`メソッドは指定文字列が、２つ目の文字列を含んでいるか判定します。（大文字小文字の区別あり）
 
     use Illuminate\Support\Str;
 
@@ -1037,7 +1097,7 @@ NULL値を指定すると、空の配列が返ってきます。
 
     // true
 
-指定した文字列に値のどれかが含まれているかを判定するために、値の配列を渡すことも可能です。
+指定文字列に値のどれかが含まれているかを判定するために、値の配列を渡すことも可能です。
 
     use Illuminate\Support\Str;
 
@@ -1048,7 +1108,7 @@ NULL値を指定すると、空の配列が返ってきます。
 <a name="method-str-contains-all"></a>
 #### `Str::containsAll()` {#collection-method}
 
-`Str::containsAll`メソッドは、指定した配列の値をすべて文字列が含んでいるか判定します。
+`Str::containsAll`メソッドは、指定配列の値すべてが文字列に含まれているかを判定します。
 
     use Illuminate\Support\Str;
 
@@ -1083,7 +1143,7 @@ NULL値を指定すると、空の配列が返ってきます。
 <a name="method-str-finish"></a>
 #### `Str::finish()` {#collection-method}
 
-`Str::finish`メソッドは指定した文字列の最後が、２つ目の引数の値で終了していない場合、その値を追加します。
+`Str::finish`メソッドは指定文字列の最後が、２つ目の引数の値で終了していない場合、その値を追加します。
 
     use Illuminate\Support\Str;
 
@@ -1110,16 +1170,20 @@ NULL値を指定すると、空の配列が返ってきます。
 
     // false
 
-<a name="method-str-ucfirst"></a>
-#### `Str::ucfirst()` {#collection-method}
+<a name="method-str-is-ascii"></a>
+#### `Str::isAscii()` {#collection-method}
 
-`Str::ucfirst`メソッドは、指定した文字列の最初の１文字目を大文字にします。
+`Str::isAscii`メソッドは、指定文字列が7ビットASCIIであるかを判定します。
 
     use Illuminate\Support\Str;
 
-    $string = Str::ucfirst('foo bar');
+    $isAscii = Str::isAscii('Taylor');
 
-    // Foo bar
+    // true
+
+    $isAscii = Str::isAscii('ü');
+
+    // false
 
 <a name="method-str-is-uuid"></a>
 #### `Str::isUuid()` {#collection-method}
@@ -1147,6 +1211,17 @@ NULL値を指定すると、空の配列が返ってきます。
 
     // foo-bar
 
+<a name="method-str-length"></a>
+#### `Str::length()` {#collection-method}
+
+`Str::length`メソッドは指定文字列の長さを返します。
+
+    use Illuminate\Support\Str;
+
+    $length = Str::length('Laravel');
+
+    // 7
+
 <a name="method-str-limit"></a>
 #### `Str::limit()` {#collection-method}
 
@@ -1165,6 +1240,17 @@ NULL値を指定すると、空の配列が返ってきます。
     $truncated = Str::limit('The quick brown fox jumps over the lazy dog', 20, ' (...)');
 
     // The quick brown fox (...)
+
+<a name="method-str-lower"></a>
+#### `Str::lower()` {#collection-method}
+
+`Str::lower`メソッドは指定文字列を小文字に変換します。
+
+    use Illuminate\Support\Str;
+
+    $converted = Str::lower('LARAVEL');
+
+    // laravel
 
 <a name="method-str-ordered-uuid"></a>
 #### `Str::orderedUuid()` {#collection-method}
@@ -1205,7 +1291,7 @@ NULL値を指定すると、空の配列が返ってきます。
 <a name="method-str-random"></a>
 #### `Str::random()` {#collection-method}
 
-`Str::random`メソッドは指定された長さのランダムな文字列を生成します。このメソッドは、PHPの`random_bytes`関数を使用します。
+`Str::random`メソッドは指定した長さのランダムな文字列を生成します。このメソッドは、PHPの`random_bytes`関数を使用します。
 
     use Illuminate\Support\Str;
 
@@ -1320,6 +1406,17 @@ NULL値を指定すると、空の配列が返ってきます。
 
     // FooBar
 
+<a name="method-str-substr"></a>
+#### `Str::substr()` {#collection-method}
+
+`Str::substr`メソッドは開始位置と文字列長の引数で指定した部分文字列を返します。
+
+    use Illuminate\Support\Str;
+
+    $converted = Str::substr('The Laravel Framework', 4, 7);
+
+    // Laravel
+
 <a name="method-title-case"></a>
 #### `Str::title()` {#collection-method}
 
@@ -1330,6 +1427,28 @@ NULL値を指定すると、空の配列が返ってきます。
     $converted = Str::title('a nice title uses the correct case');
 
     // A Nice Title Uses The Correct Case
+
+<a name="method-str-ucfirst"></a>
+#### `Str::ucfirst()` {#collection-method}
+
+`Str::ucfirst`メソッドは、指定文字列の最初の文字を大文字にして返します。
+
+    use Illuminate\Support\Str;
+
+    $string = Str::ucfirst('foo bar');
+
+    // Foo bar
+
+<a name="method-str-upper"></a>
+#### `Str::upper()` {#collection-method}
+
+`Str::upper`メソッドは、指定文字列を大文字に変換します。
+
+    use Illuminate\Support\Str;
+
+    $string = Str::upper('laravel');
+
+    // LARAVEL
 
 <a name="method-str-uuid"></a>
 #### `Str::uuid()` {#collection-method}
@@ -1492,7 +1611,7 @@ Fluent文字列はより読み書きしやすい(fluent)、オブジェクト指
 <a name="method-fluent-str-contains-all"></a>
 #### `containsAll` {#collection-method}
 
-`containsAll`メソッドは、指定した配列の値をすべて文字列が含んでいるか判定します。
+`containsAll`メソッドは、指定配列の値を文字列がすべて含んでいるか判定します。
 
     use Illuminate\Support\Str;
 

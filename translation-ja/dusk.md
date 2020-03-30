@@ -719,6 +719,9 @@ Duskはアプリケーションに対する数多くのアサートを提供し�
 [assertSelectMissingOptions](#assert-select-missing-options)
 [assertSelectHasOption](#assert-select-has-option)
 [assertValue](#assert-value)
+[assertAttribute](#assert-attribute)
+[assertAriaAttribute](#assert-aria-attribute)
+[assertDataAttribute](#assert-data-attribute)
 [assertVisible](#assert-visible)
 [assertPresent](#assert-present)
 [assertMissing](#assert-missing)
@@ -1032,6 +1035,35 @@ Duskはアプリケーションに対する数多くのアサートを提供し�
 指定したセレクタに一致する要素が、指定値であることを宣言します。
 
     $browser->assertValue($selector, $value);
+
+<a name="assert-attribute"></a>
+#### assertAttribute
+
+指定セレクタにマッチする要素が、指定属性に指定値を持っていることを宣言します。
+
+    $browser->assertAttribute($selector, $attribute, $value);
+
+<a name="assert-aria-attribute"></a>
+#### assertAriaAttribute
+
+指定セレクタにマッチする要素が、指定aria属性に指定値を持っていることを宣言します。
+
+    $browser->assertAriaAttribute($selector, $attribute, $value);
+
+たとえば、指定するマークアップが`<button aria-label="Add"></>`であり、`aria-label`に対して宣言する場合は、次のようになります。
+
+    $browser->assertAriaAttribute('button', 'label', 'Add')
+
+<a name="assert-data-attribute"></a>
+#### assertDataAttribute
+
+指定したセレクタに一致する要素が、指定データ属性に指定値を持っていることを宣言します。
+
+    $browser->assertDataAttribute($selector, $attribute, $value);
+
+たとえば、指定するマークアップが`<tr id="row-1" data-content="attendees"></>`であり、`data-label`属性に対して宣言をする場合、次のようになります。
+
+    $browser->assertDataAttribute('#row-1', 'content', 'attendees')
 
 <a name="assert-visible"></a>
 #### assertVisible
@@ -1498,11 +1530,13 @@ Duskのテスト実行に[Githubアクション](https://github.com/features/act
       dusk-php:
         runs-on: ubuntu-latest
         steps:
-          - uses: actions/checkout@v1
+          - uses: actions/checkout@v2
           - name: Prepare The Environment
             run: cp .env.example .env
           - name: Create Database
-            run: mysql --user="root" --password="root" -e "CREATE DATABASE my-database character set UTF8mb4 collate utf8mb4_bin;"
+            run: |
+              sudo systemctl start mysql
+              mysql --user="root" --password="root" -e "CREATE DATABASE my-database character set UTF8mb4 collate utf8mb4_bin;"
           - name: Install Composer Dependencies
             run: composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
           - name: Generate Application Key

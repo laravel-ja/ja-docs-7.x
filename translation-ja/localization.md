@@ -38,6 +38,10 @@ Laravelのローカリゼーション機能はアプリケーションで多言�
 アプリケーションのデフォルト言語は`config/app.php`設定ファイルで指定します。この値はアプリケーションに合うように変更できます。さらに`App`ファサードの`setLocale`メソッドを使い、実行時にアクティブな言語を変更することもできます。
 
     Route::get('welcome/{locale}', function ($locale) {
+        if (! in_array($locale, ['en', 'es', 'fr'])) {
+            abort(400);
+        }
+
         App::setLocale($locale);
 
         //

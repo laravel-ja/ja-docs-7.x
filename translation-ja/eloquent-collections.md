@@ -54,6 +54,7 @@
 [diff](#method-diff)
 [except](#method-except)
 [find](#method-find)
+[findMany](#method-findMany)
 [fresh](#method-fresh)
 [intersect](#method-intersect)
 [load](#method-load)
@@ -99,6 +100,15 @@
     $users = User::all();
 
     $user = $users->find(1);
+
+<a name="method-findMany"></a>
+#### `findMany($keys)`
+
+`findMany`メソッドは、`$keys`配列の中に含まれているプライマリキーを持つモデルをすべて返します。
+
+    $users = User::all();
+
+    $user = $users->findMany([1, 2, 3]);
 
 <a name="method-fresh"></a>
 #### `fresh($with = [])`
