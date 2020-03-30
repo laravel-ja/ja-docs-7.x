@@ -49,7 +49,7 @@
     - [イベント](/docs/{{version}}/events)
     - [ファイルストレージ](/docs/{{version}}/filesystem)
     - [ヘルパ](/docs/{{version}}/helpers)
-    - [HTTP Client](/docs/{{version}}/http-client)
+    - [HTTPクライアント](/docs/{{version}}/http-client)
     - [メール](/docs/{{version}}/mail)
     - [通知](/docs/{{version}}/notifications)
     - [パッケージ開発](/docs/{{version}}/packages)
