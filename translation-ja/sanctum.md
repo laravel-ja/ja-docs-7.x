@@ -1,4 +1,4 @@
-# Laravel Airlock
+# Laravel Sanctum
 
 - [イントロダクション](#introduction)
     - [動作の仕組み](#how-it-works)
@@ -22,43 +22,43 @@
 <a name="introduction"></a>
 ## イントロダクション
 
-Laravel Airlock（エアーロック）はSPA（Single Page Applications）のための、シンプルでトークンベースのAPIを使った羽のように軽い認証システムです。Airlockはアプリケーションのユーザーのアカウントごとに、複数のAPIトークンを生成できます。これらのトークンには、実行可能なアクションを限定するアビリティ・スコープを与えられます。
+Laravel Sanctum（サンクタム：聖所）はSPA（Single Page Applications）やモバイルアプリケーションのための、シンプルでトークンベースのAPIを使った羽のように軽い認証システムです。Sanctumはアプリケーションのユーザーのアカウントごとに、複数のAPIトークンを生成できます。これらのトークンには、実行可能なアクションを限定する能力（アビリティ）／スコープを与えられます。
 
 <a name="how-it-works"></a>
 ### 動作の仕組み
 
 #### APIトークン
 
-Laravel Airlockは、別々の問題２つを解決するために存在しています。１つ目はOAuthの煩雑さなしにユーザーへAPIトークンを発行するためのシンプルなパッケージの提供です。たとえば、ユーザーがAPIトークンを自分のアカウントへ生成すると想像してください。アプリケーションへ「アカウント設定」ページを用意するでしょう。こうしたトークンを生成し、管理するためにAirlockが使われます。こうしたトークンへは通常数年にも渡る、とても長い有効期間を指定します。しかし、ユーザー自身はいつでも破棄可能です。
+Laravel Sanctumは、別々の問題２つを解決するために存在しています。１つ目はOAuthの煩雑さなしにユーザーへAPIトークンを発行するためのシンプルなパッケージの提供です。たとえば、ユーザーがAPIトークンを自分のアカウントへ生成すると想像してください。アプリケーションへ「アカウント設定」ページを用意するでしょう。こうしたトークンを生成し、管理するためにSanctumが使われます。こうしたトークンへは通常数年にも渡る、とても長い有効期間を指定します。しかし、ユーザー自身はいつでも破棄可能です。
 
-この機能を実現するため、Laravelは一つのデータベーステーブルへユーザーのAPIトークンを保存しておき、受信したリクエストが`Authorization`ヘッダに有効なAPIトークンを含んでいるかにより認証します。
+この機能を実現するため、Laravel Sanctumは一つのデータベーステーブルへユーザーのAPIトークンを保存しておき、受信したリクエストが`Authorization`ヘッダに有効なAPIトークンを含んでいるかにより認証します。
 
 #### SPA認証
 
-> {tip} APIトークン認証だけを使う場合、もしくはAPIトークン認証だけを使う場合のどちらにもAirlockは適しています。Airlockが２つの機能を提供しているからと言っても、両方共に使う必要はありません。
+> {tip} APIトークン認証だけを使う場合、もしくはAPIトークン認証だけを使う場合のどちらにもSanctumは適しています。Sanctumが２つの機能を提供しているからと言っても、両方共に使う必要はありません。
 
-２つ目の存在理由は、Laravelが提供するAPIを使用し通信する必要があるシングルページアプリケーション(SPA)へ、シンプルな認証方法を提供するためです。こうしたSPAはLaravelアプリケーションと同じリポジトリにあっても、まったく別のリポジトリに存在していてもかまいません。
+２つ目の存在理由は、Laravelが提供するAPIを使用し通信する必要があるシングルページアプリケーション(SPA)へ、シンプルな認証方法を提供するためです。こうしたSPAはLaravelアプリケーションと同じリポジトリにあっても、まったく別のリポジトリに存在していてもかまいません。たとえばSPAがVue CLIを使用して生成された場合などです。
 
-Airlockはこの機能の実現のためにトークンは一切使用しません。Laravelへ組み込まれているクッキーベースのセッション認証サービスを使用します。これにより、XSSによる認証情報リークに対する保護と同時に、CSRF保護・セッションの認証を提供しています。皆さんのSPAのフロントエンドから送信されるリクエストに対し、Airlockはクッキーだけを使用して認証を確立しようとします。
+Sanctumはこの機能の実現のためにトークンは一切使用しません。代わりにLaravelへ組み込まれているクッキーベースのセッション認証サービスを使用します。これにより、XSSによる認証情報リークに対する保護と同時に、CSRF保護・セッションの認証を提供しています。皆さんのSPAのフロントエンドから送信されるリクエストに対し、Sanctumはクッキーだけを使用して認証を確立しようとします。
 
 <a name="installation"></a>
 ## インストール
 
-Laravel AirlockはComposerでインストールします。
+Laravel SanctumはComposerでインストールします。
 
-    composer require laravel/airlock
+    composer require laravel/sanctum
 
-次に、`vendor:publish` Artisanコマンドを使用して、Airlockの設定とマイグレーションをリソース公開します。`airlock`設定ファイルが`config`ディレクトリに設置されます。
+次に、`vendor:publish` Artisanコマンドを使用して、Sanctumの設定とマイグレーションをリソース公開します。`sanctum`設定ファイルが`config`ディレクトリに設置されます。
 
-    php artisan vendor:publish --provider="Laravel\Airlock\AirlockServiceProvider"
+    php artisan vendor:publish --provider="Laravel\Sanctum\SanctumServiceProvider"
 
-最後に、データベースマイグレーションを実行してください。AirlockはAPIトークンを保存しておくデータベースを１つ作成します。
+最後に、データベースマイグレーションを実行してください。SanctumはAPIトークンを保存しておくデータベースを１つ作成します。
 
     php artisan migrate
 
-SPAの認証のためにAirlockを活用しようと計画している場合は、`app/Http/Kernel.php`ファイル中の`api`ミドルウェアグループへ、Airlockのミドルウェアを追加します。
+SPAの認証のためにSanctumを活用しようと計画している場合は、`app/Http/Kernel.php`ファイル中の`api`ミドルウェアグループへ、Sanctumのミドルウェアを追加します。
 
-    use Laravel\Airlock\Http\Middleware\EnsureFrontendRequestsAreStateful;
+    use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
 
     'api' => [
         EnsureFrontendRequestsAreStateful::class,
@@ -66,30 +66,30 @@ SPAの認証のためにAirlockを活用しようと計画している場合は�
         \Illuminate\Routing\Middleware\SubstituteBindings::class,
     ],
 
-#### Migration Customization
+#### マイグレーションのカスタマイズ
 
-If you are not going to use Sanctum's default migrations, you should call the `Sanctum::ignoreMigrations` method in the `register` method of your `AppServiceProvider`. You may export the default migrations using `php artisan vendor:publish --tag=sanctum-migrations`.
+Sanctumのデフォルトマイグレーションを使用しない場合は、`AppServiceProvider`の`register`メソッドの中で、`Sanctum::ignoreMigrations`を必ず呼び出してください。デフォルトマイグレーションは、`php artisan vendor:publish --tag=sanctum-migrations`を使えばエクスポートできます。
 
 <a name="api-token-authentication"></a>
 ## APIトークン認証
 
-> {tip} 皆さん自身のファーストパーティSPAを認証するためにAPIトークンを決して利用してはいけません。代わりに、Airlockの組み込み[SPA認証](#spa-authentication)を使用してください。
+> {tip} 皆さん自身のファーストパーティSPAを認証するためにAPIトークンを決して利用してはいけません。代わりに、Sanctumの組み込み[SPA認証](#spa-authentication)を使用してください。
 
 <a name="issuing-api-tokens"></a>
 ### APIトークン発行
 
-APIリクエスト認証に使用するため、APIトークン／パーソナルアクセストークンをAirlockは発行します。APIトークンを利用するリクエストを作成する場合は、`Bearer`トークンとして`Authorization`ヘッダにトークンを含める必要があります。
+APIリクエスト認証に使用するため、APIトークン／パーソナルアクセストークンをSanctumは発行します。APIトークンを利用するリクエストを作成する場合は、`Bearer`トークンとして`Authorization`ヘッダにトークンを含める必要があります。
 
 ユーザーにトークンを発行開始するには、Userモデルで`HasApiTokens`トレイトを使用してください。
 
-    use Laravel\Airlock\HasApiTokens;
+    use Laravel\Sanctum\HasApiTokens;
 
     class User extends Authenticatable
     {
         use HasApiTokens, Notifiable;
     }
 
-トークンを発行するには、`createToken`メソッドを使用します。この`createToken`メソッドは`Laravel\Airlock\NewAccessToken`インスタンスを返します。APIトークンはデータベースへ格納される前に、SHA-256を使いハッシュされますが、`NewAccessToken`インスタンスの`plainTextToken`プロパティにより、平文の値へアクセスできます。トークンを生成したら、ユーザーへこの値を表示しなくてはなりません。
+トークンを発行するには、`createToken`メソッドを使用します。この`createToken`メソッドは`Laravel\Sanctum\NewAccessToken`インスタンスを返します。APIトークンはデータベースへ格納される前に、SHA-256を使いハッシュされますが、`NewAccessToken`インスタンスの`plainTextToken`プロパティにより、平文の値へアクセスできます。トークンを生成したら、ユーザーへこの値をすぐに表示しなくてはなりません。
 
     $token = $user->createToken('token-name');
 
@@ -104,24 +104,24 @@ APIリクエスト認証に使用するため、APIトークン／パーソナ�
 <a name="token-abilities"></a>
 ### トークンのアビリティ
 
-OAuthの「スコープ」と同じように、Airlockは「アビリティ（能力）」をトークンへ割り付けられます。`createToken`メソッドの第２引数として、アビリティの文字列の配列を渡してください。
+OAuthの「スコープ」と同じように、Sanctumは「アビリティ（能力）」をトークンへ割り付けられます。`createToken`メソッドの第２引数として、アビリティの文字列の配列を渡してください。
 
     return $user->createToken('token-name', ['server:update'])->plainTextToken;
 
-Airlockにより認証されたリクエストを処理するとき、そのトークンが特定のアビリティを持っているかを`tokenCan`メソッドで判定できます。
+Sanctumにより認証されたリクエストを処理するとき、そのトークンが特定のアビリティを持っているかを`tokenCan`メソッドで判定できます。
 
     if ($user->tokenCan('server:update')) {
         //
     }
 
-> {tip} 利便性のため、`tokenCan`メソッドは受信認証済みリクエストがファーストパーティSPAから送信されたとき、もしくはAirlockの組み込み[SPA認証](#spa-authentication)を使用している場合は常に`true`を返します。
+> {tip} 利便性のため、`tokenCan`メソッドは受信認証済みリクエストがファーストパーティSPAから送信されたとき、もしくはSanctumの組み込み[SPA認証](#spa-authentication)を使用している場合は常に`true`を返します。
 
 <a name="protecting-routes"></a>
 ### ルート保護
 
-受信リクエストをすべて認証済みに限定し、ルートを保護する場合は、`routes/api.php`ファイル中のAPIルートに対して`airlock`認証ガードを指定する必要があります。このガードは受信リクエストが認証済みであると保証します。そのリクエストが皆さん自身のSPAからのステートフルな認証済みであるか、もしくはサードパーティからのリクエストの場合は有効なAPIトークンのヘッダを持っているかのどちらか一方であるか確認します。
+受信リクエストをすべて認証済みに限定し、ルートを保護する場合は、`routes/api.php`ファイル中のAPIルートに対して`sanctum`認証ガードを指定する必要があります。このガードは受信リクエストが認証済みであると保証します。そのリクエストが皆さん自身のSPAからのステートフルな認証済みであるか、もしくはサードパーティからのリクエストの場合は有効なAPIトークンのヘッダを持っているかのどちらか一方であるか確認します。
 
-    Route::middleware('auth:airlock')->get('/user', function (Request $request) {
+    Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
         return $request->user();
     });
 
@@ -139,24 +139,24 @@ Airlockにより認証されたリクエストを処理するとき、そのト�
 <a name="spa-authentication"></a>
 ## SPA認証
 
-Laravelが提供するAPIを使用し通信する必要があるシングルページアプリケーション(SPA)へ、シンプルな認証方法を提供するためです。こうしたSPAはLaravelアプリケーションと同じリポジトリにあっても、もしくはVue CLIを使用して生成したSPAのように、まったく別のリポジトリに存在していてもかまいません。
+Laravelを使ったAPIと通信する必要があるシングルページアプリケーション(SPA)へ、シンプルな認証方法を提供するためにSanctumを開発しました。こうしたSPAはLaravelアプリケーションと同じリポジトリにあっても、もしくはVue CLIを使用して生成したSPAのように、まったく別のリポジトリに存在していてもかまいません。
 
-Airlockはこの機能の実現のためにトークンは一切使用しません。Laravelへ組み込まれているクッキーベースのセッション認証サービスを使用します。これにより、XSSによる認証情報リークに対する保護と同時に、CSRF保護・セッションの認証を提供しています。皆さんのSPAのフロントエンドから送信されるリクエストに対し、Airlockはクッキーだけを使用して認証を確立しようとします。
+Sanctumはこの機能の実現のためにトークンは一切使用しません。Laravelへ組み込まれているクッキーベースのセッション認証サービスを使用します。これにより、XSSによる認証情報リークに対する保護と同時に、CSRF保護・セッションの認証を提供しています。皆さんのSPAのフロントエンドから送信されるリクエストに対し、Sanctumはクッキーだけを使用して認証を確立しようとします。
 
-> {note} In order to authenticate, your SPA and API must share the same top-level domain. However, they may be placed on different subdomains.
+> {note} 認証するために、SPAとAPIは同じトップレベルドメインである必要があります。しかしながら、別のサブドメインに設置することは可能です。
 
 <a name="spa-configuration"></a>
 ### 設定
 
 #### ファーストパーティドメインの設定
 
-最初に、どのドメインから皆さんのSPAがリクエストを作成するのか設定する必要があります。`airlock`設定ファイルの`stateful`設定オプションを利用してこのドメインを指定します。この設定を元にして皆さんのAPIへリクエストを作成するときに、Laravelのセッションクッキーを使用することで「ステートフル」な認証を維持する必要があるドメインを判断します。
+最初に、どのドメインから皆さんのSPAがリクエストを作成するのか設定する必要があります。`sanctum`設定ファイルの`stateful`設定オプションを利用してこのドメインを指定します。この設定を元にして皆さんのAPIへリクエストを作成するときに、Laravelのセッションクッキーを使用することで「ステートフル」な認証を維持する必要があるドメインを判断します。
 
-#### Airlockミドルウェア
+#### Sanctumミドルウェア
 
-次に、`app/Http/Kernel.php`ファイル中の`api`ミドルウェアグループへ、Airlockのミドルウェアを追加する必要があります。このミドルウェアは皆さんのSPAから受信するリクエストが、Laravelのセッションクッキーを使用して確実に認証できるようにする責任を負っています。同時に、サードパーティやモバイルアプリからのリクエストに対し、APIトークンを使用した認証ができるようにしています。
+次に、`app/Http/Kernel.php`ファイル中の`api`ミドルウェアグループへ、Sanctumのミドルウェアを追加する必要があります。このミドルウェアは皆さんのSPAから受信するリクエストが、Laravelのセッションクッキーを使用して確実に認証できるようにする責任を負っています。同時に、サードパーティやモバイルアプリからのリクエストに対し、APIトークンを使用した認証ができるようにしています。
 
-    use Laravel\Airlock\Http\Middleware\EnsureFrontendRequestsAreStateful;
+    use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
 
     'api' => [
         EnsureFrontendRequestsAreStateful::class,
@@ -182,10 +182,10 @@ Airlockはこの機能の実現のためにトークンは一切使用しませ�
 <a name="spa-authenticating"></a>
 ### 認証
 
-皆さんのSPAを認証するには、SPAのログインページで最初に`/airlock/csrf-cookie`ルートへのリクエストを作成し、アプリケーションのCSRF保護を初期化しなくてはなりません。
+皆さんのSPAを認証するには、SPAのログインページで最初に`/sanctum/csrf-cookie`ルートへのリクエストを作成し、アプリケーションのCSRF保護を初期化しなくてはなりません。
 
-    axios.get('/airlock/csrf-cookie').then(response => {
-        // ログイン処理
+    axios.get('/sanctum/csrf-cookie').then(response => {
+        // ログイン処理…
     });
 
 CSRF保護の初期化後、通常Laravelでは`/login`であるルートへ`POST`リクエストを送る必要があります。この`login`ルートは、`laravel/ui` [認証スカフォールド](/docs/{{version}}/authentication#introduction)が提供しています。
@@ -197,9 +197,9 @@ CSRF保護の初期化後、通常Laravelでは`/login`であるルートへ`POS
 <a name="protecting-spa-routes"></a>
 ### ルート保護
 
-受信リクエストをすべて認証済みに限定し、ルートを保護する場合は、`routes/api.php`ファイル中のAPIルートに対して`airlock`認証ガードを指定する必要があります。このガードは受信リクエストが認証済みであると保証します。そのリクエストが皆さん自身のSPAからのステートフルな認証済みであるか、もしくはサードパーティからのリクエストの場合は有効なAPIトークンのヘッダを持っているかのどちらか一方であるか確認します。
+受信リクエストをすべて認証済みに限定し、ルートを保護する場合は、`routes/api.php`ファイル中のAPIルートに対して`sanctum`認証ガードを指定する必要があります。このガードは受信リクエストが認証済みであると保証します。そのリクエストが皆さん自身のSPAからのステートフルな認証済みであるか、もしくはサードパーティからのリクエストの場合は有効なAPIトークンのヘッダを持っているかのどちらか一方であるか確認します。
 
-    Route::middleware('auth:airlock')->get('/user', function (Request $request) {
+    Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
         return $request->user();
     });
 
@@ -208,7 +208,7 @@ CSRF保護の初期化後、通常Laravelでは`/login`であるルートへ`POS
 
 SPAで[プライベート／プレゼンスブロードキャストチャンネル](/docs/{{version}}/broadcasting#authorizing-channels)を使った認証が必要な場合は、`routes/api.php`ファイルの中で`Broadcast::routes`メソッドを呼び出す必要があります。
 
-    Broadcast::routes(['middleware' => ['auth:airlock']]);
+    Broadcast::routes(['middleware' => ['auth:sanctum']]);
 
 次に、Pusherの認証リクエストを成功させるため、[Laravel Echo](/docs/{{version}}/broadcasting#installing-laravel-echo)の初期化時に、カスタムPusher `authorizer`を用意する必要があります。これにより、アプリケーションが[確実にクロスドメインのリクエストを処理できるように設定した](#cors-and-cookies)`axios`インスタンスをPusherが使用するように設定できます。
 
@@ -238,19 +238,19 @@ SPAで[プライベート／プレゼンスブロードキャストチャンネ�
 <a name="mobile-application-authentication"></a>
 ## モバイルアプリの認証
 
-あなた自身のAPIに対するモバイルアプリのリクエストを認証するために、Airlockトークンを使用できます。モバイルアプリのリクエストに対する認証手順は、サードパーティAPIリクエストに対する認証と似ています。しかし、APIトークンの発行方法に多少の違いがあります。
+あなた自身のAPIに対するモバイルアプリのリクエストを認証するために、Sanctumトークンを使用できます。モバイルアプリのリクエストに対する認証手順は、サードパーティAPIリクエストに対する認証と似ています。しかし、APIトークンの発行方法に多少の違いがあります。
 
 <a name="issuing-mobile-api-tokens"></a>
 ### APIトークン発行
 
-まずはじめに、ユーザーのメールアドレス／ユーザー名、パスワード、デバイス名を受け取るルートを作成し、次にこうした認証情報を元に新しいAirlockトークンを受け取ります。このエンドポイントは平文のAirlockトークンを返し、それはモバイルデバイス上に保存され、それ以降のAPIリクエストを作成するために利用されます。
+まずはじめに、ユーザーのメールアドレス／ユーザー名、パスワード、デバイス名を受け取るルートを作成し、次にこうした認証情報を元に新しいSanctumトークンを受け取ります。このエンドポイントは平文のSanctumトークンを返し、それはモバイルデバイス上に保存され、それ以降のAPIリクエストを作成するために利用されます。
 
     use App\User;
     use Illuminate\Http\Request;
     use Illuminate\Support\Facades\Hash;
     use Illuminate\Validation\ValidationException;
 
-    Route::post('/airlock/token', function (Request $request) {
+    Route::post('/sanctum/token', function (Request $request) {
         $request->validate([
             'email' => 'required|email',
             'password' => 'required',
@@ -268,16 +268,16 @@ SPAで[プライベート／プレゼンスブロードキャストチャンネ�
         return $user->createToken($request->device_name)->plainTextToken;
     });
 
-モバイルデバイスが、アプリケーションへのAPIリクエストを作成するためにトークンを使用するときは、`Bearer`トークンとして`Authorization`ヘッダへそのトークンを渡します。
+モバイルデバイスが、アプリケーションへのAPIリクエストを作成するためにトークンを使用するときは、`Bearer`トークンとして`Authorization`ヘッダへ渡します。
 
 > {tip} モバイルアプリケーションに対してトークンを発行するときにも、自由に[トークンのアビリティ](#token-abilities)を指定できます。
 
 <a name="protecting-mobile-api-routes"></a>
 ### ルート保護
 
-以前に説明した通り、ルートへ`airlock`認証ガードを指定することで、受信リクエストをすべて認証済み必須にし、ルートを保護できます。通常、`routes/api.php`ファイルでこのガードを指定したルートを定義します。
+以前に説明した通り、ルートへ`sanctum`認証ガードを指定することで、受信リクエストをすべて認証済み必須にし、ルートを保護できます。通常、`routes/api.php`ファイルでこのガードを指定したルートを定義します。
 
-    Route::middleware('auth:airlock')->get('/user', function (Request $request) {
+    Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
         return $request->user();
     });
 
@@ -295,14 +295,14 @@ SPAで[プライベート／プレゼンスブロードキャストチャンネ�
 <a name="testing"></a>
 ## テスト
 
-テストをする時は、`Airlock::actingAs`メソッドでユーザーを認証し、トークンにアビリティを許可する指定を行えます。
+テストをする時は、`Sanctum::actingAs`メソッドでユーザーを認証し、トークンにアビリティを許可する指定を行えます。
 
     use App\User;
-    use Laravel\Airlock\Airlock;
+    use Laravel\Sanctum\Sanctum;
 
     public function test_task_list_can_be_retrieved()
     {
-        Airlock::actingAs(
+        Sanctum::actingAs(
             factory(User::class)->create(),
             ['view-tasks']
         );
@@ -314,7 +314,7 @@ SPAで[プライベート／プレゼンスブロードキャストチャンネ�
 
 トークンに全アビリティを許可したい場合は、`actingAs`メソッドへ`*`を含めたアビリティリストを指定します。
 
-    Airlock::actingAs(
+    Sanctum::actingAs(
         factory(User::class)->create(),
         ['*']
     );
