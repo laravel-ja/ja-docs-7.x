@@ -265,3 +265,22 @@ Guzzleのデフォルト動作と異なり、LaravelのHTTPクライアントラ
                $request['name'] == 'Taylor' &&
                $request['role'] == 'Developer';
     });
+
+必要であれば`assertNotSent`メソッドを用い、指定するリクエストが送信されなかった事をアサートすることもできます。
+
+    Http::fake();
+
+    Http::post('http://test.com/users', [
+        'name' => 'Taylor',
+        'role' => 'Developer',
+    ]);
+
+    Http::assertNotSent(function (Request $request) {
+        return $request->url() === 'http://test.com/posts';
+    });
+
+もしくは、リクエストがまったく送信されないことをアサートしたい場合には、`assertNothingSent`メソッドを使用してください。
+
+    Http::fake();
+
+    Http::assertNothingSent();

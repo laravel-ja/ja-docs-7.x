@@ -228,9 +228,3 @@
 ビューキャッシュを消去するには、`view:clear`コマンドを使います。
 
     php artisan view:clear
-
-通常、実働(production)環境でビューは**決して**変更されないと仮定して良いでしょう。そのため、ビューが期限切れかLaravelが行うファイルの変更チェックは、通常無効にできます。`view`設定ファイルの`expires`オプションを変更してください。
-
-    'expires' => env('APP_ENV') !== 'production',
-
-> {note} ビューの期限切れチェックを無効にするには、開発プロセス中に`php artisan view:cache`を必ず実行してください。

@@ -47,6 +47,7 @@
     - [支払い要求の追加確認](#payments-requiring-additional-confirmation)
     - [非セッション確立時の支払い通知](#off-session-payment-notifications)
 - [Stripe SDK](#stripe-sdk)
+- [テスト](#testing)
 
 <a name="introduction"></a>
 ## イントロダクション
@@ -928,3 +929,18 @@ CashierのオブジェクトはStripe SDKオブジェクト上にラップされ
     $stripeSubscription = $subscription->asStripeSubscription();
 
     $stripeSubscription->update(['application_fee_percent' => 5]);
+
+<a name="testing"></a>
+## テスト
+
+Cashierを使用するアプリケーションをテストする場合、Stripe APIに対する実際のHTTPリクエストをモックしたいことがあります。しかしながら、これはCashier自身の動作を部分的に再実装する必要があります。そのためテストでは実際のStripe APIへアクセスすることを勧めます。この方法は低速ですが、アプリケーションが期待どおりに動作していることをより確信できます。そして遅いテストは独自のPHPUnitテストグループに配置できます。
+
+Cashier自身はすでに十分なテストスーツを持っているため、Cashierの裏で実行されているすべての振る舞いをテストする必要がないことを思い出してください。自分のアプリケーションにおけるサブスクリプションと支払いのフローをテストすることだけに集中すべきでしょう。
+
+使用開始する前に、`phpunit.xml`ファイルへ**testing**バージョンのStripeシークレットを追加します。
+
+    <env name="STRIPE_SECRET" value="sk_test_<your-key>"/>
+
+これで、常にテスト中のCashierとのやり取りは、Stripeテスト環境へ実際のAPIリクエストが送信されます。便宜上、Stripeテストアカウントで、テスト中に使用するサブスクリプション/プランを事前に入力しておく必要があります。
+
+> {tip} クレジットカードの拒否や失敗など、さまざまな請求シナリオをテストするために、Stripeが提供しているさまざまな[テストカード番号とトークン](https://stripe.com/docs/testing)を使用できます。

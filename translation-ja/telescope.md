@@ -71,9 +71,20 @@ Telescopeをローカル環境でのみ使用する場合は、`--dev`フラグ�
     public function register()
     {
         if ($this->app->isLocal()) {
+            $this->app->register(\Laravel\Telescope\TelescopeServiceProvider::class);
             $this->app->register(TelescopeServiceProvider::class);
         }
     }
+
+また、`composer.json`へ以下の内容を追加することにより、Telescopeが[自動検出](/docs/{{version}}/packages#package-discovery)されるのを防げます。
+
+    "extra": {
+        "laravel": {
+            "dont-discover": [
+                "laravel/telescope"
+            ]
+        }
+    },
 
 <a name="migration-customization"></a>
 ### マイグレーションのカスタマイズ

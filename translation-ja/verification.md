@@ -1,6 +1,7 @@
 # メール確認
 
 - [イントロダクション](#introduction)
+- [モデルの準備](#model-preparation)
 - [データベースの検討](#verification-database)
 - [ルート](#verification-routing)
     - [保護下のルート](#protecting-routes)
@@ -13,9 +14,10 @@
 
 多くのWebアプリケーションはアプリケーション利用開始前に、ユーザーのメールアドレスを確認する必要があります。アプリケーションごとに再実装しなくても済むように、Laravelはメールを送信し、メールの確認リクエストを検証する便利なメソッドを用意しています。
 
-### モデルの準備
+<a name="model-preparation"></a>
+## モデルの準備
 
-利用を開始するには、`App\User`モデルが`Illuminate\Contracts\Auth\MustVerifyEmail`契約を実装していることを確認してください。
+使い始めるには、`App\User`モデルが`Illuminate\Contracts\Auth\MustVerifyEmail`契約を実装していることを確認してください。
 
     <?php
 
@@ -32,8 +34,10 @@
         // ...
     }
 
+モデルへこのインターフェイスを追加すると、新しい登録ユーザーへ自動的にメール確認のリンクを含むメールが送信されます。`EventServiceProvider`で確認できるように、`Illuminate\Auth\Events\Registered`イベントに対する`SendEmailVerificationNotification`リスナの指定をLaravelは用意しています。
+
 <a name="verification-database"></a>
-## データベースの検討
+### データベースの検討
 
 #### メール確認カラム
 

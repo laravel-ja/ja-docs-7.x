@@ -47,6 +47,7 @@
     - [Payments Requiring Additional Confirmation](#payments-requiring-additional-confirmation)
     - [Off-session Payment Notifications](#off-session-payment-notifications)
 - [Stripe SDK](#stripe-sdk)
+- [Testing](#testing)
 
 <a name="introduction"></a>
 ## Introduction
@@ -928,3 +929,18 @@ Many of Cashier's objects are wrappers around Stripe SDK objects. If you would l
     $stripeSubscription = $subscription->asStripeSubscription();
 
     $stripeSubscription->update(['application_fee_percent' => 5]);
+
+<a name="testing"></a>
+## Testing
+
+When testing an application that uses Cashier, you may mock the actual HTTP requests to the Stripe API; however, this requires you to partially re-implement Cashier's own behavior. Therefore, we recommend allowing your tests to hit the actual Stripe API. While this is slower, it provides more confidence that your application is working as expected and any slow tests may be placed within their own PHPUnit testing group.
+
+When testing, remember that that Cashier itself already has a great test suite, so you should only focus on testing the subscription and payment flow of your own application and not every underlying Cashier behavior.
+
+To get started, add the **testing** version of your Stripe secret to your `phpunit.xml` file:
+
+    <env name="STRIPE_SECRET" value="sk_test_<your-key>"/>
+
+Now, whenever you interact with Cashier while testing, it will send actual API requests to your Stripe testing environment. For convenience, you should pre-fill your Stripe testing account with subscriptions / plans that you may then use during testing.
+
+> {tip} In order to test a variety of billing scenarios, such as credit card denials and failures, you may use the vast range of [testing card numbers and tokens](https://stripe.com/docs/testing) provided by Stripe.

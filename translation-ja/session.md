@@ -192,7 +192,7 @@ Laravelでセッションを操作するには、主に２つの方法があり�
 <a name="regenerating-the-session-id"></a>
 ### セッションIDの再生成
 
-セッションIDの再生成は多くの場合、悪意のあるユーザーからの、アプリケーションに対する[session fixation](https://en.wikipedia.org/wiki/Session_fixation)攻撃を防ぐために行います。
+セッションIDの再生成は多くの場合、悪意のあるユーザーからの、アプリケーションに対する[session fixation](https://owasp.org/www-community/attacks/Session_fixation)攻撃を防ぐために行います。
 
 Laravelに組み込まれている`LoginController`を使用していれば、認証中にセッションIDは自動的に再生成されます。しかし、セッションIDを任意に再生成する必要があるのでしたら、`regenerate`メソッドを使ってください。
 

@@ -191,6 +191,8 @@
         //
     }
 
+> {note} `null`の属性はキャストされません。
+
 <a name="custom-casts"></a>
 ### カスタムキャスト
 
@@ -372,6 +374,42 @@ Laravelには多様な利便性のあるキャストタイプが用意されて�
      */
     protected $casts = [
         'secret' => Hash::class.':sha256',
+    ];
+
+#### Castable
+
+モデルにカスタムキャストを指定する代わりに、`Illuminate\Contracts\Database\Eloquent\Castable`インターフェイスを実装するクラスを指定することも可能です。
+
+    protected $casts = [
+        'options' => \App\Address::class,
+    ];
+
+`Castable`インターフェイスを実装するオブジェクトは、`castUsing`メソッドを定義する必要があります。このメソッドは、キャストに責任を持つカスタムキャスタクラスのクラス名を返します。
+
+    <?php
+
+    namespace App;
+
+    use Illuminate\Contracts\Database\Eloquent\Castable;
+    use App\Casts\Address as AddressCast;
+
+    class Address implements Castable
+    {
+        /**
+         * キャスト対象をキャストするときに使用するキャスタクラス名を取得
+         *
+         * @return string
+         */
+        public static function castUsing()
+        {
+            return AddressCast::class;
+        }
+    }
+
+`Castable`クラス使用時も、`$casts`定義中で引数を指定可能です。引数はキャスタクラスへ直接渡されます。
+
+    protected $casts = [
+        'options' => \App\Address::class.':argument',
     ];
 
 <a name="array-and-json-casting"></a>

@@ -300,9 +300,9 @@ handleメソッドの中でレート制限をする代わりに、レート制�
 
 条件によりジョブをディスパッチする場合は、`dispatchIf`か`dispatchUnless`を使います。
 
-    ProcessPodcast::dispatchIf($accountActive = true, $podcast);
+    ProcessPodcast::dispatchIf($accountActive === true, $podcast);
 
-    ProcessPodcast::dispatchUnless($accountSuspended = false, $podcast);
+    ProcessPodcast::dispatchUnless($accountSuspended === false, $podcast);
 
 <a name="delayed-dispatching"></a>
 ### 遅延ディスパッチ

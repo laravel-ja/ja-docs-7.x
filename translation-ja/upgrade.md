@@ -208,6 +208,16 @@ Markdownではインデントが特別な意味を持っているため、Markdo
 
     php artisan vendor:publish --tag=laravel-mail --force
 
+#### Swift Mailer Bindings
+
+**影響の可能性： 低い**
+
+Laravel7.xでは、`swift.mailer`と`swift.transport`のコンテナ結合は提供していません。これらのオブジェクトは、`mailer`の結合を経由してアクセスできます。
+
+    $swiftMailer = app('mailer')->getSwiftMailer();
+
+    $swiftTransport = $swiftMailer->getTransport();
+
 ### キュー
 
 #### 非推奨の`--daemon`フラグの削除
