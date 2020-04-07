@@ -232,7 +232,7 @@ Laravel7.xでは、`swift.mailer`と`swift.transport`のコンテナ結合は提
 
 **影響の可能性： 低い**
 
-非推奨だった`Illuminate\Http\Resources\Json\Resource`クラスは削除されました。代わりにリソースは`Illuminate\Http\Resources\Json\JsonResource`を拡張子てください。
+非推奨だった`Illuminate\Http\Resources\Json\Resource`クラスは削除されました。代わりにリソースは`Illuminate\Http\Resources\Json\JsonResource`を拡張してください。
 
 ### ルート
 
