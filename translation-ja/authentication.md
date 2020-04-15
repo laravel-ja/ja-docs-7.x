@@ -50,8 +50,6 @@ Laravelの認証機能は「ガード」と「プロバイダ」を中心概念�
 <a name="authentication-quickstart"></a>
 ## 認証クイックスタート
 
-`App\Http\Controllers\Auth`名前空間下に多くの組み込み済み認証コントローラがLaravelにより用意されています。`RegisterController`は新ユーザーの登録、`LoginController`は認証処理、`ForgotPasswordController`はパスワードリセットのためのメールリンク処理、`ResetPasswordController`はパスワードリセット処理を行います。各コントローラは必要なメソッドを含むトレイトを使用しています。多くのアプリケーションでは、これらのコントローラを変更する必要はまったくありません。
-
 <a name="included-routing"></a>
 ### ルート定義
 
@@ -62,6 +60,8 @@ Laravelの`laravel/ui`パッケージは、認証に必要なルートとビュ�
     php artisan ui vue --auth
 
 このコマンドは新しくインストールしたアプリケーションでのみ実行すべきで、レイアウトビュー、登録ログインビューをインストールし、同時にすべての認証エンドポイントのルートも定義します。`HomeController`も、ログイン後に必要となる、アプリケーションのダッシュボードのために生成されます。
+
+`laravel/ui`パッケージはたくさんの事前に用意した認証コントローラも生成します。生成したコントローラは、`App\Http\Controllers\Auth`名前空間に位置づけられます。`RegisterController`は新しいユーザーの登録を処理します。`LoginController`は認証を処理します。`ForgotPasswordController`はパスワードリセットに使用するメールからのリンクを処理します。`ResetPasswordController`はパスワードリセットのロジック部分です。それぞれのコントローラは必要なメソッドを含んだトレイトを使用しています。大抵のアプリケーションではこれらのコントローラを変更する必要はまったくないでしょう。
 
 > {tip} アプリケーションでユーザー登録が必要なければ、新しく作成された`RegisterController`を削除し、ルート定義を`Auth::routes(['register' => false]);`のように変更すれば、無効にできます。
 

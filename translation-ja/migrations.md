@@ -358,7 +358,7 @@ Laravelの`Schema`[ファサード](/docs/{{version}}/facades)は、テーブル
         $table->string('name', 50)->nullable()->change();
     });
 
-> {note} 以降のカラムタイプのみ変更可能です：bigInteger、binary、boolean、date、dateTime、dateTimeTz、decimal、integer、json、longText、mediumText、smallInteger、string、text、time、unsignedBigInteger、unsignedInteger and unsignedSmallInteger
+> {note} 以降のカラムタイプのみ変更可能です：bigInteger、binary、boolean、date、dateTime、dateTimeTz、decimal、integer、json、longText、mediumText、smallInteger、string、text、time、unsignedBigInteger、unsignedInteger、unsignedSmallInteger、uuid
 
 #### カラム名変更
 

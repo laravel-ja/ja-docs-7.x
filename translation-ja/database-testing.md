@@ -263,7 +263,7 @@ Laravelでは、データベースを駆動するアプリケーションのテ�
 
     use Illuminate\Foundation\Testing\RefreshDatabase;
     use Illuminate\Foundation\Testing\WithoutMiddleware;
-    use OrderStatusesTableSeeder;
+    use OrderStatusSeeder;
     use Tests\TestCase;
 
     class ExampleTest extends TestCase
@@ -281,7 +281,7 @@ Laravelでは、データベースを駆動するアプリケーションのテ�
             $this->seed();
 
             // シーダを１つ実行
-            $this->seed(OrderStatusesTableSeeder::class);
+            $this->seed(OrderStatusSeeder::class);
 
             // …
         }

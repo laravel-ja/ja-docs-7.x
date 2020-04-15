@@ -147,6 +147,7 @@ Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し�
 [is](#method-fluent-str-is)
 [isAscii](#method-fluent-str-is-ascii)
 [isEmpty](#method-fluent-str-is-empty)
+[isNotEmpty](#method-fluent-str-is-not-empty)
 [kebab](#method-fluent-str-kebab)
 [length](#method-fluent-str-length)
 [limit](#method-fluent-str-limit)
@@ -1742,6 +1743,22 @@ Fluent文字列はより読み書きしやすい(fluent)、オブジェクト指
     $result = Str::of('Laravel')->trim()->isEmpty();
 
     // false
+
+<a name="method-fluent-str-is-not-empty"></a>
+#### `isNotEmpty` {#collection-method}
+
+`isNotEmpty`メソッドは、文字列が空でないかを判定します。
+
+
+    use Illuminate\Support\Str;
+
+    $result = Str::of('  ')->trim()->isNotEmpty();
+
+    // false
+
+    $result = Str::of('Laravel')->trim()->isNotEmpty();
+
+    // true
 
 <a name="method-fluent-str-kebab"></a>
 #### `kebab` {#collection-method}

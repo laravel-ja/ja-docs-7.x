@@ -482,5 +482,5 @@ Laravelには多様な利便性のあるキャストタイプが用意されて�
         'last_posted_at' => Post::selectRaw('MAX(created_at)')
                 ->whereColumn('user_id', 'users.id')
     ])->withCasts([
-        'last_posted_at' => 'date'
+        'last_posted_at' => 'datetime'
     ])->get();

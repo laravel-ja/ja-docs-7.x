@@ -175,6 +175,7 @@
 [unless](#method-unless)
 [unlessEmpty](#method-unlessempty)
 [unlessNotEmpty](#method-unlessnotempty)
+[until](#method-until)
 [unwrap](#method-unwrap)
 [values](#method-values)
 [when](#method-when)
@@ -2150,6 +2151,33 @@ sliceメソッドはデフォルトでキー値を保持したまま返します
 
 [`whenEmpty`](#method-whenempty)メソッドのエイリアスです。
 
+<a name="method-until"></a>
+#### `until()` {#collection-method}
+
+`until`メソッドは指定値が見つかるまで、コレクション中のアイテムを返します。
+
+    $collection = collect([1, 2, 3, 4]);
+
+    $subset = $collection->until(3);
+
+    $subset->all();
+
+    // [1, 2]
+
+独自ロジックを実行するため、`until`メソッドへコールバックを渡すこともできます。コールバックが`true`を返すと、`until`メソッドは停止します。
+
+    $collection = collect([1, 2, 3, 4]);
+
+    $subset = $collection->until(function ($item) {
+        return $item >= 3;
+    });
+
+    $subset->all();
+
+    // [1, 2]
+
+指定値が見つからない、もしくはコールバックが`true`を返さない場合、`until`メソッドはコレクションの全アイテムを返します。
+
 <a name="method-unwrap"></a>
 #### `unwrap()` {#collection-method}
 
@@ -2552,7 +2580,7 @@ staticの`wrap`メソッドは適用可能であれば、指定値をコレク�
 <a name="higher-order-messages"></a>
 ## Higher Order Message
 
-コレクションで繁用するアクションを手短に実行できるよう、"higher order messages"をサポートしました。[`average`](#method-average)、[`avg`](#method-avg)、[`contains`](#method-contains)、[`each`](#method-each)、[`every`](#method-every)、[`filter`](#method-filter)、[`first`](#method-first)、[`flatMap`](#method-flatmap)、[`groupBy`](#method-groupby)、[`keyBy`](#method-keyby)、[`map`](#method-map)、[`max`](#method-max)、[`min`](#method-min)、[`partition`](#method-partition)、[`reject`](#method-reject)、[`some`](#method-some)、[`sortBy`](#method-sortby)、[`sortByDesc`](#method-sortbydesc)、[`sum`](#method-sum)、[`unique`](#method-unique)コレクションメソッドでhigher order messageが使用できます。
+コレクションで繁用するアクションを手短に実行できるよう、"higher order messages"をサポートしました。[`average`](#method-average)、[`avg`](#method-avg)、[`contains`](#method-contains)、[`each`](#method-each)、[`every`](#method-every)、[`filter`](#method-filter)、[`first`](#method-first)、[`flatMap`](#method-flatmap)、[`groupBy`](#method-groupby)、[`keyBy`](#method-keyby)、[`map`](#method-map)、[`max`](#method-max)、[`min`](#method-min)、[`partition`](#method-partition)、[`reject`](#method-reject)、[`some`](#method-some)、[`sortBy`](#method-sortby)、[`sortByDesc`](#method-sortbydesc)、[`sum`](#method-sum)、[`unique`](#method-unique)、[`until`](#method-until)コレクションメソッドでhigher order messageが使用できます。
 
 各higher order messageへは、コレクションインスタンスの動的プロパティとしてアクセスできます。例として、コレクション中の各オブジェクトメソッドを呼び出す、`each` higher order messageを使用してみましょう。
 

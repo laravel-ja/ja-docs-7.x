@@ -146,6 +146,20 @@ HTTPカーネルへミドルウェアを定義し終えたら、ルートに対�
         //
     })->middleware(CheckAge::class);
 
+ルートグループに対してミドルウェアを指定する場合、そのグループ内の個別のルートに対して適用を除外する必要も起きるでしょう。`withoutMiddleware`メソッドを使用してください。
+
+    use App\Http\Middleware\CheckAge;
+
+    Route::middleware([CheckAge::class])->group(function () {
+        Route::get('/', function () {
+            //
+        });
+
+        Route::get('admin/profile', function () {
+            //
+        })->withoutMiddleware([CheckAge::class]);
+    });
+
 <a name="middleware-groups"></a>
 ### ミドルウェアグループ
 

@@ -420,7 +420,7 @@ JSONレスポンスの特定パスに、指定したデータが含まれてい�
 <a name="assert-forbidden"></a>
 #### assertForbidden
 
-レスポンスがforbiddenステータスコードを持っていることを宣言。
+レスポンスがforbiddenステータスコード（４０３）を持っていることを宣言。
 
     $response->assertForbidden();
 

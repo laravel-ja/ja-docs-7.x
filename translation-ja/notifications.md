@@ -757,7 +757,7 @@ Slackを通して通知を送れるようにするには、ComposerでSlackの�
 
     composer require laravel/slack-notification-channel
 
-さらに、Slackチームの["Incoming Webhook"](https://api.slack.com/incoming-webhooks)インテグレーションを設定する必要もあります。このインテグレーションは、[Slack通知のルート](#routing-slack-notifications)を行う時に使用するURLを提供します。
+さらに、Slackチームの["Incoming Webhook"](https://slack.com/apps/A0F7XDUAZ-incoming-webhooks)インテグレーションを設定する必要もあります。このインテグレーションは、[Slack通知のルート](#routing-slack-notifications)を行う時に使用するURLを提供します。
 
 <a name="formatting-slack-notifications"></a>
 ### Slack通知のフォーマット
