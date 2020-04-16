@@ -24,6 +24,7 @@
     - [サブスクリプション状態の確認](#checking-subscription-status)
     - [プラン変更](#changing-plans)
     - [サブスクリプション数](#subscription-quantity)
+    - [複数のサブスクリプション](#multiplan-subscriptions)
     - [サブスクリプションの税金](#subscription-taxes)
     - [サブスクリプション課金日付け](#subscription-anchor-date)
     - [サブスクリプションキャンセル](#cancelling-subscriptions)
@@ -59,7 +60,7 @@ Laravel Cashierは[Stripe](https://stripe.com)によるサブスクリプショ�
 
 新しいバージョンのCashierへアップグレードする場合は、[アップグレードガイド](https://github.com/laravel/cashier/blob/master/UPGRADE.md)を注意深く確認することが重要です。
 
-> {note} ブレーキングチェンジを防ぐために、CashierではStripeの固定APIバージョンを使用しています。Cashier10.1では、Stripeの`2019-08-14`付けAPIバージョンを使用しています。Stripeの新機能や機能向上を利用するため、マイナーリリースでもStripe APIのバージョンを更新することがあります。
+> {note} ブレーキングチェンジを防ぐために、CashierではStripeの固定APIバージョンを使用しています。Cashier11では、Stripeの`2020-03-02`付けAPIバージョンを使用しています。Stripeの新機能や機能向上を利用するため、マイナーリリースでもStripe APIのバージョンを更新することがあります。
 
 <a name="installation"></a>
 ## インストール
@@ -303,7 +304,13 @@ Billableモデルインスタンスの`paymentMethods`メソッドは、`Laravel
 <a name="check-for-a-payment-method"></a>
 ### ユーザーが支払い方法を持っているかの判定
 
-Billableモデルが自身のアカウントに付加されている支払いメソッドを持っているかを判定するには、`hasPaymentMethod`メソッドを使用します。
+Billableモデルが自身のアカウントに付加されているデフォルト支払いメソッドを持っているかを判定するには、`hasDefaultPaymentMethod`メソッドを使用します。
+
+    if ($user->hasDefaultPaymentMethod()) {
+        //
+    }
+
+Billableモデルが自身のアカウントに付加されている支払いメソッドを最低１つ持っているかを判定するには、`hasPaymentMethod`メソッドを使用します。
 
     if ($user->hasPaymentMethod()) {
         //
@@ -362,15 +369,17 @@ Billableモデルが自身のアカウントに付加されている支払いメ
 
 > {note} サブスクリプションの`create()`へ支払いメソッド識別子を直接渡すと、ユーザーの保存済み支払いメソッドへ自動的に追加します。
 
-#### ユーザー詳細情報の指定
+#### 詳細情報の指定
 
-ユーザーに関する詳細情報を追加したい場合は、`create`メソッドの第２引数に渡すことができます。
+ユーザーとサブスクリプションに関する詳細情報を追加したい場合は、`create`メソッドの第２引数と第３引数へ渡すことができます。
 
     $user->newSubscription('default', 'monthly')->create($paymentMethod, [
         'email' => $email,
+    ], [
+        'metadata' => ['note' => 'Some extra information.'],
     ]);
 
-Stripeがサポートしている追加のフィールドについてのさらなる情報は、Stripeの[顧客の作成](https://stripe.com/docs/api#create_customer)ドキュメントを確認してください。
+Stripeがサポートしている追加のフィールドについてのさらなる情報は、Stripeの[顧客の作成](https://stripe.com/docs/api#create_customer)と[サブスクリプションの作成](https://stripe.com/docs/api/subscriptions/create)ドキュメントを確認してください。
 
 #### クーポン
 
@@ -379,6 +388,14 @@ Stripeがサポートしている追加のフィールドについてのさら�
     $user->newSubscription('default', 'monthly')
          ->withCoupon('code')
          ->create($paymentMethod);
+
+#### サブスクリプションの追加
+
+デフォルトの支払い方法を設定済みユーザーへサブスクリプションを追加する場合は、`newSubscription`メソッド使用時に`add`メソッドが使えます。
+
+    $user = User::find(1);
+
+    $user->newSubscription('default', 'premium')->add();
 
 <a name="checking-subscription-status"></a>
 ### サブスクリプション状態の確認
@@ -507,7 +524,7 @@ Stripeがサポートしている追加のフィールドについてのさら�
 
 #### 按分課金
 
-デフォルトでStripeはプランの変更時に按分課金(prorate)を行います。`noProrate`メソッドは按分課金を行わずにサブスクリプションの更新を指定するために使用します。
+デフォルトでStripeはプランの変更時に按分課金(日割り計算：prorate)を行います。`noProrate`メソッドは按分課金を行わずにサブスクリプションの更新を指定するために使用します。
 
     $user->subscription('default')->noProrate()->swap('provider-plan-id');
 
@@ -540,25 +557,132 @@ Stripeがサポートしている追加のフィールドについてのさら�
 
 サブスクリプション数の詳細については、[Stripeドキュメント](https://stripe.com/docs/subscriptions/quantities)を読んでください。
 
+> {note} マルチプランサブスクリプションを使用する場合、上記の数量メソッドには追加の「プラン」パラメーターが必要です。
+
+<a name="multiplan-subscriptions"></a>
+### 複数のサブスクリプション
+
+[複数のサブスクリプション](https://stripe.com/docs/billing/subscriptions/multiplan)では、1つのサブスクリプションに複数の請求プランを割り当てられます。たとえば、月額１０ドルの基本サブスクリプションがあり、さらに月額１６ドルのライブチャットアドオンプランを提供する、カスタマーサービスの「ヘルプデスク」アプリケーションを構築していると想像してください。
+
+    $user = User::find(1);
+
+    $user->subscription('default')->addPlan('chat-plan');
+
+これで、顧客は「デフォルト」サブスクリプションに２つのプランを持ちます。上記の例では新しいプランが追加され、次の請求サイクルで顧客へ請求されます。すぐに顧客に請求したい場合は、`addPlanAndInvoice`メソッドを使用します。
+
+    $user->subscription('default')->addPlanAndInvoice('chat-plan');
+
+サブスクリプションからプランを削除したい場合は、`removePlan`メソッドを使用します。
+
+    $user->subscription('default')->removePlan('chat-plan');
+
+> {note} サブスクリプションの最後のプランは削除できません。その代わりにサブスクリプションをシンプルにキャンセルしてください。
+
+### プラン切り替え
+
+複数のサブスクリプションに紐付いているプランを変更することもできます。たとえば、`chat-plan`アドオンを含む`basic-plan`サブスクリプションを利用していて、`pro-plan`プランにアップグレードしたいとします。
+
+    $user = User::find(1);
+
+    $user->subscription('default')->swap(['pro-plan', 'chat-plan']);
+
+上記のコードを実行すると、`basic-plan`を含む基になるサブスクリプションアイテムが削除され、`chat-plan`を含むものが保持されます。さらに、新しい`pro-plan`のために新しいサブスクリプションアイテムが作成されます。
+
+サブスクリプションアイテムのオプションを指定することもできます。たとえば、プランの購入数を指定する必要が起きる場合もあるでしょう。
+
+    $user = User::find(1);
+
+    $user->subscription('default')->swap([
+        'pro-plan' => ['quantity' => 5],
+        'chat-plan'
+    ]);
+
+サブスクリプション上のプランをひとつだけ切り替える場合は、サブスクリプションアイテム自体に対して`swap`メソッドを使用してください。このアプローチは、たとえばサブスクリプションアイテムの既存のメタデータをすべて保持したい場合に役立ちます。
+
+    $user = User::find(1);
+
+    $user->subscription('default')
+            ->findItemOrFail('basic-plan')
+            ->swap('pro-plan');
+
+#### 按分課金
+
+Stripeはサブスクリプションのプランを追加または削除する場合、デフォルトで料金を按分課金(日割り計算：prorate)します。按分課金を行わずにプランを調整する場合は、`noProrate`メソッドをプラン操作へチェーンしてください。
+
+    $user->subscription('default')->noProrate()->removePlan('chat-plan');
+
+#### 購入数
+
+個々のサブスクリプションプランの購入数を更新する場合は、[既存の購入数メソッド](＃subscription-quantity)をつかい、メソッドの追加の引数としてプラン名を渡してください。
+
+    $user = User::find(1);
+
+    $user->subscription('default')->incrementQuantity(5, 'chat-plan');
+
+    $user->subscription('default')->decrementQuantity(3, 'chat-plan');
+
+    $user->subscription('default')->updateQuantity(10, 'chat-plan');
+
+> {note} サブスクリプションに複数のプランを設定している場合、`Subscription`モデルの`stripe_plan`および`quantity`属性は`null`になります。個々のプランにアクセスするには、`Subscription`モデルで利用可能な`items`リレーションを使用する必要があります。
+
+#### サブスクリプションアイテム
+
+サブスクリプションに複数のプランがある場合、データベースの`subscription_items`テーブルに複数のサブスクリプション「アイテム」が保存されます。サブスクリプションの`items`リレーションを介してこれらにアクセスできます：
+
+    $user = User::find(1);
+
+    $subscriptionItem = $user->subscription('default')->items->first();
+
+    // Retrieve the Stripe plan and quantity for a specific item...
+    $stripePlan = $subscriptionItem->stripe_plan;
+    $quantity = $subscriptionItem->quantity;
+
+`findItemOrFail`メソッドを使用し、特定のプランを取得することも可能です。
+
+    $user = User::find(1);
+
+    $subscriptionItem = $user->subscription('default')->findItemOrFail('chat-plan');
+
 <a name="subscription-taxes"></a>
 ### サブスクリプションの税金
 
-ユーザーが支払うサブスクリプションに対する税率を指定するには、Billableモデルへ`taxPercentage`メソッドを実装し、小数点以下が１桁以内で、0から１００までの数値を返します。
+ユーザーがサブスクリプションに対して支払う税率を指定するには、Billableモデルに`taxRates`メソッドを実装し、税率IDを含む配列を返してください。これらの税率は、[Stripeダッシュボード]（https://dashboard.stripe.com/test/tax-rates）で定義できます。
 
-    public function taxPercentage()
+    public function taxRates()
     {
-        return 20;
+        return ['tax-rate-id'];
     }
 
-`taxPercentage`メソッドにより、モデルごとに税率を適用できるため、多くの州や国に渡るユーザーベースで税率を決める場合に便利です。
+`taxRates`メソッドを使用すると、モデルごとに税率を適用できます。これは、複数の国や税率にまたがるユーザー向けサービスで役立つでしょう。マルチプランサブスクリプションを使用している場合は、Billableモデルに`planTaxRates`メソッドを実装することで、プランごとに異なる税率を定義できます。
 
-> {note} `taxPercentage`メソッドは、サブスクリプションの課金時のみに適用されます。Cashierで「一回のみ」の支払いを行う場合は、税率を自分で適用する必要があります。
+    public function planTaxRates()
+    {
+        return [
+            'plan-id' => ['tax-rate-id'],
+        ];
+    }
+
+> {note} `taxRates`メソッドはサブスクリプション料金にのみ適用されます。Cashierを使用して「1回限り」の請求を行う場合は、その時点で税率を手動で指定する必要があります。
 
 #### 税率の同期
 
-`taxPercentage`が返すハードコードした値を変更する場合、ユーザーに対する既存のサブスクリプションは以前のままになります。`taxPercentage`が返す値に既存のサブスクリプションも更新したい場合は、ユーザーのサブスクリプションインスタンスに対し、`syncTaxPercentage`メソッドを呼び出す必要があります。
+`taxRates`メソッドが返すハードコードされた税率IDを変更しても、ユーザーの既存サブスクリプションの税率設定は同じままです。返された`taxTaxRates`値で既存サブスクリプションの税率を更新する場合は、ユーザーのサブスクリプションインスタンスに対し、`syncTaxRates`メソッドを呼び出す必要があります。
 
-    $user->subscription('default')->syncTaxPercentage();
+    $user->subscription('default')->syncTaxRates();
+
+これはサブスクリプションアイテムの税率も同期するため、`planTaxRates`メソッドも適切に変更してください。
+
+#### 非課税
+
+キャッシャーは、Stripe APIを呼び出して顧客が非課税かを判断するメソッドも提供します。`isNotTaxExempt`および`isTaxExempt`、`reverseChargeApplies`メソッドはBillableモデルで使用できます。
+
+    $user = User::find(1);
+
+    $user->isTaxExempt();
+    $user->isNotTaxExempt();
+    $user->reverseChargeApplies();
+
+これらのメソッドは、任意の `Laravel\Cashier\Invoice`オブジェクトでも使用できます。ただし、`Invoice`オブジェクトでこれらのメソッドを呼び出すと、メソッドはインボイス作成時の非課税状態であると判断します。
 
 <a name="subscription-anchor-date"></a>
 ### サブスクリプション課金日付け
@@ -810,7 +934,7 @@ Webhookの確認を有効にするには、`.env`ファイル中の`STRIPE_WEBHO
     $user->invoiceFor('Stickers', 500, [
         'quantity' => 50,
     ], [
-        'tax_percent' => 21,
+        'default_tax_rates' => ['tax-rate-id'],
     ]);
 
 > {note} `invoiceFor`メソッドは、課金失敗時にリトライするStripeインボイスを生成します。リトライをしてほしくない場合は、最初に課金に失敗した時点で、Stripe APIを使用し、生成したインボイスを閉じる必要があります。
@@ -860,6 +984,13 @@ Stripeでの課金を払い戻す必要がある場合は、`refund`メソッド
         ]);
     });
 
+`downloadInvoice`メソッドでは、3番目の引数としてオプションのカスタムファイル名も指定できます。このファイル名は自動的に".pdf"のサフィックスが付けられます。
+
+    return $request->user()->downloadInvoice($invoiceId, [
+        'vendor' => 'Your Company',
+        'product' => 'Your Product',
+    ], 'my-invoice');
+
 <a name="handling-failed-payments"></a>
 ## 課金失敗の処理
 
@@ -897,7 +1028,7 @@ Stripeでの課金を払い戻す必要がある場合は、`refund`メソッド
 
 皆さんのビジネスがヨーロッパを基盤とするものであるなら、堅牢な顧客認証 (SCA)規制を守る必要があります。これらのレギュレーションは支払い詐欺を防ぐためにEUにより２０１９年９月に課せられたものです。幸運なことに、StripeとCashierはSCA準拠のアプリケーション構築のために準備をしてきました。
 
-> {note} 始める前に、[StripeのPSD2とSCAのガイド](https://stripe.com/en-be/guides/strong-customer-authentication)と、[新SCA APIのドキュメント](https://stripe.com/docs/strong-customer-authentication)を確認してください。
+> {note} 始める前に、[StripeのPSD2とSCAのガイド](https://stripe.com/guides/strong-customer-authentication)と、[新SCA APIのドキュメント](https://stripe.com/docs/strong-customer-authentication)を確認してください。
 
 <a name="payments-requiring-additional-confirmation"></a>
 ### 支払い要求の追加確認
