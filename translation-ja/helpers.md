@@ -152,6 +152,7 @@ Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し�
 [length](#method-fluent-str-length)
 [limit](#method-fluent-str-limit)
 [lower](#method-fluent-str-lower)
+[ltrim](#method-fluent-str-ltrim)
 [match](#method-fluent-str-match)
 [matchAll](#method-fluent-str-matchAll)
 [plural](#method-fluent-str-plural)
@@ -161,17 +162,18 @@ Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し�
 [replaceFirst](#method-fluent-str-replace-first)
 [replaceLast](#method-fluent-str-replace-last)
 [replaceMatches](#method-fluent-str-replace-matches)
-[start](#method-fluent-str-start)
-[upper](#method-fluent-str-upper)
-[title](#method-fluent-str-title)
+[rtrim](#method-fluent-str-rtrim)
 [singular](#method-fluent-str-singular)
 [slug](#method-fluent-str-slug)
 [snake](#method-fluent-str-snake)
+[start](#method-fluent-str-start)
 [startsWith](#method-fluent-str-starts-with)
 [studly](#method-fluent-str-studly)
 [substr](#method-fluent-str-substr)
+[title](#method-fluent-str-title)
 [trim](#method-fluent-str-trim)
 [ucfirst](#method-fluent-str-ucfirst)
+[upper](#method-fluent-str-upper)
 [whenEmpty](#method-fluent-str-when-empty)
 [words](#method-fluent-str-words)
 
@@ -1812,6 +1814,21 @@ Fluent文字列はより読み書きしやすい(fluent)、オブジェクト指
 
     // 'laravel'
 
+<a name="method-fluent-str-ltrim"></a>
+#### `ltrim` {#collection-method}
+
+`ltrim`メソッドは、指定文字列の左側をトリムします。
+
+    use Illuminate\Support\Str;
+
+    $string = Str::of('  Laravel  ')->ltrim();
+
+    // 'Laravel  '
+
+    $string = Str::of('/Laravel/')->ltrim('/');
+
+    // 'Laravel/'
+
 <a name="method-fluent-str-match"></a>
 #### `match` {#collection-method}
 
@@ -1953,42 +1970,20 @@ replaceMatches`メソッドは、パターンが文字列と一致するたび�
 
     // '[1][2][3]'
 
-<a name="method-fluent-str-start"></a>
-#### `start` {#collection-method}
+<a name="method-fluent-str-rtrim"></a>
+#### `rtrim` {#collection-method}
 
-`start`メソッドは文字列が指定値から始まっていないとき、先頭にその文字列を追加します。
-
-    use Illuminate\Support\Str;
-
-    $adjusted = Str::of('this/string')->start('/');
-
-    // /this/string
-
-    $adjusted = Str::of('/this/string')->start('/');
-
-    // /this/string
-
-<a name="method-fluent-str-upper"></a>
-#### `upper` {#collection-method}
-
-`upper`メソッドは、文字列を大文字に変換します。
+`rtrim`メソッドは、指定文字列の右側をトリムします。
 
     use Illuminate\Support\Str;
 
-    $adjusted = Str::of('laravel')->upper();
+    $string = Str::of('  Laravel  ')->rtrim();
 
-    // LARAVEL
+    // '  Laravel'
 
-<a name="method-fluent-str-title"></a>
-#### `title` {#collection-method}
+    $string = Str::of('/Laravel/')->rtrim('/');
 
-`title`メソッドは、文字列をタイトルケース（`Title Case`）へ変換します。
-
-    use Illuminate\Support\Str;
-
-    $converted = Str::of('a nice title uses the correct case')->title();
-
-    // A Nice Title Uses The Correct Case
+    // '/Laravel'
 
 <a name="method-fluent-str-singular"></a>
 #### `singular` {#collection-method}
@@ -2027,6 +2022,21 @@ The `snake` method converts the given string to `snake`メソッドは、文字�
 
     // foo_bar
 
+<a name="method-fluent-str-start"></a>
+#### `start` {#collection-method}
+
+`start`メソッドは文字列が指定値から始まっていないとき、先頭にその文字列を追加します。
+
+    use Illuminate\Support\Str;
+
+    $adjusted = Str::of('this/string')->start('/');
+
+    // /this/string
+
+    $adjusted = Str::of('/this/string')->start('/');
+
+    // /this/string
+
 <a name="method-fluent-str-starts-with"></a>
 #### `startsWith` {#collection-method}
 
@@ -2064,6 +2074,17 @@ The `snake` method converts the given string to `snake`メソッドは、文字�
 
     // Frame
 
+<a name="method-fluent-str-title"></a>
+#### `title` {#collection-method}
+
+`title`メソッドは、文字列をタイトルケース（`Title Case`）へ変換します。
+
+    use Illuminate\Support\Str;
+
+    $converted = Str::of('a nice title uses the correct case')->title();
+
+    // A Nice Title Uses The Correct Case
+
 <a name="method-fluent-str-trim"></a>
 #### `trim` {#collection-method}
 
@@ -2089,6 +2110,17 @@ The `snake` method converts the given string to `snake`メソッドは、文字�
     $string = Str::of('foo bar')->ucfirst();
 
     // Foo bar
+
+<a name="method-fluent-str-upper"></a>
+#### `upper` {#collection-method}
+
+`upper`メソッドは、文字列を大文字に変換します。
+
+    use Illuminate\Support\Str;
+
+    $adjusted = Str::of('laravel')->upper();
+
+    // LARAVEL
 
 <a name="method-fluent-str-when-empty"></a>
 #### `whenEmpty` {#collection-method}

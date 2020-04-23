@@ -172,7 +172,7 @@ Laravel Mixはwebpack上に構築されているため、webpackのコンセプ�
 
 この機能は便利ですが、好きなようにフォルダ構造を設定することもできます。その場合、以下のように`url()`リライトを停止してください。
 
-    mix.sass('resources/app/app.scss', 'public/css')
+    mix.sass('resources/sass/app.scss', 'public/css')
         .options({
             processCssUrls: false
         });

@@ -483,7 +483,7 @@ Laravelアプリケーションに含まれる`User`モデルは、アクショ�
 
 [リソースコントローラ](/docs/{{version}}/controllers#resource-controllers)を活用している場合、コントローラのコンストラクタの中で、`authorizeResource`メソッドを使用できます。このメソッドはリソースコントローラのメソッドへ適切な`can`ミドルウェア定義を付加します。
 
-`authorizeResource`メソッドは最初の引数にモデルのクラス名を受け取ります。モデルのIDを含むルート／リクエストパラメータ名を第２引数に受け取ります。
+`authorizeResource`メソッドは最初の引数にモデルのクラス名を受け取ります。モデルのIDを含むルート／リクエストパラメータ名を第２引数に受け取ります。必用なメソッド引数とタイプヒントを含んだ[リソースコントローラ](/docs/{{version}}/controllers#resource-controllers)を生成するには、必ず`--model`フラグを付けて生成してください。
 
     <?php
 

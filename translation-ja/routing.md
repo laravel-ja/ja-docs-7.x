@@ -65,7 +65,7 @@ Laravelの全ルートは、`routes`ディレクトリ下に設置されてい�
 
 #### CSRF保護
 
-`web`ルートファイル中で定義され、`POST`、`PUT`、`DELETE`ルートへ送信されるHTMLフォームはすべて、CSRFトークンフィールドを含んでいる必要があります。含めていないと、そのリクエストは拒否されます。CSRF保護についての詳細は、[CSRFのドキュメント](/docs/{{version}}/csrf)をご覧ください。
+`web`ルートファイル中で定義され、`POST`、`PUT`、`PATCH`、`DELETE`ルートへ送信されるHTMLフォームはすべて、CSRFトークンフィールドを含んでいる必要があります。含めていないと、そのリクエストは拒否されます。CSRF保護についての詳細は、[CSRFのドキュメント](/docs/{{version}}/csrf)をご覧ください。
 
     <form method="POST" action="/profile">
         @csrf

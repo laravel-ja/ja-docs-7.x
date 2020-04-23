@@ -150,7 +150,7 @@ Eloquentモデルの"ID"をルートパラメーターとしてリダイレク�
 
     return redirect()->route('profile', [$user]);
 
-ルートパラメータに埋め込む値をカスタマイズしたい場合は、Eloquentモデルの`getRouteKey`メソッドをオーバーライドします。
+ルートパラメータに埋め込む値をカスタマイズしたい場合は、ルートパラメータ定義でカラムを指定するか（`profile/{id:slug}`）、Eloquentモデルの`getRouteKey`メソッドをオーバーライドします。
 
     /**
      * モデルのルートキー値の取得

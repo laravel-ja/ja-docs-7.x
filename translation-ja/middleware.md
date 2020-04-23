@@ -160,6 +160,8 @@ HTTPカーネルへミドルウェアを定義し終えたら、ルートに対�
         })->withoutMiddleware([CheckAge::class]);
     });
 
+`withoutMiddleware`メソッドはルートミドルウエアからのみ削除でき、[グローバルミドルウェア](#global-middleware)には適用されません。
+
 <a name="middleware-groups"></a>
 ### ミドルウェアグループ
 

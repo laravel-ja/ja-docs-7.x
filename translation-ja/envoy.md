@@ -27,7 +27,7 @@
 
 グローバルComposerライブラリは、ときどきパッケージバージョンのコンフリクトを起こすため、`composer global require`コマンドの代替として、`cgr`の使用を考慮してください。`cgr`ライブラリのインストール方法は、[GitHubで見つけられます](https://github.com/consolidation-org/cgr)。
 
-> {note} `envoy`コマンドを端末で実行するときに`envoy`の実行ファイルが見つかるように、`~/.composer/vendor/bin`ディレクトリに実行パスを通しておくのを忘れないでください。
+> {note} `envoy`コマンドを端末で実行するときに`envoy`の実行ファイルが見つかるように`$HOME/.config/composer/vendor/bin`、もしくは`$HOME/.composer/vendor/bin`ディレクトリに実行パスを通しておくのを忘れないでください。
 
 #### Envoyの更新
 

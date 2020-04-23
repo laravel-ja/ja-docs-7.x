@@ -430,21 +430,25 @@ Eloquentは、`Comment`モデルに対する外部キーを自動的に決める
 <a name="has-one-through"></a>
 ### Has One Through
 
-"has-one-through"（〜経由で１つへ紐づく）リレーションは、一つの仲介関係を通し、モデルを関連付けます。
-たとえば、各サプライヤは一人のユーザーを持ち、各ユーザーは一つのユーザー履歴レコードに関連付けられていると仮定します。サプライヤモデルは、ユーザーを**経由して**ユーザー履歴にアクセスできます。このリレーションを定義するために必要な、データベーステーブルを見てみましょう。
+"has-one-through"（〜経由で１つへ紐づく）リレーションは、一つの仲介関係を通しモデルを関連付けます。
 
-    users
+たとえば、自動車修理工場のアプリケーションでは、各整備士（`Mechanic`）が車（`Car`）を1つ所有し、各車が所有者（`Owner`）を１つ所有します。`Mechanic`と`Owner`は直接関係していませんが、`Mechanic`は`Owner`を**通じて（through）**`Car`へアクセスできます。このリレーションを定義するために必要なテーブルを見てみましょう：
+
+    mechanics
         id - integer
-        supplier_id - integer
+        name - string
 
-    suppliers
+    cars
         id - integer
+        model - string
+        mechanic_id - integer
 
-    history
+    owners
         id - integer
-        user_id - integer
+        name - string
+        car_id - integer
 
-`history`テーブルには`supplier_id`カラムが含まれていませんが、`hasOneThrough`リレーションでサプライヤモデルからユーザー履歴へアクセスできます。このリレーションのテーブル構造を確認できたので、`Supplier`モデルを定義しましょう。
+これでリレーションのテーブル構造が確認できました。では、`Mechanic`モデル上でリレーションを定義してみましょう。
 
     <?php
 
@@ -452,14 +456,14 @@ Eloquentは、`Comment`モデルに対する外部キーを自動的に決める
 
     use Illuminate\Database\Eloquent\Model;
 
-    class Supplier extends Model
+    class Mechanic extends Model
     {
         /**
-         * ユーザー履歴の取得
+         * 車のオーナーを取得
          */
-        public function userHistory()
+        public function carOwner()
         {
-            return $this->hasOneThrough('App\History', 'App\User');
+            return $this->hasOneThrough('App\Owner', 'App\Car');
         }
     }
 
@@ -467,20 +471,20 @@ Eloquentは、`Comment`モデルに対する外部キーを自動的に決める
 
 通常、Eloquent外部キー規約は、リレーションのクエリを実行するときに使用されます。リレーションのキーをカスタマイズしたい場合は、`hasOneThrough`メソッドの第３引数、第４引数に渡します。第３引数は仲介モデルの外部キー名です。第４引数は最終モデルの外部キーの名前です。第５引数はローカルキー、第６引数は仲介モデルのローカルキーです。
 
-    class Supplier extends Model
+    class Mechanic extends Model
     {
         /**
-         * ユーザー履歴の取得
+         * 車のオーナーを取得
          */
-        public function userHistory()
+        public function carOwner()
         {
             return $this->hasOneThrough(
-                'App\History',
-                'App\User',
-                'supplier_id', // usersテーブルの外部キー
-                'user_id', // historyテーブルの外部キー
-                'id', // suppliersテーブルのローカルキー
-                'id' // usersテーブルのローカルキー
+                'App\Owner',
+                'App\Car',
+                'mechanic_id', // carsテーブルの外部キー
+                'car_id', // ownersテーブルの外部キー
+                'id', // mechanicsテーブルのローカルキー
+                'id' // carsテーブルのローカルキー
             );
         }
     }
