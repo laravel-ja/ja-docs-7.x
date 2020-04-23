@@ -218,14 +218,6 @@ Laravel7.xでは、`swift.mailer`と`swift.transport`のコンテナ結合は提
 
     $swiftTransport = $swiftMailer->getTransport();
 
-### キュー
-
-#### 非推奨の`--daemon`フラグの削除
-
-**影響の可能性： 低い**
-
-`queue:work`コマンドの`--daemon`フラグは削除されました。デフォルトでデーモンとしてワーカが実行されるため、このフラグは必要なくなっていました。
-
 ### リソース
 
 #### `Illuminate\Http\Resources\Json\Resource`クラス

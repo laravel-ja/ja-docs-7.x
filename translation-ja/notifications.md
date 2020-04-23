@@ -219,7 +219,7 @@ Laravelの各通知は、（通常、`app/Notifications`ディレクトリに設
      */
     public function toMail($notifiable)
     {
-        return (new Mailable($this->invoice))->to($this->user->email);
+        return (new Mailable($this->invoice))->to($notifiable->email);
     }
 
 <a name="error-messages"></a>
