@@ -23,6 +23,7 @@
     - [JavaScriptダイアログ](#javascript-dialogs)
     - [セレクタの範囲指定](#scoping-selectors)
     - [要素の待機](#waiting-for-elements)
+    - [要素のビュー内へのスクロール](#scrolling-an-element-into-view)
     - [Veuアサーションの作成](#making-vue-assertions)
 - [使用可能なアサート](#available-assertions)
 - [ページ](#pages)
@@ -622,6 +623,14 @@ Duskにある数多くの「待機」メソッドは、`waitUsing`メソッド�
         return $something->isReady();
     }, "Something wasn't ready in time.");
 
+<a name="scrolling-an-element-into-view"></a>
+### 要素のビュー内へのスクロール
+
+ブラウザの表示可能領域の外にあるため、ある要素をクリックできなことも起き得ます。`scrollIntoView`メソッドは指定したセレクタの要素がビューの中に入るまで、ブラウザウィンドウをスクロールします。
+
+    $browser->scrollIntoView('selector')
+            ->click('selector');
+
 <a name="making-vue-assertions"></a>
 ### Vueアサーションの作成
 
@@ -1216,6 +1225,12 @@ Duskはアプリケーションに対する数多くのアサートを提供し�
     use Tests\Browser\Pages\Login;
 
     $browser->visit(new Login);
+
+「前へ」と「戻る」操作は、`back`と`forward`メソッドで行います。
+
+    $browser->back();
+
+    $browser->forward();
 
 すでに特定のページに移動済みで、現在のテストコンテキストへそのページのセレクタとメソッドを「ロード」する必要が起き得ます。この状況は、明示的に移動していなくても、あるボタンを押すことで指定ページへリダイレクトしてしまう場合に発生します。そうした場合は、`on`メソッドで、そのページをロードできます。
 

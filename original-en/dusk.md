@@ -23,6 +23,7 @@
     - [JavaScript Dialogs](#javascript-dialogs)
     - [Scoping Selectors](#scoping-selectors)
     - [Waiting For Elements](#waiting-for-elements)
+    - [Scrolling An Element Into View](#scrolling-an-element-into-view)
     - [Making Vue Assertions](#making-vue-assertions)
 - [Available Assertions](#available-assertions)
 - [Pages](#pages)
@@ -622,6 +623,14 @@ Many of the "wait" methods in Dusk rely on the underlying `waitUsing` method. Yo
         return $something->isReady();
     }, "Something wasn't ready in time.");
 
+<a name="scrolling-an-element-into-view"></a>
+### Scrolling An Element Into View
+
+Sometimes you may not be able to click on an element because it is outside of the viewable area of the browser. The `scrollIntoView` method will scroll the browser window until the element at the given selector is within the view:
+
+    $browser->scrollIntoView('selector')
+            ->click('selector');
+
 <a name="making-vue-assertions"></a>
 ### Making Vue Assertions
 
@@ -1216,6 +1225,12 @@ Once a page has been configured, you may navigate to it using the `visit` method
     use Tests\Browser\Pages\Login;
 
     $browser->visit(new Login);
+
+You may navigate "back" and "forward" using the `back` and `forward` methods:
+
+    $browser->back();
+
+    $browser->forward();
 
 Sometimes you may already be on a given page and need to "load" the page's selectors and methods into the current test context. This is common when pressing a button and being redirected to a given page without explicitly navigating to it. In this situation, you may use the `on` method to load the page:
 
