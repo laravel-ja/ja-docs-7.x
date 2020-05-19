@@ -167,6 +167,7 @@ Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し�
 [singular](#method-fluent-str-singular)
 [slug](#method-fluent-str-slug)
 [snake](#method-fluent-str-snake)
+[split](#method-fluent-str-split)
 [start](#method-fluent-str-start)
 [startsWith](#method-fluent-str-starts-with)
 [studly](#method-fluent-str-studly)
@@ -2033,6 +2034,17 @@ The `snake` method converts the given string to `snake`メソッドは、文字�
     $converted = Str::of('fooBar')->snake();
 
     // foo_bar
+
+<a name="method-fluent-str-split"></a>
+#### `split` {#collection-method}
+
+`split`メソッドは正規表現を使い文字列をコレクションへ分割します。
+
+    use Illuminate\Support\Str;
+
+    $segments = Str::of('one, two, three')->split('/[\s,]+/');
+
+    // collect(["one", "two", "three"])
 
 <a name="method-fluent-str-start"></a>
 #### `start` {#collection-method}

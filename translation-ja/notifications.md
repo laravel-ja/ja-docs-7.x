@@ -147,6 +147,23 @@ Laravelの各通知は、（通常、`app/Notifications`ディレクトリに設
 
     $user->notify((new InvoicePaid($invoice))->delay($when));
 
+#### 通知チャンネルキューのカスタマイズ
+
+各通知チャンネルが使用しその通知がサポートしている特定のキューを指定する場合、通知へ`viaQueues`メソッドを定義してください。このメソッドはチャンネル名／キュー名のペアの配列を返してください。
+
+    /**
+     * 各通知チャンネルで使用するキューを判断。
+     *
+     * @return array
+     */
+    public function viaQueues()
+    {
+        return [
+            'mail' => 'mail-queue',
+            'slack' => 'slack-queue',
+        ];
+    }
+
 <a name="on-demand-notifications"></a>
 ### オンデマンド通知
 

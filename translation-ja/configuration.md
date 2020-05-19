@@ -111,6 +111,9 @@ null | (null) null
 
     $value = config('app.timezone');
 
+    // 設定値が存在しない場合、デフォルト値を取得する
+    $value = config('app.timezone', Asia/Seoul');
+
 実行時に設定値をセットするには、`config`ヘルパへ配列で渡してください。
 
     config(['app.timezone' => 'America/Chicago']);

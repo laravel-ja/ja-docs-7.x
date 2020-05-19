@@ -264,6 +264,20 @@ Blade（およびLaravelの`e`ヘルパ）はデフォルトで、HTMLエンテ�
         <div class="clearfix"></div>
     @endif
 
+#### 環境ディレクティブ
+
+アプリケーションが実働環境("production")で実行されているかを調べるには、`@production`ディレクティブを使います。
+
+    @production
+        // 実働環境のコンテンツを指定…
+    @endproduction
+
+もしくは、特定の環境でアプリケーションが実行されているかを判定するには、`@env`ディレクティブを使います。
+
+    @env('staging')
+        // ステージングのコンテンツを指定…
+    @endenv
+
 <a name="switch-statements"></a>
 ### Switch文
 
@@ -556,7 +570,6 @@ HTML属性を使い、Bladeコンポーネントへデータを渡すことが�
      * コンポーネントインスタンスの生成
      *
      * @param  string  $alertType
-     * @param  string  $message
      * @return void
      */
     public function __construct($alertType)
@@ -882,7 +895,7 @@ Bladeでは`directive`メソッドを使い、自分のカスタムディレク�
 <a name="custom-if-statements"></a>
 ### カスタムif文
 
-シンプルなカスタム条件文を定義する時、必要以上にカスタムディレクティブのプログラミングが複雑になってしまうことが、ときどき起きます。そのため、Bladeはクロージャを使用し、カスタム条件ディレクティブを素早く定義できるように、`Blade::if`メソッドを提供しています。例として、現在のアプリケーション環境をチェックするカスタム条件を定義してみましょう。`AppServiceProvider`の`boot`メソッドで行います。
+シンプルなカスタム条件文を定義する時、必要以上にカスタムディレクティブのプログラミングが複雑になってしまうことが、ときどき起きます。そのため、Bladeはクロージャを使用し、カスタム条件ディレクティブを素早く定義できるように、`Blade::if`メソッドを提供しています。例として、現在のアプリケーションのクラウドプロバイダをチェックするカスタム条件を定義してみましょう。`AppServiceProvider`の`boot`メソッドで行います。
 
     use Illuminate\Support\Facades\Blade;
 
@@ -893,21 +906,21 @@ Bladeでは`directive`メソッドを使い、自分のカスタムディレク�
      */
     public function boot()
     {
-        Blade::if('env', function ($environment) {
-            return app()->environment($environment);
+        Blade::if('cloud', function ($provider) {
+            return config('filesystems.default') === $provider;
         });
     }
 
 カスタム条件を定義したら、テンプレートの中で簡単に利用できます。
 
-    @env('local')
-        // アプリケーションはlocal環境
-    @elseenv('testing')
-        // アプリケーションはtesting環境
+    @cloud('digitalocean')
+        // アプリケーションはdigitaloceanクラウドプロバイダを使用している
+    @elsecloud('aws')
+        // アプリケーションはawsプロバイダを使用している
     @else
-        // アプリケーションは、local環境でもtesting環境でもない
-    @endenv
+        // アプリケーションはdigitaloceanとawsプロバイダを使用していない
+    @endcloud
 
-    @unlessenv('production')
-        // アプリケーションは、production環境でない
-    @endenv
+    @unlesscloud('aws')
+        // アプリケーションはawsプロバイダを使用していない
+    @endcloud

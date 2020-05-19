@@ -406,6 +406,8 @@ WHEREの結合にチェーンで`or`節をクエリに追加できます。`orWh
                         ->whereNotIn('id', [1, 2, 3])
                         ->get();
 
+> {note} 整数の巨大な配列をクエリと結合する場合は、メモリ使用量を大きく減らすために`whereIntegerInRaw`か`whereIntegerNotInRaw`メソッドを使用してください。
+
 **whereNull / whereNotNull / orWhereNull / orWhereNotNull**
 
 `whereNull`メソッドは指定したカラムの値が`NULL`である条件を加えます。
@@ -744,7 +746,7 @@ JSONカラムを更新する場合は、JSONオブジェクト中の適切なキ
 
     DB::table('users')->increment('votes', 1, ['name' => 'John']);
 
-> {note} Model events are not fired when using the `increment` and `decrement` methods.
+> {{note} `increment`と`decrement`メソッドを使用する場合、モデルイベントは発行されません。
 
 <a name="deletes"></a>
 ## DELETE

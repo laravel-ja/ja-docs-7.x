@@ -20,6 +20,7 @@
     - [存在しないリレーションのクエリ](#querying-relationship-absence)
     - [ポリモーフィックリレーションのクエリ](#querying-polymorphic-relationships)
     - [関連するモデルのカウント](#counting-related-models)
+    - [ポリモーフィックリレーションで関連モデルを数える](#counting-related-models-on-polymorphic-relationships)
 - [Eagerロード](#eager-loading)
     - [制約Eager Loads](#constraining-eager-loads)
     - [遅延Eagerロード](#lazy-eager-loading)
@@ -1074,6 +1075,34 @@ Eagerロードのクエリに追加の制約を指定する必要がある場合
     $book->loadCount(['reviews' => function ($query) {
         $query->where('rating', 5);
     }])
+
+<a name="counting-related-models-on-polymorphic-relationships"></a>
+### ポリモーフィックリレーションで関連モデルを数える
+
+`morphTo`リレーションでEagerロードし、同時にそのネストしたリレーションが返す可能性のあるさまざまなエンティティを数え上げたい場合は、`with`メソッドを`morphTo`リレーションの`morphWithCount`メソッドと組み合わせ使用します。
+
+以下の例は、`Photo`と`Post`モデルが`ActivityFeed`モデルを生成していると想定してください。さらに、`Photo`モデルは`Tag`モデルと関係し、`Post`モデルは`Comment`モデルと関係していると想定してください。
+
+こうしたモデルの定義とリレーションを使い、`ActivityFeed`モデルインスタンスを取得し、すべての`parentable`モデルと、それぞれのネストしたリレーション件数をEagerロードできます。
+
+    use Illuminate\Database\Eloquent\Relations\MorphTo;
+
+    $activities = ActivityFeed::query()
+        ->with(['parentable' => function (MorphTo $morphTo) {
+            $morphTo->morphWithCount([
+                Photo::class => ['tags'],
+                Post::class => ['comments'],
+            ]);
+        }])->get();
+
+さらに、`ActivityFeed`モデルがすでに取得済みであればポリモーフィズムリレーションのさまざまなエンティティ上ですべてのネストしたリレーション件数をEagerロードするため、`loadMorphCount`メソッドを使用できます。
+
+    $activities = ActivityFeed::with('parentable')
+        ->get()
+        ->loadMorphCount('parentable', [
+            Photo::class => ['tags'],
+            Post::class => ['comments'],
+        ]);
 
 <a name="eager-loading"></a>
 ## Eagerロード

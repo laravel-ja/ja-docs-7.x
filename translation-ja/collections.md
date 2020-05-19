@@ -1853,7 +1853,7 @@ sliceメソッドはデフォルトでキー値を保持したまま返します
 <a name="method-sortdesc"></a>
 #### `sortDesc()` {#collection-method}
 
-このメソッドの使い方は[`sort`](#method-sort)と同じで、コレクションを逆順にソートします
+このメソッドは[`sort`](#method-sort)メソッドの逆順でコレクションをソートします。
 
     $collection = collect([5, 3, 1, 2, 4]);
 
@@ -1862,6 +1862,8 @@ sliceメソッドはデフォルトでキー値を保持したまま返します
     $sorted->values()->all();
 
     // [5, 4, 3, 2, 1]
+
+`sort`と異なり、コールバックを引数として`sortDesc`渡せません。コールバックを使用する場合は、[`sort`](#method-sort)を使用し、比較を逆にしてください。
 
 <a name="method-sortkeys"></a>
 #### `sortKeys()` {#collection-method}

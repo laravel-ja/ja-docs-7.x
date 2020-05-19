@@ -81,6 +81,17 @@ Laravel7は、Symfonyコンポーネントの5.xシリーズを活用してい�
 
     'secure' => env('SESSION_SECURE_COOKIE', null),
 
+Artisanの裏で動作しているSymfony Consoleはすべてのコマンドが整数値を返すことを期待しています。そのため値を返すすべてのコマンドは確実に整数を返してください。
+
+    public function handle()
+    {
+        // 以前
+        return true;
+
+        // 以後
+        return 0;
+    }
+
 ### 認証
 
 <a name="authentication-scaffolding"></a>

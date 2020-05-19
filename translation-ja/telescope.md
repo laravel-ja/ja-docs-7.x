@@ -26,6 +26,7 @@
     - [Redisワッチャー](#redis-watcher)
     - [Requestワッチャー](#request-watcher)
     - [Scheduleワッチャー](#schedule-watcher)
+- [ユーザーアバターの表示](#displaying-user-avatars)
 
 <a name="introduction"></a>
 ## イントロダクション
@@ -351,3 +352,23 @@ Requestワッチャーはアプリケーションにより処理された全リ�
 ### Scheduleワッチャー
 
 Scheduleワッチャーは、アプリケーションで実行された全スケジュール済みタスクのコマンドと出力を記録します。
+
+<a name="displaying-user-avatars"></a>
+## ユーザーアバターの表示
+
+Telescopeダッシュボードは与えられたエントリーが保存されている時、ログインしているユーザーのアバターを表示します。TelescopeはデフォルトでGravatar Webサービスを使用してアバターを取得します。しかし、`TelescopeSeerviceProvider`でコールバックを登録すれば、アバターのURLをカスタマイズできます。コールバックにはユーザーのIDとメールアドレスが渡されますので、ユーザーのアバターイメージのURLを返す必用があります。
+
+    use App\User;
+    use Laravel\Telescope\Telescope;
+
+    /**
+     * 全アプリケーションサービスの登録
+     *
+     * @return void
+     */
+    public function register()
+    {
+        Telescope::avatar(function ($id, $email) {
+            return '/avatars/'.User::find($id)->avatar_path;
+        });
+    }
