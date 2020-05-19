@@ -312,6 +312,24 @@ API構築時、Eloquentモデルと、アプリケーションユーザーに対
         ]
     }
 
+`data`の代わりにカスタムキーを使用したい場合は、リソースクラスで`$wrap`属性を定義してください。
+
+    <?php
+
+    namespace App\Http\Resources;
+
+    use Illuminate\Http\Resources\Json\JsonResource;
+
+    class User extends JsonResource
+    {
+        /**
+         * 適用する"data"ラッパー
+         *
+         * @var string
+         */
+        public static $wrap = 'user';
+    }
+
 一番外部のリソースでラップしないようにしたい場合は、ベースのリソースクラスに対し、`withoutWrapping`メソッドを使用してください。通常、このメソッドはアプリケーションに対するリクエストごとにロードされる、`AppServiceProvider`か、もしくは他の[サービスプロバイダ](/docs/{{version}}/providers)から呼び出します。
 
     <?php

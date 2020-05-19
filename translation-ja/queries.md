@@ -744,6 +744,8 @@ JSONカラムを更新する場合は、JSONオブジェクト中の適切なキ
 
     DB::table('users')->increment('votes', 1, ['name' => 'John']);
 
+> {note} Model events are not fired when using the `increment` and `decrement` methods.
+
 <a name="deletes"></a>
 ## DELETE
 

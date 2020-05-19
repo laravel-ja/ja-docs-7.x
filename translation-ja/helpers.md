@@ -86,6 +86,7 @@ Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し�
 [preg_replace_array](#method-preg-replace-array)
 [Str::after](#method-str-after)
 [Str::afterLast](#method-str-after-last)
+[Str::ascii](#method-str-ascii)
 [Str::before](#method-str-before)
 [Str::beforeLast](#method-str-before-last)
 [Str::between](#method-str-between)
@@ -154,7 +155,7 @@ Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し�
 [lower](#method-fluent-str-lower)
 [ltrim](#method-fluent-str-ltrim)
 [match](#method-fluent-str-match)
-[matchAll](#method-fluent-str-matchAll)
+[matchAll](#method-fluent-str-match-all)
 [plural](#method-fluent-str-plural)
 [prepend](#method-fluent-str-prepend)
 [replace](#method-fluent-str-replace)
@@ -1044,6 +1045,17 @@ NULL値を指定すると、空の配列が返ってきます。
     $slice = Str::afterLast('App\Http\Controllers\Controller', '\');
 
     // 'Controller'
+
+<a name="method-str-ascii"></a>
+#### `Str::ascii()` {#collection-method}
+
+`Str::ascii`メソッドは文字列をASCII値へ変換しようと試みます。
+
+    use Illuminate\Support\Str;
+
+    $slice = Str::ascii('û');
+
+    // 'u'
 
 <a name="method-str-before"></a>
 #### `Str::before()` {#collection-method}

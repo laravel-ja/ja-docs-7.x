@@ -5,7 +5,9 @@
 - [インストール](#installation)
     - [フロントエンド・クイックスタート](#frontend-quickstart)
     - [Passportのデプロイ](#deploying-passport)
+    - [マイグレーションのカスタマイズ](#migration-customization)
 - [設定](#configuration)
+    - [クライアントシークレットハッシュ](#client-secret-hashing)
     - [トークン持続時間](#token-lifetimes)
     - [デフォルトモデルのオーバーライド](#overriding-default-models)
 - [アクセストークンの発行](#issuing-access-tokens)
@@ -20,6 +22,7 @@
     - [パスワードグラントクライアントの作成](#creating-a-password-grant-client)
     - [トークンのリクエスト](#requesting-password-grant-tokens)
     - [全スコープの要求](#requesting-all-scopes)
+    - [ユーザープロバイダのカスタマイズ](#customizing-the-user-provider)
     - [ユーザー名フィールドのカスタマイズ](#customizing-the-username-field)
     - [パスワードバリデーションのカスタマイズ](#customizing-the-password-validation)
 - [暗黙のグラントトークン](#implicit-grant-tokens)
@@ -66,7 +69,9 @@ Passportサービスプロバイダはフレームワークに対し、自身の
 
     php artisan passport:install
 
-このコマンドを実行後、`App\User`モデルへ`Laravel\Passport\HasApiTokens`トレイトを追加してください。このトレイトは認証済みユーザーのトークンとスコープを確認するためのヘルパメソッドをモデルに提供します。
+> {tip} 自動増分整数の代わりに、Passportの`Client`モデルの主キー値としてUUIDを使用したい場合は、[`uuids`オプション](#client-uuids)を使いPassportをインストールしてください。
+
+`passport:install`コマンドを実行し終えたら、`Laravel\Passport\HasApiTokens`トレイトを`App\User`モデルへ追加してください。このトレイトは認証済みユーザーのトークンとスコープを調べられるように、モデルへ数個のヘルパメソッドを提供します。
 
     <?php
 
@@ -129,11 +134,12 @@ Passportサービスプロバイダはフレームワークに対し、自身の
         ],
     ],
 
-### マイグレーションのカスタマイズ
+<a name="client-uuids"></a>
+#### クライアントUUID
 
-Passportのデフォルトマイグレーションを使用しない場合は、`AppServiceProvider`の`register`メソッドの中で、`Passport::ignoreMigrations`を呼び出してください。デフォルトのマイグレーションは、`php artisan vendor:publish --tag=passport-migrations`を使えばエクスポートできます。
+`passport:install`コマンドは`--uuids`オプションを指定して実行できます。このフラグはPassportへ`Client`モデルの主キー値として自動増分整数の代わりにUUIDを使用することを指示します。`--uuids`オプションを付けて`passport:install`コマンドを実行したら、Passportのデフォルトマイグレーションの無効化に関して追加の指示が与えられます。
 
-Passportはデフォルトで、`user_id`の保存に整数カラムを使用します。たとえば、UUIDのような異なったカラムタイプをユーザーの識別子に使用している場合は、エキスポートした後に、デフォルトのPassportマイグレーションを変更する必要があります。
+    php artisan passport:install --uuids
 
 <a name="frontend-quickstart"></a>
 ### フロントエンド・クイックスタート
@@ -204,8 +210,22 @@ Passportを実働サーバへ最初にデプロイするとき、`passport:keys`
     <public key here>
     -----END PUBLIC KEY-----"
 
+<a name="migration-customization"></a>
+### マイグレーションのカスタマイズ
+
+Passportのデフォルトマイグレーションを使用しない場合、`AppServiceProvider`の`register`メソッドで`Passport::ignoreMigrations`メソッドを呼び出す必用があります。`php artisan vendor:publish --tag=passport-migrations`により、デフォルトマイグレーションをエクスポートできます。
+
 <a name="configuration"></a>
 ## 設定
+
+<a name="client-secret-hashing"></a>
+### クライアントシークレットハッシュ
+
+クライアントのシークレットをデータベース保存時にハッシュ化したい場合は、`AppServiceProvider`の`boot`メソッドで`Passport::hashClientSecrets`メソッドを呼び出す必用があります。
+
+    Passport::hashClientSecrets();
+
+一度有効にすると、すべてのクライアントのシークレットはクライアント作成時に一度だけ表示されます。データベースには平文のクライアントシークレット値はまったく保存されないため、失われたら回復は不可能です。
 
 <a name="token-lifetimes"></a>
 ### トークン持続時間
@@ -617,6 +637,11 @@ OAuth2のパスワードグラントはモバイルアプリケーションの�
         ],
     ]);
 
+<a name="customizing-the-user-provider"></a>
+### ユーザープロバイダのカスタマイズ
+
+アプリケーションが[認証ユーザープロバイダ](/docs/{{version}}/authentication#introduction)を複数使用している場合、`artisan passport:client --password`コマンドによりクライアントを制作する時に、`--provider`オプションによりパスワードグランツクライアントで使用するユーザープロバイダを指定します。指定プロバイダ名は`config/auth.php`設定ファイルで定義した有効なプロバイダと一致している必用があります。次に、[ミドルウェアを使用してルートを保護]（＃via-middleware）して、ガードの指定したプロバイダのユーザーのみ認証するようにします。
+
 <a name="customizing-the-username-field"></a>
 ### ユーザー名フィールドのカスタマイズ
 
@@ -771,7 +796,12 @@ OAuth2のパスワードグラントはモバイルアプリケーションの�
 
     php artisan passport:client --personal
 
-すでにパーソナルアクセスクライアントを定義済みの場合は、それを使用することを`personalAccessClientId`メソッドを使用しPassportへ指定します。通常、このメソッドは`AuthServiceProvider`の`boot`メソッドから呼び出します。
+パーソナルアクセスクライアントを制作したら、クライアントIDと平文シークレット値をアプリケーションの`.env`ファイルに設定してください。
+
+    PASSPORT_PERSONAL_ACCESS_CLIENT_ID=client-id-value
+    PASSPORT_PERSONAL_ACCESS_CLIENT_SECRET=unhashed-client-secret-value
+
+次に、`AuthServiceProvider`の`boot`メソッドの中で、`Passport::personalAccessClientId`と`Passport::personalAccessClientSecret`を呼び出し、これらの値を登録します。
 
     /**
      * 全認証／認可の登録
@@ -784,7 +814,13 @@ OAuth2のパスワードグラントはモバイルアプリケーションの�
 
         Passport::routes();
 
-        Passport::personalAccessClientId('client-id');
+        Passport::personalAccessClientId(
+            config('passport.personal_access_client.id')
+        );
+
+        Passport::personalAccessClientSecret(
+            config('passport.personal_access_client.secret')
+        );
     }
 
 <a name="managing-personal-access-tokens"></a>
@@ -860,6 +896,28 @@ Passportは送信されてきたリクエスト上のアクセストークンを
     Route::get('/user', function () {
         //
     })->middleware('auth:api');
+
+#### 複数認証ガード
+
+アプリケーションの認証でたぶんまったく異なるEloquentモデルを使用する、別々のタイプのユーザーを認証する場合、それぞれのユーザープロバイダタイプごとにガード設定を定義する必用があるでしょう。これにより特定ユーザープロバイダ向けのリクエストを保護できます。例として`config/auth.php`設定ファイルで以下のようなガード設定を行っているとしましょう。
+
+    'api' => [
+        'driver'   => 'passport',
+        'provider' => 'users',
+    ],
+
+    'api-customers' => [
+        'driver'   => 'passport',
+        'provider' => 'customers',
+    ],
+
+以下のルートは受信リクエストを認証するため`customers`ユーザープロバイダを使用する`api-customers`ガードを使用します。
+
+    Route::get('/customer', function () {
+        //
+    })->middleware('auth:api-customers');
+
+> {tip} Passportを使用する複数ユーザープロバイダ利用の詳細は、[パスワードグラントのドキュメント](#customizing-the-user-provider)を調べてください。
 
 <a name="passing-the-access-token"></a>
 ### アクセストークンの受け渡し

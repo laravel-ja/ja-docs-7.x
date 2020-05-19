@@ -1471,6 +1471,12 @@ DustテストにCircleCIを使用する場合、以下の設定ファイルを�
 
                 - store_artifacts:
                     path: tests/Browser/screenshots
+                    
+                - store_artifacts:
+                    path: tests/Browser/console
+                    
+                - store_artifacts:
+                    path: storage/logs
 
 
 <a name="running-tests-on-codeship"></a>

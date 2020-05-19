@@ -152,6 +152,8 @@
 [shift](#method-shift)
 [shuffle](#method-shuffle)
 [skip](#method-skip)
+[skipUntil](#method-skipuntil)
+[skipWhile](#method-skipwhile)
 [slice](#method-slice)
 [some](#method-some)
 [sort](#method-sort)
@@ -1709,6 +1711,50 @@ staticの`make`メソッドは、新しいコレクションインスタンス�
 
     // [5, 6, 7, 8, 9, 10]
 
+<a name="method-skipuntil"></a>
+#### `skipUntil()` {#collection-method}
+
+`skipUntil`メソッドは指定コールバックが`true`を返すまでアイテムをスキップし、それからコレクションの残りのアイテムを返します。
+
+    $collection = collect([1, 2, 3, 4]);
+
+    $subset = $collection->skipUntil(function ($item) {
+        return $item >= 3;
+    });
+
+    $subset->all();
+
+    // [3, 4]
+
+もしくはシンプルに値を`skipUntil`メソッドへ渡すこともでき、その場合は指定した値が見つかるまでアイテムをスキップします。
+
+    $collection = collect([1, 2, 3, 4]);
+
+    $subset = $collection->skipUntil(3);
+
+    $subset->all();
+
+    // [3, 4]
+
+> {note} 指定した値が見つからないか、コールバックが`true`を返さなかった場合、`skipUntil`メソッドは空のコレクションを返します。
+
+<a name="method-skipwhile"></a>
+#### `skipWhile()` {#collection-method}
+
+`skipWhile`メソッドは指定コールバックが`true`を返す間アイテムをスキップし、それからコレクション残りのアイテムを返します。
+
+    $collection = collect([1, 2, 3, 4]);
+
+    $subset = $collection->skipWhile(function ($item) {
+        return $item <= 3;
+    });
+
+    $subset->all();
+
+    // [4]
+
+> {note} コールバックが`true`を返さなかった場合、`skipWhile`メソッドは空のコレクションを返します。
+
 <a name="method-slice"></a>
 #### `slice()` {#collection-method}
 
@@ -1979,7 +2025,7 @@ sliceメソッドはデフォルトでキー値を保持したまま返します
 
     $collection = collect([1, 2, 3, 4]);
 
-    $subset = $collection->until(3);
+    $subset = $collection->takeUntil(3);
 
     $subset->all();
 
@@ -2598,7 +2644,7 @@ staticの`wrap`メソッドは適用可能であれば、指定値をコレク�
 <a name="higher-order-messages"></a>
 ## Higher Order Message
 
-コレクションで繁用するアクションを手短に実行できるよう、"higher order messages"をサポートしました。[`average`](#method-average)、[`avg`](#method-avg)、[`contains`](#method-contains)、[`each`](#method-each)、[`every`](#method-every)、[`filter`](#method-filter)、[`first`](#method-first)、[`flatMap`](#method-flatmap)、[`groupBy`](#method-groupby)、[`keyBy`](#method-keyby)、[`map`](#method-map)、[`max`](#method-max)、[`min`](#method-min)、[`partition`](#method-partition)、[`reject`](#method-reject)、[`some`](#method-some)、[`sortBy`](#method-sortby)、[`sortByDesc`](#method-sortbydesc)、[`sum`](#method-sum)、[`unique`](#method-unique)、[`takeUntil`](#method-takeuntil)、[`takeWhile`](#method-takewhile)コレクションメソッドでhigher order messageが使用できます。
+コレクションで繁用するアクションを手短に実行できるよう、"higher order messages"をサポートしました。[`average`](#method-average)、[`avg`](#method-avg)、[`contains`](#method-contains)、[`each`](#method-each)、[`every`](#method-every)、[`filter`](#method-filter)、[`first`](#method-first)、[`flatMap`](#method-flatmap)、[`groupBy`](#method-groupby)、[`keyBy`](#method-keyby)、[`map`](#method-map)、[`max`](#method-max)、[`min`](#method-min)、[`partition`](#method-partition)、[`reject`](#method-reject)、[`skipUntil`](#method-skipuntil)、[`skipWhile`](#method-skipwhile)、[`some`](#method-some)、[`sortBy`](#method-sortby)、[`sortByDesc`](#method-sortbydesc)、[`sum`](#method-sum)、[`unique`](#method-unique)、[`takeUntil`](#method-takeuntil)、[`takeWhile`](#method-takewhile)コレクションメソッドでhigher order messageが使用できます。
 
 各higher order messageへは、コレクションインスタンスの動的プロパティとしてアクセスできます。例として、コレクション中の各オブジェクトメソッドを呼び出す、`each` higher order messageを使用してみましょう。
 

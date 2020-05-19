@@ -13,6 +13,10 @@
     - [タグ付けしたキャッシュアイテムの保存](#storing-tagged-cache-items)
     - [タグ付けしたキャッシュアイテムへのアクセス](#accessing-tagged-cache-items)
     - [タグ付けしたキャッシュアイテムの削除](#removing-tagged-cache-items)
+- [アトミックロック](#atomic-locks)
+    - [ドライバ動作要件](#lock-driver-prerequisites)
+    - [ロック管理](#managing-locks)
+    - [プロセス間のロック管理](#managing-locks-across-processes)
 - [カスタムキャッシュドライバの追加](#adding-custom-cache-drivers)
     - [ドライバープログラミング](#writing-the-driver)
     - [ドライバ登録](#registering-the-driver)
@@ -209,10 +213,81 @@ Redisの設定についての詳細は、[Laravelドキュメントページ](/d
 
 > {note} `flush`メソッドは、キャッシュのプレフィックスを考慮せずに、キャッシュから全アイテムを削除します。他のアプリケーションと共有するキャッシュを削除するときは、利用を熟考してください。
 
-<a name="atomic-locks"></a>
-### アトミックロック
+<a name="the-cache-helper"></a>
+### Cacheヘルパ
 
-> {note} この機能を利用するには、アプリケーションのデフォルトキャッシュドライバに、 `memcached`か`dynamodb`、`redis`ドライバを使用する必要があります。さらに、すべてのサーバが同じ中央キャッシュサーバに接続する必要があります。
+`Cache`ファサードや[キャッシュ契約](/docs/{{version}}/contracts)の利用に加え、グローバルな`cache`関数を使用し、キャッシュ経由でデータを取得および保存することもできます。`cache`関数を文字列引数だけで呼び出すと、指定したキーの値を返します。
+
+    $value = cache('key');
+
+関数へキー／値ペアの配列と有効時間を指定した場合は、指定した時間まで値をキャッシュへ保存します。
+
+    cache(['key' => 'value'], $seconds);
+
+    cache(['key' => 'value'], now()->addMinutes(10));
+
+`cache`関数を引数無しで呼び出すと、Illuminate\Contracts\Cache\Factory`の実装インスタンスが返されます。これを使い他のキャッシュメソッドも呼び出せます。
+
+    cache()->remember('users', $seconds, function () {
+        return DB::table('users')->get();
+    });
+
+> {tip} テストでグローバルの`cache`関数の呼び出し時は、[ファサードのテスト](/docs/{{version}}/mocking#mocking-facades)と同様に`Cache::shouldReceive`メソッドを使用できます。
+
+<a name="cache-tags"></a>
+## キャッシュタグ
+
+> {note} キャッシュタグは`file`と`database`キャッシュドライバ使用時は使用できません。また"forever"として保存しているキャッシュに複数のタグを使用する場合は、`memcached`のような古いレコードを自動的にパージするドライバで良いパフォーマンスが出ます。
+
+<a name="storing-tagged-cache-items"></a>
+### タグ付きキャッシュアイテムの保存
+
+キャッシュタグにより関連するアイテムにタグを付け、そのタグを指定することで割り付けたキャッシュ値へ一度にアクセスできます。たとえば、タグ付けしたキャッシュにアクセスし、キャッシュへ値を`put`してみましょう。
+
+    Cache::tags(['people', 'artists'])->put('John', $john, $seconds);
+
+    Cache::tags(['people', 'authors'])->put('Anne', $anne, $seconds);
+
+<a name="accessing-tagged-cache-items"></a>
+### タグ付けしたキャッシュアイテムへのアクセス
+
+タグ付けしたキャッシュアイテムを取得するには、`tags`メソッドへ渡した同じ順番でタグのリストを渡します。それから、`get`メソッドを取得したいキーで呼び出します。
+
+    $john = Cache::tags(['people', 'artists'])->get('John');
+
+    $anne = Cache::tags(['people', 'authors'])->get('Anne');
+
+<a name="removing-tagged-cache-items"></a>
+### タグ付けしたアイテムの削除
+
+タグやタグのリストを割り付けたアイテムすべてを削除できます。たとえば次の文は、`people`か `authors`、もしくは両方のタグ付けしたキャッシュをすべて削除します。
+
+    Cache::tags(['people', 'authors'])->flush();
+
+制約により、この文は`authors`のタグづけしたキャッシュだけを削除するため、`Anne`は削除されますが`John`はされません。
+
+    Cache::tags('authors')->flush();
+
+<a name="atomic-locks"></a>
+## アトミックロック
+
+> {note} この機能を利用するには、アプリケーションで`memcached`、`dynamodb`、`redis`、`database`、`array`のどれかをデフォルトキャッシュドライバに使用する必用があります。更に、すべてのサーバから同じ中央キャッシュサーバへ通信できる必用もあります。
+
+<a name="lock-driver-prerequisites"></a>
+### ドライバー要件
+
+#### データベース
+
+`database`キャッシュドライバを使用する場合は、キャッシュロックを含むテーブルを準備する必用があります。以下にテーブルの`Schema`定義の例を紹介します。
+
+    Schema::create('cache_locks', function ($table) {
+        $table->string('key')->primary();
+        $table->string('owner');
+        $table->integer('expiration');
+    });
+
+<a name="managing-locks"></a>
+### ロック管理
 
 アトミックロックにより競合状態を心配することなく、分散型のロック操作を実現できます。たとえば、[Laravel Forge](https://forge.laravel.com)では、一度に１つのリモートタスクを１つのサーバで実行するために、アトミックロックを使用しています。ロックを生成し、管理するには`Cache::lock`メソッドを使用します。
 
@@ -252,7 +327,8 @@ Redisの設定についての詳細は、[Laravelドキュメントページ](/d
         // 最大５秒待機し、ロックを獲得
     });
 
-#### プロセス間のロック管理
+<a name="managing-locks-across-processes"></a>
+### プロセス間のロック管理
 
 あるプロセスでロックを獲得し、他のプロセスで開放したい場合もあります。たとえば、Webリクエストでロックを獲得し、そのリクエストから起動したキュー済みジョブの最後で、ロックを開放したい場合です。そのようなシナリオでは、ジョブで渡されたトークンを使い、ロックを再インスタンス化できるように、ロックを限定する「所有者(owner)のトークン」をキューするジョブへ渡す必要があります。
 
@@ -271,61 +347,6 @@ Redisの設定についての詳細は、[Laravelドキュメントページ](/d
 現在の所有者にかかわらず、ロックを開放したい場合は、`forceRelease`メソッドを使用します。
 
     Cache::lock('foo')->forceRelease();
-
-<a name="the-cache-helper"></a>
-### cacheヘルパ
-
-`Cache`ファサードと[Cache契約](/docs/{{version}}/contracts)に付け加え、キャッシュからのデータ取得／保存を行う、グローバル`cache`関数も使用できます。`cache`関数を文字列引数一つで呼び出す場合、指定したキーの値を返します。
-
-    $value = cache('key');
-
-キー／値ペアの配列と、有効期間を関数へ渡す場合、指定期間の間、値をキャッシュへ保存します。
-
-    cache(['key' => 'value'], $seconds);
-
-    cache(['key' => 'value'], now()->addMinutes(10));
-
-`cache`関数を引数なしで呼び出すと、`Illuminate\Contracts\Cache\Factory`を実装したインスタンスが返ってきます。これを使い、他のキャッシュメソッドを呼び出せます。
-
-    cache()->remember('users', $seconds, function () {
-        return DB::table('users')->get();
-    });
-
-> グローバル`cache`関数への呼び出しをテストする場合、[ファサードのテスト](/docs/{{version}}/mocking#mocking-facades)と同様に、`Cache::shouldReceive`メソッドを使います。
-
-<a name="cache-tags"></a>
-## キャッシュタグ
-
-> {note} `file`と`database`キャッシュドライバ使用時、キャッシュタグはサポートされません。また、"forever"を使い、複数のタグをつけたキャッシュを使用する場合、古いレコードを自動的にパージする`memcached`のようなドライバがパフォーマンス的に最適です。
-
-<a name="storing-tagged-cache-items"></a>
-### タグ付けキャッシュアイテムの保存
-
-キャッシュタグにより、キャッシュ中の関連するアイテムへタグ付けできます。その後、指定したタグがつけられたキャッシュの値を全部削除できます。タグを順番に指定する配列を渡すことで、タグ付けしたキャッシュへアクセスできます。例としてタグ付けしたキャッシュにアクセスし、キャッシュへ値を`put`してみましょう。
-
-    Cache::tags(['people', 'artists'])->put('John', $john, $seconds);
-
-    Cache::tags(['people', 'authors'])->put('Anne', $anne, $seconds);
-
-<a name="accessing-tagged-cache-items"></a>
-### タグ付けキャッシュアイテムへのアクセス
-
-タグ付けしたキャッシュアイテムを取得するには、`tags`メソッドに同じ順序でタグのリストを渡し、続けて`get`メソッドで取得したいキーを指定します。
-
-    $john = Cache::tags(['people', 'artists'])->get('John');
-
-    $anne = Cache::tags(['people', 'authors'])->get('Anne');
-
-<a name="removing-tagged-cache-items"></a>
-### タグ付けキャッシュアイテムの削除
-
-タグ一つ、もしくはタグのリストに結びついた全アイテムを一度に消去できます。たとえば、次の実行文は`people`か`authors`のどちらか、または両方にタグ付けされたキャッシュを全部削除します。ですから、`Anne`と`John`は両方共キャッシュから削除されます。
-
-    Cache::tags(['people', 'authors'])->flush();
-
-対照的に、次の実行分では`authors`にタグ付けしたキャッシュのみ削除されますので、`Anne`が削除され、`John`は残ります。
-
-    Cache::tags('authors')->flush();
 
 <a name="adding-custom-cache-drivers"></a>
 ## カスタムキャッシュドライバの追加

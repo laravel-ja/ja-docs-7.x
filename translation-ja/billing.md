@@ -824,7 +824,7 @@ StripeはWebフックにより、アプリケーションへさまざまなイ�
 
 デフォルトでこのコントローラは、課金に多く失敗し続ける（Stripeの設定で定義している回数）、顧客の更新、顧客の削除、サブスクリプションの変更、支払い方法の変更があると、自動的にサブスクリプションをキャンセル処理します。しかしながら、すぐに見つけることができるようにこのコントローラを拡張し、どんなWebhookイベントでもお好きに処理できます
 
-アプリケーションでStripeのWebhookを処理するためには、StripeのコントロールパネルでWebhook URLを確実に設定してください。Stripeのコントロールパネルで設定する必要のあるWebhookの全リストは、以下のとおりです。
+アプリケーションでStripeのWebhookを処理するためには、StripeのコントロールパネルでWebhook URLを確実に設定してください。CashierのWebhookのデフォルトコントローラは、`/stripe/webhook`のURIをリッスンしています。Stripeのコントロールパネルで設定する必要のあるWebhookの全リストは、以下のとおりです。
 
 - `customer.subscription.updated`
 - `customer.subscription.deleted`

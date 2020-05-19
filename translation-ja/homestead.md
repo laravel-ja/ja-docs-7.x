@@ -16,6 +16,7 @@
     - [データベーススナップショット](#database-snapshots)
     - [サイトの追加](#adding-additional-sites)
     - [環境変数](#environment-variables)
+    - [ワイルドカードSSL](#wildcard-ssl)
     - [Cronスケジュール設定](#configuring-cron-schedules)
     - [Mailhogの設定](#configuring-mailhog)
     - [Minioの設定](#configuring-minio)
@@ -69,7 +70,7 @@ HomesteadはWindowsやMac、Linuxシステム上で実行でき、NginxやPHP、
 - MySQL
 - lmmによるMySQLとMariaDBデータベーススナップショット
 - Sqlite3
-- PostgreSQL
+- PostgreSQL (9.6, 10, 11, 12)
 - Composer
 - Node (Yarn、Bower、Bower、Grunt、Gulpを含む)
 - Redis
@@ -455,6 +456,23 @@ Laravelベースではないプロジェクトも簡単に実行できるよう�
           value: bar
 
 `Homestead.yaml`を変更したら、`vagrant reload --provision`を実行し、再プロビジョンするのを忘れないでください。これにより全インストール済みPHPバージョンに対するPHP-FPM設定と、`vagrant`ユーザーの環境も更新されます。
+
+<a name="wildcard-ssl"></a>
+### ワイルドカードSSL
+
+Homesteadは`Homestead.yaml`ファイルの`sites:`セクションで定義している各サイトごとに、自己署名したSSL証明書を設定しています。サイトに対しワイルドカードSSL証明書を生成したい場合は、サイトの設定に`wildcard`オプションを追加してください。シングルドメイン証明書の代わりにワイルドカード証明書を使いたい場合はサイトの設定に`use_wildcard`オプションも追加してください。
+
+    - map: foo.domain.test
+      to: /home/vagrant/domain
+      wildcard: "yes"
+      use_wildcard: "yes"
+
+`use_wildcard`オプションが`no`と指定されている場合は、ワイルドカード証明書は生成されますが使用されません。
+
+    - map: foo.domain.test
+      to: /home/vagrant/domain
+      wildcard: "yes"
+      use_wildcard: "no"
 
 <a name="configuring-cron-schedules"></a>
 ### Cronスケジュール設定

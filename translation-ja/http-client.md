@@ -38,6 +38,7 @@
     $response->status() : int;
     $response->ok() : bool;
     $response->successful() : bool;
+    $response->failed() : bool;
     $response->serverError() : bool;
     $response->clientError() : bool;
     $response->header($header) : string;
@@ -136,6 +137,9 @@ Guzzleのデフォルト動作と異なり、LaravelのHTTPクライアントラ
 
     // ステータスコードが２００以上、３００より小さいレスポンスであったかを判定
     $response->successful();
+
+    // ステータスコードが４００より大きいかを判定
+    $response->failed();
 
     // ステータスコードが４００レベルのレスポンスであったかを判定
     $response->clientError();
