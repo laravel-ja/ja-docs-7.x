@@ -493,7 +493,7 @@ Homesteadサイトで`schedule:run`コマンドを実行したい場合は、サ
 
 Mailhogを使用すると、簡単に送信するメールを捉えることができ、受信者へ実際に届けなくとも内容を調べることができます。これを使用するには、`.env`ファイルのメール設定を以下のように更新します。
 
-    MAIL_DRIVER=smtp
+    MAIL_MAILER=smtp
     MAIL_HOST=localhost
     MAIL_PORT=1025
     MAIL_USERNAME=null

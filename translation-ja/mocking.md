@@ -77,7 +77,8 @@ Laravelのサービスコンテナにより、アプリケーションへ依存�
 
             // 注文の実行コード…
 
-            Bus::assertDispatched(ShipOrder::class, function ($job) use ($order) {
+            // 指定したテストに成功する特定のタイプのジョブがディスパッチされたことを宣言
+            Bus::assertDispatched(function (ShipOrder $job) use ($order) {
                 return $job->order->id === $order->id;
             });
 
@@ -113,14 +114,15 @@ Laravelのサービスコンテナにより、アプリケーションへ依存�
 
             // 注文の実行コード…
 
-            Event::assertDispatched(OrderShipped::class, function ($e) use ($order) {
-                return $e->order->id === $order->id;
+            // 指定したテストに成功する特定のタイプのイベントがディスパッチされたことを宣言
+            Event::assertDispatched(function (OrderShipped $event) use ($order) {
+                return $event->order->id === $order->id;
             });
 
-            // イベントが２回ディスパッチされることをアサート
+            // イベントが２回ディスパッチされることを宣言
             Event::assertDispatched(OrderShipped::class, 2);
 
-            // イベントがディスパッチされないことをアサート
+            // イベントがディスパッチされないことを宣言
             Event::assertNotDispatched(OrderFailedToShip::class);
         }
     }
@@ -205,26 +207,27 @@ Laravelのサービスコンテナにより、アプリケーションへ依存�
         {
             Mail::fake();
 
-            // Assert that no mailables were sent...
+            // Mailableがまったく送信されなかったことを宣言
             Mail::assertNothingSent();
 
             // 注文の実行コード…
 
-            Mail::assertSent(OrderShipped::class, function ($mail) use ($order) {
+            // 指定するテストに成功する特定のタイプのMailableがディスパッチされたことを宣言
+            Mail::assertSent(function (OrderShipped $mail) use ($order) {
                 return $mail->order->id === $order->id;
             });
 
-            // メッセージが指定したユーザーに届いたことをアサート
+            // メッセージが指定したユーザーに届いたことを宣言
             Mail::assertSent(OrderShipped::class, function ($mail) use ($user) {
                 return $mail->hasTo($user->email) &&
                        $mail->hasCc('...') &&
                        $mail->hasBcc('...');
             });
 
-            // mailableが２回送信されたことをアサート
+            // mailableが２回送信されたことを宣言
             Mail::assertSent(OrderShipped::class, 2);
 
-            // mailableが送られなかったことをアサート
+            // mailableが送られなかったことを宣言
             Mail::assertNotSent(AnotherMailable::class);
         }
     }
@@ -256,35 +259,35 @@ Laravelのサービスコンテナにより、アプリケーションへ依存�
         {
             Notification::fake();
 
-            // 通知がまったく送られていないことをアサート
+            // 通知がまったく送られていないことを宣言
             Notification::assertNothingSent();
 
             // 注文の実行コード…
 
+            // 指定するテストに成功する特定のタイプの通知が送信されたことを宣言
             Notification::assertSentTo(
                 $user,
-                OrderShipped::class,
-                function ($notification, $channels) use ($order) {
+                function (OrderShipped $notification, $channels) use ($order) {
                     return $notification->order->id === $order->id;
                 }
             );
 
-            // 通知が指定したユーザーへ送られたことをアサート
+            // 通知が指定したユーザーへ送られたことを宣言
             Notification::assertSentTo(
                 [$user], OrderShipped::class
             );
 
-            // 通知が送られなかったことをアサート
+            // 通知が送られなかったことを宣言
             Notification::assertNotSentTo(
                 [$user], AnotherNotification::class
             );
 
-            // 通知がNotification::route()メソッドにより送られたことをアサート
+            // 通知がNotification::route()メソッドにより送られたことを宣言
             Notification::assertSentTo(
                 new AnonymousNotifiable, OrderShipped::class
             );
 
-            // Notification::route()メソッドで通知を現在のユーザーに送ったことをアサート
+            // Notification::route()メソッドで通知を現在のユーザーに送ったことを宣言
             Notification::assertSentTo(
                 new AnonymousNotifiable,
                 OrderShipped::class,
@@ -318,37 +321,38 @@ Laravelのサービスコンテナにより、アプリケーションへ依存�
         {
             Queue::fake();
 
-            // ジョブがまったく投入されていないことをアサート
+            // ジョブがまったく投入されていないことを宣言
             Queue::assertNothingPushed();
 
             // 注文の実行コード…
 
-            Queue::assertPushed(ShipOrder::class, function ($job) use ($order) {
+            // 指定するテストに成功する特定のタイプのジョブがキュー投入されたことを宣言
+            Queue::assertPushed(function (ShipOrder $job) use ($order) {
                 return $job->order->id === $order->id;
             });
 
-            // 特定のキューへジョブが投入されたことをアサート
+            // 特定のキューへジョブが投入されたことを宣言
             Queue::assertPushedOn('queue-name', ShipOrder::class);
 
-            // ジョブが２回投入されたことをアサート
+            // ジョブが２回投入されたことを宣言
             Queue::assertPushed(ShipOrder::class, 2);
 
-            // ジョブが投入されなかったことをアサート
+            // ジョブが投入されなかったことを宣言
             Queue::assertNotPushed(AnotherJob::class);
 
-            // ジョブが指定したジョブチェーンで投入され、クラスが一致していることをアサート
+            // ジョブが指定したジョブチェーンで投入され、クラスが一致していることを宣言
             Queue::assertPushedWithChain(ShipOrder::class, [
                 AnotherJob::class,
                 FinalJob::class
             ]);
 
-            // ジョブが指定したジョブチェーンで投入され、クラスとプロパティ両方が一致していることをアサート
+            // ジョブが指定したジョブチェーンで投入され、クラスとプロパティ両方が一致していることを宣言
             Queue::assertPushedWithChain(ShipOrder::class, [
                 new AnotherJob('foo'),
                 new FinalJob('bar'),
             ]);
 
-            // ジョブチェーンを使わずに、ジョブが投入されたことをアサート
+            // ジョブチェーンを使わずに、ジョブが投入されたことを宣言
             Queue::assertPushedWithoutChain(ShipOrder::class);
         }
     }

@@ -89,7 +89,7 @@ Laravelの`laravel/ui`パッケージは、認証に必要なルートとビュ�
 
     public const HOME = '/home';
 
-ユーザー認証後に返すレスポンスをもっとがっちりカスタマイズする必要があるなら、必要に応じオーバーライトできるよう空の`authenticated(Request $request, $user)`メソッドもLaravelは提供できます。
+ユーザー認証時に返されるレスポンスのより堅牢なカスタマイズが必要な場合のため、Laravelは`AuthenticatesUsers`トレイトに空の`authenticated(Request $request、$user)`メソッドを用意しています。このトレイトは、`laravel/ui`パッケージを使用するときにアプリケーションへインストールされる、`LoginController`クラスで使用されます。そのため、`LoginController`クラスで独自の`authenticated`メソッドを定義可能です。
 
     /**
      * ユーザーが認証された

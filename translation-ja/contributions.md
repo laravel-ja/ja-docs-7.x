@@ -45,6 +45,7 @@ LaravelのソースコードはGitHubで管理され、各Laravelプロジェク
 LaravelのGitHubイシュートラッカーは、Laravelのヘルプやサポートの提供を目的としていません。代わりに以下のチャンネルを利用してください。
 
 <div class="content-list" markdown="1">
+- [GitHub Discussions](https://github.com/laravel/framework/discussions)
 - [Laracasts Forums](https://laracasts.com/discuss)
 - [Laravel.io Forums](https://laravel.io/forum)
 - [StackOverflow](https://stackoverflow.com/questions/tagged/laravel)

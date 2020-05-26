@@ -466,6 +466,30 @@ Stripeがサポートしている追加のフィールドについてのさら�
         //
     }
 
+#### サブスクリプションスコープ
+
+特定状態のサブスクリプションをデータベースから簡単にクエリできるよう、ほとんどのサブスクリプション状態はクエリスコープとしても利用できます。
+
+    // アクティブサブスクリプションをすべて取得
+    $subscriptions = Subscription::query()->active()->get();
+
+    // 特定ユーザーのキャンセル済みサブスクリプションをすべて取得
+    $subscriptions = $user->subscriptions()->cancelled()->get();
+
+以下に利用可能なサブスクリプションスコープをリストします。
+
+    Subscription::query()->active();
+    Subscription::query()->cancelled();
+    Subscription::query()->ended();
+    Subscription::query()->incomplete();
+    Subscription::query()->notCancelled();
+    Subscription::query()->notOnGracePeriod();
+    Subscription::query()->notOnTrial();
+    Subscription::query()->onGracePeriod();
+    Subscription::query()->onTrial();
+    Subscription::query()->pastDue();
+    Subscription::query()->recurring();
+
 <a name="incomplete-and-past-due-status"></a>
 #### 不十分と期日超過の状態
 
@@ -1063,7 +1087,13 @@ CashierのオブジェクトはStripe SDKオブジェクト上にラップされ
 
     $stripeSubscription = $subscription->asStripeSubscription();
 
-    $stripeSubscription->update(['application_fee_percent' => 5]);
+    $stripeSubscription->application_fee_percent = 5;
+
+    $stripeSubscription->save();
+
+Stripeのサブスクリプションを直接更新するために、`updateStripeSubscription`も使用できます。
+
+    $subscription->updateStripeSubscription(['application_fee_percent' => 5]);
 
 <a name="testing"></a>
 ## テスト
