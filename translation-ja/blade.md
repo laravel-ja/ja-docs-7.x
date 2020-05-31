@@ -688,6 +688,18 @@ HTML属性を使い、Bladeコンポーネントへデータを渡すことが�
             サーバエラー
         </x-slot>
 
+        <strong>Whoops!</strong> Something went wrong!
+    </x-alert>
+
+#### スコープ付きスロット
+
+VueのようなJavaScriptフレームワークを使用している方は「スコープ付きスロット」に慣れていると思います。これは、スロットの中でコンポーネントのデータやメソッドへアクセスできる機構です。同様の振る舞いはLaravelでも、コンポーネントでpublicメソッドやプロパティを定義すれば可能です。`component`変数によりスロットの中でコンポーネントへアクセスします。
+
+    <x-alert>
+        <x-slot name="title">
+            {{ $component->formatAlert('Server Error') }}
+        </x-slot>
+
         <strong>あーーー！</strong> なんか変だ！
     </x-alert>
 

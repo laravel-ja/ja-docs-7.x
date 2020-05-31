@@ -566,26 +566,6 @@ Laravelは`mail`設定ファイルの`default`メーラーとして設定され�
             ->to($request->user())
             ->send(new OrderShipped($order));
 
-<a name="rendering-mailables"></a>
-## Mailableのレンダーリング
-
-場合により、実際に送信はしないが、MailableのHTMLコンテンツを利用したいことも起きます。そのためには、Mailableの`render`メソッドを呼び出してください。このメソッドは、Mailableのコンテンツを評価し、文字列として返します。
-
-    $invoice = App\Invoice::find(1);
-
-    return (new App\Mail\InvoicePaid($invoice))->render();
-
-<a name="previewing-mailables-in-the-browser"></a>
-### Mailablesをブラウザでプレビュー
-
-mailableのテンプレートをデザインしているとき、Bladeテンプレートのようにブラウザでレンダーし、簡単にレビューできると便利です。そのため、Laravelでは、ルートのクロージャやコントローラから直接mailableを返すことができます。mailableが返されるとレンダーされ、ブラウザに表示されますので、実際のメールアドレスへ送る必要はなく、素早くレビューできます。
-
-    Route::get('mailable', function () {
-        $invoice = App\Invoice::find(1);
-
-        return new App\Mail\InvoicePaid($invoice);
-    });
-
 <a name="queueing-mail"></a>
 ### キュー使用メール
 
@@ -634,6 +614,26 @@ mailableのテンプレートをデザインしているとき、Bladeテンプ�
     {
         //
     }
+
+<a name="rendering-mailables"></a>
+## Mailableのレンダーリング
+
+場合により、実際に送信はしないが、MailableのHTMLコンテンツを利用したいことも起きます。そのためには、Mailableの`render`メソッドを呼び出してください。このメソッドは、Mailableのコンテンツを評価し、文字列として返します。
+
+    $invoice = App\Invoice::find(1);
+
+    return (new App\Mail\InvoicePaid($invoice))->render();
+
+<a name="previewing-mailables-in-the-browser"></a>
+### Mailablesをブラウザでプレビュー
+
+Mailableのテンプレートをデザインしているとき、Bladeテンプレートのようにブラウザでレンダーし、簡単にレビューできると便利です。そのため、Laravelでは、ルートのクロージャやコントローラから直接mailableを返すことができます。mailableが返されるとレンダーされ、ブラウザに表示されますので、実際のメールアドレスへ送る必要はなく、素早くレビューできます。
+
+    Route::get('mailable', function () {
+        $invoice = App\Invoice::find(1);
+
+        return new App\Mail\InvoicePaid($invoice);
+    });
 
 <a name="localizing-mailables"></a>
 ## Mailableのローカライズ

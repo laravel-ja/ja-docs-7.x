@@ -8,6 +8,7 @@
 - [ペジネーション結果の表示](#displaying-pagination-results)
     - [結果のJSON変換](#converting-results-to-json)
 - [ペジネーションビューのカスタマイズ](#customizing-the-pagination-view)
+    - [Tailwindの使用](#using-tailwind)
 - [ペジネータインスタンスメソッド](#paginator-instance-methods)
 
 <a name="introduction"></a>
@@ -186,6 +187,18 @@ Laravelのペジネーター結果クラスは`Illuminate\Contracts\Support\Json
         Paginator::defaultView('view-name');
 
         Paginator::defaultSimpleView('view-name');
+    }
+
+<a name="using-tailwind"></a>
+### Tailwindの使用
+
+Laravelは[Tailwind CSS](https://tailwindcss.com/)を使用し構築したペジネーションビューも用意しています。デフォルトのBootstrapビューの代わりに使用するには、`AppServiceProvider`の中でペジネーターの`useTailwind`メソッドを呼び出してください。
+
+    use Illuminate\Pagination\Paginator;
+
+    public function boot()
+    {
+        Paginator::useTailwind();
     }
 
 <a name="paginator-instance-methods"></a>

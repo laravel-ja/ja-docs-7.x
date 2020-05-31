@@ -12,6 +12,7 @@
 - [通知](#notifications)
     - [Slack](#slack)
     - [Discord](#discord)
+    - [Telegram](#telegram)
 
 <a name="introduction"></a>
 ## イントロダクション
@@ -189,4 +190,13 @@ Envoyは各タスク実行後の、[Discord](https://discord.com)への通知も
 
     @finished
         @discord('discord-webhook-url')
+    @endfinished
+
+<a name="telegram"></a>
+### Telegram
+
+Envoyは各タスク終了後に[Telegram](https://telegram.org)への通知送信もサポートしています。`@telegram`ディレクティブはTelegram Bot IDとチャットIDを引数に取ります。[BotFather](https://t.me/botfather)を使用して新しいBotを作成し、Bot IDを取得できます。[@username_to_id_bot](https://t.me/username_to_id_bot)を使用し、有効なチャットIDを取得できます。Bot IDとチャットID全体を`@telegram`ディレクティブへ渡してください。
+
+    @finished
+        @telegram('<bot-id>','<chat-id>')
     @endfinished
