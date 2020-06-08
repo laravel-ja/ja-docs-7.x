@@ -14,6 +14,7 @@
     - [１対多](#one-to-many-polymorphic-relations)
     - [多対多](#many-to-many-polymorphic-relations)
     - [カスタムポリモーフィックタイプ](#custom-polymorphic-types)
+- [動的リレーション](#dynamic-relationships)
 - [リレーションのクエリ](#querying-relations)
     - [リレーションメソッド対動的プロパティ](#relationship-methods-vs-dynamic-properties)
     - [存在するリレーションのクエリ](#querying-relationship-existence)
@@ -843,6 +844,20 @@ has many through（〜経由で多数へ紐づく）リレーションは、仲�
     $alias = $post->getMorphClass();
 
     $class = Relation::getMorphedModel($alias);
+
+<a name="dynamic-relationships"></a>
+### 動的リレーション
+
+`resolveRelationUsing`メソッドにより、実行時にEloquentモデル間のリレーションを定義できます。通常のアプリケーション開発では通常推奨できませんが、Laravelパッケージの開発時には時に便利でしょう。
+
+    use App\Order;
+    use App\Customer;
+
+    Order::resolveRelationUsing('customer', function ($orderModel) {
+        return $orderModel->belongsTo(Customer::class, 'customer_id');
+    });
+
+> {note} 動的リレーションを定義するときは常にEloquentリレーションメソッドの引数に明確なキー名を渡してください。
 
 <a name="querying-relations"></a>
 ## リレーションのクエリ

@@ -358,7 +358,7 @@ Laravelには多様な利便性のあるキャストタイプが用意されて�
         public function set($model, $key, $value, $attributes)
         {
             return is_null($this->algorithm)
-                        ? bcrypt($value);
+                        ? bcrypt($value)
                         : hash($this->algorithm, $value);
         }
     }

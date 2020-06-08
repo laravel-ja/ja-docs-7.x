@@ -145,12 +145,6 @@ JavaScriptの変数を初期化するために、配列をビューに渡してJ
 
 > {note} 既存の変数をJSONとしてレンダーするには、`@json`ディレクティブだけを使用してください。正規表現ベースのBladeテンプレートに、複雑な正規表現をディレクティブで渡すと、予期しない不良動作の原因になります。
 
-`@json`ディレクティブは、Vueコンポーネントや`data-*`属性を生成するのにも便利に使えます。
-
-    <example-component :some-prop='@json($array)'></example-component>
-
-> {note} 要素の属性の中で`@json`を使用する場合は、シングルコーテーションで囲みます。
-
 #### HTMLエンティティエンコーディング
 
 Blade（およびLaravelの`e`ヘルパ）はデフォルトで、HTMLエンティティをdouble encodeします。double encodeを無効にするには、`AppServiceProvider`の`boot`メソッドで、`Blade::withoutDoubleEncoding`メソッドを呼び出してください。
@@ -185,6 +179,14 @@ Blade（およびLaravelの`e`ヘルパ）はデフォルトで、HTMLエンテ�
     Hello, @{{ name }}.
 
 この例で、`@`記号はBladeにより削除されます。しかし、`{{ name }}`式はBladeエンジンにより変更されずにそのまま残り、JavaScriptフレームワークによりレンダリングできるようになります。
+
+`@`記号は、Bladeディレクティブをエスケープするためにも使用します。
+
+    {{-- Blade --}}
+    @@json()
+
+    <!-- HTML出力 -->
+    @json()
 
 #### `@verbatim`ディレクティブ
 

@@ -79,7 +79,7 @@ null | (null) null
 <a name="hiding-environment-variables-from-debug"></a>
 ### デバッグページの環境変数非表示
 
-例外が補足されず、`APP_DEBUG`環境変数が`true`になっていると、すべての環境変数とその内容がデバッグページに表示されます。特定の変数は非表示にしたい場合があるでしょう。`config/app.php`設定ファイルの`debug_blacklist`オプションを更新してください。
+例外が補足されず、`APP_DEBUG`環境変数が`true`になっていると、すべての環境変数とその内容がデバッグページに表示されます。特定の変数は非表示にしたい場合があるでしょう。`config/app.php`設定ファイルの`debug_hide`オプションを更新してください。
 
 いくつかの変数は、環境変数とサーバ／リクエストデータの両方で利用できます。そのため、`$_ENV`と`$_SERVER`両方のブラックリストへ登録する必要があります。
 
@@ -87,7 +87,7 @@ null | (null) null
 
         // ...
 
-        'debug_blacklist' => [
+        'debug_hide' => [
             '_ENV' => [
                 'APP_KEY',
                 'DB_PASSWORD',

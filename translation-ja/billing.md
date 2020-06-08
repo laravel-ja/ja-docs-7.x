@@ -558,6 +558,8 @@ Stripeがサポートしている追加のフィールドについてのさら�
 
 サブスクリプションの按分課金についての情報は、[Stripeドキュメント](https://stripe.com/docs/billing/subscriptions/prorations)で確認してください。
 
+> {note} `swapAndInvoice`メソッドの前に`noProrate`メソッドを実行しても按分課金には影響しません。インボイスは常に発行されます。
+
 <a name="subscription-quantity"></a>
 ### 購入数
 

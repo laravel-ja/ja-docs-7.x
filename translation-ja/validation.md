@@ -529,13 +529,21 @@ Laravelは`TrimStrings`と`ConvertEmptyStringsToNull`ミドルウェアをアプ
         ],
     ],
 
-#### 言語ファイル中のカスタム属性名の指定
+#### カスタム属性値の指定
 
 バリデーションメッセージの`:attribute`部分をカスタムアトリビュート名で置き換えたい場合は、`resources/lang/xx/validation.php`言語ファイルの`attributes`配列でカスタム名を指定してください。
 
     'attributes' => [
         'email' => 'email address',
     ],
+
+`Validator::make`メソッドの第４引数としてカスタム属性を渡すこともできます。
+
+    $customAttributes = [
+        'email' => 'email address',
+    ];
+
+    $validator = Validator::make($input, $rules, $messages, $customAttributes);
 
 #### 言語ファイルでカスタム値を指定
 

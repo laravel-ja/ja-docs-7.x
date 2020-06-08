@@ -405,6 +405,17 @@ Duskはフォームと入力要素を操作する、さまざまなメソッド�
 
     $browser->clear('email');
 
+`typeSlowly`メソッドによりDuskへゆっくりとタイプするように指示できます。Duskはデフォルトでキー押下間に１００ミリ秒の間隔を開けます。このキー押下間の時間をカスタマイズするには、メソッドの第２引数へ適切なミリ秒数を渡してください。
+
+    $browser->typeSlowly('mobile', '+1 (202) 555-5555');
+
+    $browser->typeSlowly('mobile', '+1 (202) 555-5555', 300);
+
+テキストをゆっくりと追加するために`appendSlowly`メソッドも使用できます。
+
+    $browser->type('tags', 'foo')
+            ->appendSlowly('tags', ', bar, baz');
+
 #### ドロップダウン
 
 ドロップダウンの選択ボックスから値を選ぶには、`select`メソッドを使います。`type`メソッドと同様に、`select`メソッドも完全なCSSセレクタは必要ありません。`select`メソッドに引数を指定するとき、表示テキストの代わりに、オプション値を渡します。
@@ -1471,10 +1482,10 @@ DustテストにCircleCIを使用する場合、以下の設定ファイルを�
 
                 - store_artifacts:
                     path: tests/Browser/screenshots
-                    
+
                 - store_artifacts:
                     path: tests/Browser/console
-                    
+
                 - store_artifacts:
                     path: storage/logs
 

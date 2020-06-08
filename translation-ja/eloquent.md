@@ -498,6 +498,19 @@ Eloquentの`all`メソッドはモデルテーブルの全レコードを結果�
     $user->wasChanged('title'); // true
     $user->wasChanged('first_name'); // false
 
+`getOriginal`メソッドはモデルのロード後にどんな変更がされているかにかかわらず、モデルのオリジナルな属性を含む配列を返します。特定の属性のオリジナル値を取得するために属性名を指定できます。
+
+    $user = User::find(1);
+
+    $user->name; // John
+    $user->email; // john@example.com
+
+    $user->name = "Jack";
+    $user->name; // Jack
+
+    $user->getOriginal('name'); // John
+    $user->getOriginal(); // オリジナルな属性の配列
+
 <a name="mass-assignment"></a>
 ### 複数代入
 
@@ -533,7 +546,7 @@ Eloquentの`all`メソッドはモデルテーブルの全レコードを結果�
 
 #### 属性の保護
 
-`$fillable`が複数代入時における属性の「ホワイトリスト」として動作する一方、`$guarded`の使用を選ぶことができます。`$guarded`プロパティは複数代入したくない属性の配列です。配列に含まれない他の属性は全部複数代入可能です。そのため`$guarded`は「ブラックリスト」として働きます。重要なのは、`$fillable`か`$guarded`のどちらか一方を使用することです。両方一度には使えません。以下の例は、**`price`を除いた**全属性に複数代入できます。
+`$fillable`が複数代入時における属性の「許可リスト」として動作する一方、`$guarded`の使用を選ぶことができます。`$guarded`プロパティは複数代入したくない属性の配列です。配列に含まれない他の属性は全部複数代入可能です。そのため`$guarded`は「拒否リスト」として働きます。重要なのは、`$fillable`か`$guarded`のどちらか一方を使用することです。両方一度には使えません。以下の例は、**`price`を除いた**全属性に複数代入できます。
 
     <?php
 
