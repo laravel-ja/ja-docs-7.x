@@ -522,6 +522,16 @@ Sometimes you may wish to perform several operations while scoping all of the op
               ->clickLink('Delete');
     });
 
+You may occasionally need to execute assertions outside of the current scope. You may use the `elsewhere` method to accomplish this:
+
+     $browser->with('.table', function ($table) {
+        // Current scope is `body .table`...
+        $browser->elsewhere('.page-title', function ($title) {
+            // Current scope is `body .page-title`...
+            $title->assertSee('Hello World');
+        });
+     });
+
 <a name="waiting-for-elements"></a>
 ### Waiting For Elements
 
@@ -1482,10 +1492,10 @@ If you are using CircleCI to run your Dusk tests, you may use this configuration
 
                 - store_artifacts:
                     path: tests/Browser/screenshots
-                    
+
                 - store_artifacts:
                     path: tests/Browser/console
-                    
+
                 - store_artifacts:
                     path: storage/logs
 

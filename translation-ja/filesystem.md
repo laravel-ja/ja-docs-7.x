@@ -341,6 +341,14 @@ Webアプリケーションで、ファイルを保存する一般的なケー�
         'avatars/'.$request->user()->id, 's3'
     );
 
+`storeAs`メソッドを使う場合は、ディスク名を第３引数としてメソッドに渡してください。
+
+    $path = $request->file('avatar')->storeAs(
+        'avatars',
+        $request->user()->id,
+        's3'
+    );
+
 #### 他のファイル情報
 
 アップロードしたファイルの元の名前を知りたい場合は、`getClientOriginalName`メソッドを使います。

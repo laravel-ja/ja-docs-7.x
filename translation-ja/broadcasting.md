@@ -83,6 +83,10 @@
 
     BROADCAST_DRIVER=pusher
 
+#### Pusher互換のLaravel　WebSocket
+
+[laravel-websockets](https://github.com/beyondcode/laravel-websockets)はPHPで実装された、Laravel用のPusher互換のWebSocketパッケージです。このパッケージは外部WebソケットプロバイダーやNodeを使用しなくてもLaravelブロードキャストの能力を最大限に活用できます。このパッケージのインストールと使用の詳細は、[公式ドキュメント]（https://beyondco.de/docs/laravel-websockets）を参照してください。
+
 #### Redis
 
 Redisブロードキャスタを使用する場合は、phpredis PHP拡張をPECLを使いインストールするか、PredisライブラリをComposerを使用しインストールする必要があります。
@@ -126,6 +130,8 @@ RedisブロードキャスタとSocket.IOサーバをペアリングする場合
 LaravelのイベントブロードキャストはサーバサイドのLaravelイベントから、WebSocketに対する駆動ベースのアプローチを使っているあなたのクライアントサイドのJavaScriptアプリケーションへ、ブロードキャストできるようにします。現在、[Pusherチャンネル](https://pusher.com/channels)とRedisドライバーが用意されています。[Laravel Echo](#installing-laravel-echo) JavaScriptパッケージを使用したクライアントサイド上で、イベントは簡単に利用できます。
 
 パブリック、もしくはプライベートに指定された「チャンネル」上で、イベントはブロードキャストされます。アプリケーションの全訪問者は、認証も認可も必要ないパブリックチャンネルを購入できます。しかし、プライベートチャンネルを購入するためには、認証され、そのチャンネルをリッスンできる認可が必要です。
+
+> {tip} Pusherの代替になるPHPで動作するオープンソースを使用したい場合は、[laravel-websockets](https://github.com/beyondcode/laravel-websockets)パッケージをチェックしてください。
 
 <a name="using-example-application"></a>
 ### サンプルアプリケーションの使用

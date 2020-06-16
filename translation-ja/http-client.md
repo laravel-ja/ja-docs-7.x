@@ -34,7 +34,7 @@
 `get`メソッドは`Illuminate\Http\Client\Response`のインスタンスを返します。これはレスポンスを調べるために使用できるさまざまなメソッドを持っています。
 
     $response->body() : string;
-    $response->json() : array;
+    $response->json() : array|mixed;
     $response->status() : int;
     $response->ok() : bool;
     $response->successful() : bool;

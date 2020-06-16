@@ -793,6 +793,18 @@ Supervisorの詳細情報は、[Supervisorドキュメント](http://supervisord
      */
     public $retryAfter = 3;
 
+リトライ時のディレイを決める複雑なロジックが必要になる場合は、キュージョブクラスで、`retryAfter`メソッドを定義してください。
+
+    /**
+    * ジョブを再取得する前に何秒待つか計算する
+    *
+    * @return int
+    */
+    public function retryAfter()
+    {
+        return 60 * pow(2, $this->attempts());
+    }
+
 <a name="cleaning-up-after-failed-jobs"></a>
 ### ジョブ失敗後のクリーンアップ
 

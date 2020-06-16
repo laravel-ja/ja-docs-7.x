@@ -522,6 +522,16 @@ DuskはJavaScriptダイアログを操作する、さまざまなメソッドを
               ->clickLink('Delete');
     });
 
+現在のスコープ外でアサーションを実行する必要のある場合があります。そのためには、`elsewhere`メソッドを使用します。
+
+     $browser->with('.table', function ($table) {
+        // Current scope is `body .table`...
+        $browser->elsewhere('.page-title', function ($title) {
+            // Current scope is `body .page-title`...
+            $title->assertSee('Hello World');
+        });
+     });
+
 <a name="waiting-for-elements"></a>
 ### 要素の待機
 

@@ -208,21 +208,21 @@ Laravelは[Tailwind CSS](https://tailwindcss.com/)を使用し構築したペジ
 
 メソッド  |  説明
 -------  |  -----------
-`$results->count()`  |  現在のページのアイテム数取得
-`$results->currentPage()`  |  現在のページ数
-`$results->firstItem()`  |  現在ページの最初のアイテムが何番目か取得
-`$results->getOptions()`  |  ペジネータオプション取得
-`$results->getUrlRange($start, $end)`  |  一定範囲のペジネーションURLを取得
-`$results->hasPages()`  |  複数ページに分割できるだけのアイテムがあるか判定
-`$results->hasMorePages()`  |  データストレージにまだアイテムが存在しているか判定
-`$results->items()`  |  現在ページのアイテムを取得
-`$results->lastItem()`  |  現在ページの最後のアイテムが何番目か取得
-`$results->lastPage()`  |  利用可能な最終ページ数取得（`simplePaginate`では使用できない）
-`$results->nextPageUrl()`  |  次ページのURL取得
-`$results->onFirstPage()`  |  ペジネータが最初のページを扱っているか判定
-`$results->perPage()`  |  ページごとに表示するアイテム数
-`$results->previousPageUrl()`  |  前ページのURL取得
-`$results->total()`  |  データ領域にある、条件に一致するアイテムの総数（`simplePaginate`では使用できない）
-`$results->url($page)`  |  指定したページのURL取得
-`$results->getPageName()`  |  ページを保存するために使用するクエリ文字変数を取得
-`$results->setPageName($name)`  |  ページを保存するために使用するクエリ文字変数を指定
+`$paginator->count()`  |  現在のページのアイテム数取得
+`$paginator->currentPage()`  |  現在のページ数
+`$paginator->firstItem()`  |  現在ページの最初のアイテムが何番目か取得
+`$paginator->getOptions()`  |  ペジネータオプション取得
+`$paginator->getUrlRange($start, $end)`  |  一定範囲のペジネーションURLを取得
+`$paginator->hasPages()`  |  複数ページに分割できるだけのアイテムがあるか判定
+`$paginator->hasMorePages()`  |  データストレージにまだアイテムが存在しているか判定
+`$paginator->items()`  |  現在ページのアイテムを取得
+`$paginator->lastItem()`  |  現在ページの最後のアイテムが何番目か取得
+`$paginator->lastPage()`  |  利用可能な最終ページ数取得（`simplePaginate`では使用できない）
+`$paginator->nextPageUrl()`  |  次ページのURL取得
+`$paginator->onFirstPage()`  |  ペジネータが最初のページを扱っているか判定
+`$paginator->perPage()`  |  ページごとに表示するアイテム数
+`$paginator->previousPageUrl()`  |  前ページのURL取得
+`$paginator->total()`  |  データ領域にある、条件に一致するアイテムの総数（`simplePaginate`では使用できない）
+`$paginator->url($page)`  |  指定したページのURL取得
+`$paginator->getPageName()`  |  ページを保存するために使用するクエリ文字変数を取得
+`$paginator->setPageName($name)`  |  ページを保存するために使用するクエリ文字変数を指定

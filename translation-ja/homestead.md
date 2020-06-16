@@ -754,6 +754,14 @@ Homesteadの更新を開始する前に、現在の仮想マシンを削除す�
 
     vagrant box update
 
+次に追加の設定ファイルを更新するために、Homesteadディレクトリで`bash init.sh`コマンドを実行してください。既存の`Homestead.yaml`、`after.sh`、`aliases`ファイルをオーバーライトするかどうか尋ねます。
+
+    // Mac／Linux…
+    bash init.sh
+
+    // Windows…
+    init.bat
+
 最後に、最新のVagrantバージョンを使用するために、Homestead Boxを再生成する必要があります。Homesteadディレクトリで以下のコマンドを実行してください。
 
     vagrant up
