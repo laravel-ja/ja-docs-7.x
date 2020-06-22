@@ -8,7 +8,7 @@
     - [設定ロードの最適化](#optimizing-configuration-loading)
     - [ルートロードの最適化](#optimizing-route-loading)
     - [ビューロードの最適化](#optimizing-view-loading)
-- [Forgeによるデプロイ](#deploying-with-forge)
+- [Forge／Vaporによるデプロイ](#deploying-with-forge-or-vapor)
 
 <a name="introduction"></a>
 ## イントロダクション
@@ -99,9 +99,13 @@ Nginxを実行しているサーバにアプリケーションをデプロイす
 
 このコマンドは全Bladeビューを事前にコンパイルし、要求ごとにコンパイルしなくて済むため、ビューを返すリクエストすべてでパフォーマンスが向上します。
 
-<a name="deploying-with-forge"></a>
-## Forgeによるデプロイ
+<a name="deploying-with-forge-or-vapor"></a>
+## Forge／Vaporによるデプロイ
 
 自分のサーバ設定管理に準備不足であったり、堅牢なLaravelアプリケーション実行に必要な数多くのサービスすべての設定について慣れていなければ、[Laravel Forge](https://forge.laravel.com)は素晴らしい代替案です。
 
 Laravel ForgeはDigitalOcean、Linode、AWSなど数多くのインフラプロバイダー上に、サーバを作成できます。それに加え、ForgeはNginx、MySQL、Redis、Memcached、Beanstalkなどのような、堅牢なLaravelアプリケーションを構築するために必要なツールを全部インストールし、管理します。
+
+#### Laravel Vapor
+
+Laravel向け完全サーバレスのオートスケーリング開発プラットフォームが必要な場合は、[Laravel Vapor](https://vapor.laravel.com)をチェックしてください。Laravel Vaporは、AWSで動作するLaravelのサーバレス開発プラットフォームです。Vapor上でLaravelインフラを起動し、サーバレスのスケーラブルなシンプルさに魅了されてください。Laravel Vaporは、Laravelの作成者によりフレームワークとシームレスに連携するように調整されているため、普段通りにLaravelアプリケーションを書き続けられます。

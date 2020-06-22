@@ -304,7 +304,7 @@ OAuth2で認可コードを使いこなせるかは、どの程度開発者がOA
 
 **リダイレクトURL**
 
-クライアントに対するリダイレクトURLをホワイトリストで指定したければ、入力を促すURLをカンマで区切り、`passport:client`コマンドで指定できます。
+クライアントに対するリダイレクトURLを複数許可したければ、`passport:client`コマンドで入力を促された時にURLをカンマで区切り指定します。
 
     http://example.com/callback,http://examplefoo.com/callback
 

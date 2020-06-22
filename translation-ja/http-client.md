@@ -58,6 +58,15 @@
         'role' => 'Network Administrator',
     ]);
 
+#### GETリクエストのクエリパラメータ
+
+`GET`リクエストの作成時はクエリ文字列をURLに直接追加するか、キー／値ペアの配列を第２引数として`get`メソッドに渡します。
+
+    $response = Http::get('http://test.com/users', [
+        'name' => 'Taylor',
+        'page' => 1,
+    ]);
+
 #### URLエンコードされたリクエストのフォーム送信
 
 `application/x-www-form-urlencoded`コンテンツタイプを使用してデータを送信したい場合は、リクエストを作成する前に`asForm`メソッドを呼び出す必要があります。

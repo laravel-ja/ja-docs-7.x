@@ -7,7 +7,6 @@
     - [キャッシュからアイテム取得](#retrieving-items-from-the-cache)
     - [キャッシュへアイテム保存](#storing-items-in-the-cache)
     - [キャッシュからのアイテム削除](#removing-items-from-the-cache)
-    - [アトミックロック](#atomic-locks)
     - [cacheヘルパ](#the-cache-helper)
 - [キャッシュタグ](#cache-tags)
     - [タグ付けしたキャッシュアイテムの保存](#storing-tagged-cache-items)
