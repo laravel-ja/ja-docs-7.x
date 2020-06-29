@@ -57,6 +57,7 @@ Laravel7は裏で動作しているSymfonyコンポーネントを5.xへアッ�
 - [Nova v3.0](https://nova.laravel.com/releases)
 - [Scout v8.0](https://github.com/laravel/scout/blob/master/UPGRADE.md)
 - [Telescope v3.0](https://github.com/laravel/telescope/releases)
+- [Tinker v2.0](https://github.com/laravel/tinker/blob/2.x/CHANGELOG.md)
 - UI v2.0 (No changes necessary)
 
 最後に、皆さんのアプリケーションで使用する他のサードパーティ製パッケージを調べ、Laravel7に対応するバージョンを使用していることを確認してください。

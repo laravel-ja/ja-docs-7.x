@@ -763,8 +763,6 @@ Stripeはサブスクリプションのプランを追加または削除する�
 <a name="subscription-trials"></a>
 ## サブスクリプションのトレイト
 
-> {note} Cashierのサブスクリプション試用期日はStripeのプランを使用せず、独自に管理しています。Cashierで試用期間を管理するため、Stripeのプランでは試用期間を０に設定する必要があります。
-
 <a name="with-payment-method-up-front"></a>
 ### 支払いの事前登録あり
 
@@ -797,6 +795,10 @@ Stripeはサブスクリプションのプランを追加または削除する�
     if ($user->subscription('default')->onTrial()) {
         //
     }
+
+#### Stripe／Cashierで使用期間を定義する
+
+Stripeダッシュボードによりプランで受け入れる試用日数を定義するか、Cashierを使用して常に明示的に引数で渡すか選んでください。Stripeでプランの試用日数を定義することを選択する場合、過去にサブスクリプションを購入した顧客の新規サブスクリプションも含め、新規サブスクリプションは明示的に`trialDays(0)`を呼び出さない限り、常に試用期間を受け取ることに注意してください。
 
 <a name="without-payment-method-up-front"></a>
 ### 支払いの事前登録なし

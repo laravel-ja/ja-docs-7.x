@@ -10,6 +10,7 @@
     - [Securing Sites With TLS](#securing-sites)
 - [Sharing Sites](#sharing-sites)
 - [Site Specific Environment Variables](#site-specific-environment-variables)
+- [Proxying Services](#proxying)
 - [Custom Valet Drivers](#custom-valet-drivers)
     - [Local Drivers](#local-drivers)
 - [Other Valet Commands](#other-valet-commands)
@@ -205,6 +206,23 @@ Some applications using other frameworks may depend on server environment variab
             'key' => 'value',
         ],
     ];
+
+<a name="proxying-services"></a>
+## Proxying Services
+
+Sometimes you may wish to proxy a Valet domain to another service on your local machine. For example, you may occasionally need to run Valet while also running a separate site in Docker; however, Valet and Docker can't both bind to port 80 at the same time.
+
+To solve this, you may use the `proxy` command to generate a proxy. For example, you may proxy all traffic from `http://elasticsearch.test` to `http://127.0.0.1:9200`:
+
+    valet proxy elasticsearch http://127.0.0.1:9200
+
+You may remove a proxy using the `unproxy` command:
+
+    valet unproxy elasticsearch
+
+You may use the `proxies` command to list all site configuration that are proxied:
+
+    valet proxies
 
 <a name="custom-valet-drivers"></a>
 ## Custom Valet Drivers

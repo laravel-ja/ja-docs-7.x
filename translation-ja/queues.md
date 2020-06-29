@@ -802,7 +802,7 @@ Supervisorの詳細情報は、[Supervisorドキュメント](http://supervisord
     */
     public function retryAfter()
     {
-        return 60 * pow(2, $this->attempts());
+        return 3;
     }
 
 <a name="cleaning-up-after-failed-jobs"></a>
@@ -831,7 +831,7 @@ Supervisorの詳細情報は、[Supervisorドキュメント](http://supervisord
         /**
          * 新しいジョブインスタンスの生成
          *
-         * @param  Podcast  $podcast
+         * @param  \App\Podcast  $podcast
          * @return void
          */
         public function __construct(Podcast $podcast)
@@ -842,7 +842,7 @@ Supervisorの詳細情報は、[Supervisorドキュメント](http://supervisord
         /**
          * ジョブの実行
          *
-         * @param  AudioProcessor  $processor
+         * @param  \App\AudioProcessor  $processor
          * @return void
          */
         public function handle(AudioProcessor $processor)
@@ -851,9 +851,9 @@ Supervisorの詳細情報は、[Supervisorドキュメント](http://supervisord
         }
 
         /**
-         * 失敗したジョブの処理
+         * ジョブ失敗の処理
          *
-         * @param  Exception  $exception
+         * @param  \Exception  $exception
          * @return void
          */
         public function failed(Exception $exception)

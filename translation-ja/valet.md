@@ -10,6 +10,7 @@
     - [TLSによる安全なサイト](#securing-sites)
 - [サイトの共有](#sharing-sites)
 - [サイト限定環境変数](#site-specific-environment-variables)
+- [プロキシサーバ](#proxying)
 - [カスタムValetドライバ](#custom-valet-drivers)
     - [ローカルドライバ](#local-drivers)
 - [その他のValetコマンド](#other-valet-commands)
@@ -205,6 +206,23 @@ Nginx設定を更新したら、設定の変更を反映するために`valet re
             'key' => 'value',
         ],
     ];
+
+<a name="proxying-services"></a>
+## プロキシサーバ
+
+時にローカルマシンの他のサービスへValetドメインをプロキシ動作させたいこともあるでしょう。たとえば、Valetを実行する一方で、たまにDockerにより別のサイトを実行する必要がある場合です。しかし、ValetとDockerは同時に８０ポートを両方でバインドできません。
+
+これを解決するには、`proxy`コマンドを使いプロキシを生成してください。たとえば、`http://elasticsearch.test`からのトラフィックをすべて`http://127.0.0.1:9200`へ仲介するには、以下のとおりです。
+
+    valet proxy elasticsearch http://127.0.0.1:9200
+
+`unproxy`コマンドでプロキシを削除できます。
+
+    valet unproxy elasticsearch
+
+`proxies`コマンドを使い、プロキシとしてサイト設定している全サイトをリスト表示できます。
+
+    valet proxies
 
 <a name="custom-valet-drivers"></a>
 ## カスタムValetドライバ

@@ -257,6 +257,10 @@ PHPUnitテストランナが通常受け付ける引数は、`dusk`コマンド�
 
     $browser->disableFitOnFailure();
 
+スクリーン上の別の位置へブラウザのウィンドウを移動する場合は、`move`メソッドを使います。
+
+    $browser->move(100, 100);
+
 <a name="browser-macros"></a>
 ### ブラウザマクロ
 
@@ -373,6 +377,11 @@ Duskは現在表示されているテキスト、値、ページ要素の属性�
     // 値の設定
     $browser->value('selector', 'value');
 
+指定したフィールド名を持つインプット要素の「値」を取得するには、`inputValue`メソッドを使ってください。
+
+    // 入力要素の値の取得
+    $inputValue = $browser->inputValue('field');
+
 #### テキストの取得
 
 `text`メソッドは、指定したセレクタに一致する要素の表示テキストを取得します。
@@ -471,6 +480,30 @@ Duskはフォームと入力要素を操作する、さまざまなメソッド�
 
     $browser->click('.selector');
 
+`clickAtXPath`メソッドは、指定するXPath表現に一致する要素を「クリック」するために使用します。
+
+    $browser->clickAtXPath('//div[@class = "selector"]');
+
+`clickAtPoint`メソッドはブラウザーの表示可能領域との相対座標ペアで指定した、最上位の要素を「クリック」するために使用します。
+
+    $browser->clickAtPoint(0, 0);
+
+`doubleClick`メソッドはマウスのダブル「クリック」をシミュレートするために使用します。
+
+    $browser->doubleClick();
+
+`rightClick`メソッドはマウスの右「クリック」をシミュレートするために使用します。
+
+    $browser->rightClick();
+
+    $browser->rightClick('.selector');
+
+`clickAndHold`メソッドはマウスボタンをクリックし、そのまま押し続ける動作をシミュレートするため使用します。続いて呼び出す`releaseMouse`メソッドはこの動作を取り消し、マウスボタンを離します。
+
+    $browser->clickAndHold()
+            ->pause(1000)
+            ->releaseMouse();
+
 #### マウスオーバー
 
 指定したセレクタに一致する要素を「マウスオーバー」したい場合は、`mouseover`メソッドを使います。
@@ -489,6 +522,10 @@ Duskはフォームと入力要素を操作する、さまざまなメソッド�
     $browser->dragRight('.selector', 10);
     $browser->dragUp('.selector', 10);
     $browser->dragDown('.selector', 10);
+
+指定したオフセットにより要素をドラッグします。
+
+    $browser->dragOffset('.selector', 10, 10);
 
 <a name="javascript-dialogs"></a>
 ### JavaScriptダイアログ
@@ -746,6 +783,7 @@ Duskはアプリケーションに対する数多くのアサートを提供し�
 [assertSelected](#assert-selected)
 [assertNotSelected](#assert-not-selected)
 [assertSelectHasOptions](#assert-select-has-options)
+[assertSelectMissingOption](#assert-select-missing-option)
 [assertSelectMissingOptions](#assert-select-missing-options)
 [assertSelectHasOption](#assert-select-has-option)
 [assertValue](#assert-value)
@@ -762,6 +800,9 @@ Duskはアプリケーションに対する数多くのアサートを提供し�
 [assertButtonDisabled](#assert-button-disabled)
 [assertFocused](#assert-focused)
 [assertNotFocused](#assert-not-focused)
+[assertAuthenticated](#assert-authenticated)
+[assertGuest](#assert-guest)
+[assertAuthenticatedAs](#assert-authenticated-as)
 [assertVue](#assert-vue)
 [assertVueIsNot](#assert-vue-is-not)
 [assertVueContains](#assert-vue-contains)
@@ -1045,6 +1086,13 @@ Duskはアプリケーションに対する数多くのアサートを提供し�
 
     $browser->assertSelectHasOptions($field, $values);
 
+<a name="assert-select-missing-option"></a>
+#### assertSelectMissingOption
+
+指定値が選択不可能であることを宣言します。
+
+    $browser->assertSelectMissingOption($field, $value);
+
 <a name="assert-select-missing-options"></a>
 #### assertSelectMissingOptions
 
@@ -1165,6 +1213,27 @@ Duskはアプリケーションに対する数多くのアサートを提供し�
 
     $browser->assertNotFocused($field);
 
+<a name="assert-authenticated"></a>
+#### assertAuthenticated
+
+そのユーザーが認証済みであることを宣言します。
+
+    $browser->assertAuthenticated();
+
+<a name="assert-guest"></a>
+#### assertGuest
+
+そのユーザーが認証されていないことを宣言します。
+
+    $browser->assertGuest();
+
+<a name="assert-authenticated-as"></a>
+#### assertAuthenticatedAs
+
+そのユーザーが指定したユーザーとして認証されていることを宣言します。
+
+    $browser->assertAuthenticatedAs($user);
+
 <a name="assert-vue"></a>
 #### assertVue
 
@@ -1247,11 +1316,19 @@ Duskはアプリケーションに対する数多くのアサートを提供し�
 
     $browser->visit(new Login);
 
+`visitRoute`メソッドを使い、名前付きルートへナビゲートできます。
+
+    $browser->visitRoute('login');
+
 「前へ」と「戻る」操作は、`back`と`forward`メソッドで行います。
 
     $browser->back();
 
     $browser->forward();
+
+`refresh`メソッドはページを再描写するために使います。
+
+    $browser->refresh();
 
 すでに特定のページに移動済みで、現在のテストコンテキストへそのページのセレクタとメソッドを「ロード」する必要が起き得ます。この状況は、明示的に移動していなくても、あるボタンを押すことで指定ページへリダイレクトしてしまう場合に発生します。そうした場合は、`on`メソッドで、そのページをロードできます。
 

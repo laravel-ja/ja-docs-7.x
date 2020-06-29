@@ -270,6 +270,7 @@ Laravelには多様な利便性のあるキャストタイプが用意されて�
 
     use App\Address;
     use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
+    use InvalidArgumentException;
 
     class Address implements CastsAttributes
     {
@@ -301,6 +302,10 @@ Laravelには多様な利便性のあるキャストタイプが用意されて�
          */
         public function set($model, $key, $value, $attributes)
         {
+            if (! $value instanceof Address) {
+                throw InvalidArgumentException('The given value is not an Address instance.');
+            }
+
             return [
                 'address_line_one' => $value->lineOne,
                 'address_line_two' => $value->lineTwo,

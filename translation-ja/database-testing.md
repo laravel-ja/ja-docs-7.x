@@ -294,6 +294,7 @@ Laravelは、多くのデータベースアサーションを[PHPUnit](https://p
 
 メソッド  | 説明
 ------------- | ---------------------------------------------------------------------------
+`$this->assertDatabaseCount($table, int $count);`  |  データベースのテーブルが、エンティティを指定量含むことをアサート
 `$this->assertDatabaseHas($table, array $data);`  |  指定したデータが、テーブルに存在することをアサート
 `$this->assertDatabaseMissing($table, array $data);`  |  指定したデータが、テーブルに含まれないことをアサート
 `$this->assertDeleted($table, array $data);`  |  指定したレコードが削除されていることをアサート

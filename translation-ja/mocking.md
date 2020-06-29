@@ -5,6 +5,7 @@
 - [Bus Fake](#bus-fake)
 - [Event Fake](#event-fake)
     - [イベントのサブセットのFake](#scoped-event-fakes)
+- [HTTP Fake](#http-fake)
 - [Mail Fake](#mail-fake)
 - [Notification Fake](#notification-fake)
 - [Queue Fake](#queue-fake)
@@ -185,6 +186,11 @@ Laravelのサービスコンテナにより、アプリケーションへ依存�
             $order->update([...]);
         }
     }
+
+<a name="http-fake"></a>
+## HTTP Fake
+
+`Http`ファサードの`fake`メソッドでHTTPリクエスト作成時に、スタブした／ダミーのレスポンスを返すようにHTTPクライアントへ指示できます。送信するHTTPリクエストのFakeの詳細は、[HTTPクライアントテストのドキュメント](/docs/{{version}}/http-client#testing)を調べてください。
 
 <a name="mail-fake"></a>
 ## Mail Fake

@@ -135,11 +135,13 @@ Laravelはリフレクションを使いリスナクラスをスキャンし、�
     namespace App\Events;
 
     use App\Order;
+    use Illuminate\Broadcasting\InteractsWithSockets;
+    use Illuminate\Foundation\Events\Dispatchable;
     use Illuminate\Queue\SerializesModels;
 
     class OrderShipped
     {
-        use SerializesModels;
+        use Dispatchable, InteractsWithSockets, SerializesModels;
 
         public $order;
 
@@ -404,6 +406,10 @@ Laravelはリフレクションを使いリスナクラスをスキャンし、�
             event(new OrderShipped($order));
         }
     }
+
+もしくは、イベントが`Illuminate\Foundation\Events\Dispatchable`トレイトを使用していれば、そのイベントの静的`dispatch`メソッドを呼び出せます。`dispatch`メソッドへ渡したすべての引数は、そのイベントのコンストラクタへ渡されます。
+
+    OrderShipped::dispatch($order);
 
 > {tip} テスト時は実際にリスナを起動せずに、正しいイベントがディスパッチされたことをアサートできると便利です。Laravelに[組み込まれたテストヘルパ](/docs/{{version}}/mocking#event-fake)で簡単に行なえます。
 
