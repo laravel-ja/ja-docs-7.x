@@ -12,6 +12,7 @@
     - [顧客の取得](#retrieving-customers)
     - [顧客の生成](#creating-customers)
     - [顧客の更新](#updating-customers)
+    - [支払いポータル](#billing-portal)
 - [支払い方法](#payment-methods)
     - [支払い方法の保存](#storing-payment-methods)
     - [支払い方法の取得](#retrieving-payment-methods)
@@ -175,6 +176,33 @@ BillableなエンティティがすでにStripeの顧客である場合に顧客
 まれに、Stripeの顧客を追加情報と一緒に直接更新したい状況もあります。`updateStripeCustomer`メソッドを使用してください。
 
     $stripeCustomer = $user->updateStripeCustomer($options);
+
+<a name="billing-portal"></a>
+### 支払いポータル
+
+顧客がサブスクリプションや支払い方法を管理したり、履歴を確認したりを簡単にできるよう、Stripeは[支払いポータルを用意](https://stripe.com/docs/billing/subscriptions/customer-portal)しています。コントローラやルートで`redirectToBillingPortal`メソッドを使えば、ユーザーを支払いポータルへリダイレクトできます。
+
+    use Illuminate\Http\Request;
+
+    public function billingPortal(Request $request)
+    {
+        return $request->user()->redirectToBillingPortal();
+    }
+
+サブスクリプションの管理を終えたユーザーは、アプリケーションの`home`ルートへ戻されるのがデフォルトです。`redirectToBillingPortal`メソッドの引数としてユーザーの戻りURLを指定し、カスタマイズ可能です。
+
+    use Illuminate\Http\Request;
+
+    public function billingPortal(Request $request)
+    {
+        return $request->user()->redirectToBillingPortal(
+            route('billing')
+        );
+    }
+
+支払いポータルへのURLを生成のみしたい場合は`billingPortalUrl`メソッドを使用してください。
+
+    $url = $user->billingPortalUrl(route('billing'));
 
 <a name="payment-methods"></a>
 ## 支払い方法

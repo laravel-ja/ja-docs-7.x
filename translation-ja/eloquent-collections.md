@@ -62,6 +62,7 @@
 [makeVisible](#method-makeVisible)
 [makeHidden](#method-makeHidden)
 [only](#method-only)
+[toQuery](#method-toquery)
 [unique](#method-unique)
 
 </div>
@@ -165,6 +166,17 @@
 `only`メソッドは、指定した主キーを持つモデルを全部返します。
 
     $users = $users->only([1, 2, 3]);
+
+<a name="method-toquery"></a>
+#### `toQuery()`
+
+`toQuery`メソッドはモデルの主キーのコレクションで制約する`whereIn`を含む、Eloquentクエリビルダインスタンスを返します。
+
+    $users = App\User::where('status', 'VIP')->get();
+
+    $users->toQuery()->update([
+        'status' => 'Administrator',
+    ]);
 
 <a name="method-unique"></a>
 #### `unique($key = null, $strict = false)`

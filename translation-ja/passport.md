@@ -250,6 +250,8 @@ Passportはデフォルトで、一年間有効な長期間持続するアクセ
         Passport::personalAccessTokensExpireIn(now()->addMonths(6));
     }
 
+> {note} Passportデータベーステーブルの `expires_at`カラムは読み取り専用で、表示目的のみです。トークン発行時にPassportは、署名暗号化されたトークン内へ有効期限情報を格納します。トークンを無効にする必要がある場合は、トークンを取り消す必要があります。
+
 <a name="overriding-default-models"></a>
 ### デフォルトモデルのオーバーライド
 
@@ -902,12 +904,12 @@ Passportは送信されてきたリクエスト上のアクセストークンを
 アプリケーションの認証でたぶんまったく異なるEloquentモデルを使用する、別々のタイプのユーザーを認証する場合、それぞれのユーザープロバイダタイプごとにガード設定を定義する必用があるでしょう。これにより特定ユーザープロバイダ向けのリクエストを保護できます。例として`config/auth.php`設定ファイルで以下のようなガード設定を行っているとしましょう。
 
     'api' => [
-        'driver'   => 'passport',
+        'driver' => 'passport',
         'provider' => 'users',
     ],
 
     'api-customers' => [
-        'driver'   => 'passport',
+        'driver' => 'passport',
         'provider' => 'customers',
     ],
 

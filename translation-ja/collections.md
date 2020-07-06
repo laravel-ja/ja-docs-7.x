@@ -498,7 +498,7 @@
     $collection = collect([
         'color' => 'orange',
         'type' => 'fruit',
-        'remain' => 6
+        'remain' => 6,
     ]);
 
     $diff = $collection->diffAssoc([
@@ -765,7 +765,7 @@
             ['name' => 'iPhone 6S', 'brand' => 'Apple'],
         ],
         'Samsung' => [
-            ['name' => 'Galaxy S7', 'brand' => 'Samsung']
+            ['name' => 'Galaxy S7', 'brand' => 'Samsung'],
         ],
     ]);
 
@@ -998,11 +998,11 @@
 `intersectByKeys`メソッドは、指定した配列かコレクションに含まれないキーの要素をオリジナルコレクションから削除します。
 
     $collection = collect([
-        'serial' => 'UX301', 'type' => 'screen', 'year' => 2009
+        'serial' => 'UX301', 'type' => 'screen', 'year' => 2009,
     ]);
 
     $intersect = $collection->intersectByKeys([
-        'reference' => 'UX404', 'type' => 'tab', 'year' => 2011
+        'reference' => 'UX404', 'type' => 'tab', 'year' => 2011,
     ]);
 
     $intersect->all();
@@ -1224,12 +1224,12 @@ staticの`make`メソッドは、新しいコレクションインスタンス�
         [
             'name' => 'John',
             'department' => 'Sales',
-            'email' => 'john@example.com'
+            'email' => 'john@example.com',
         ],
         [
             'name' => 'Jane',
             'department' => 'Marketing',
-            'email' => 'jane@example.com'
+            'email' => 'jane@example.com',
         ]
     ]);
 
@@ -2268,7 +2268,7 @@ staticの`unwrap`メソッドは適用可能な場合、指定値からコレク
 
     $collection = collect([
         10 => ['product' => 'Desk', 'price' => 200],
-        11 => ['product' => 'Desk', 'price' => 200]
+        11 => ['product' => 'Desk', 'price' => 200],
     ]);
 
     $values = $collection->values();

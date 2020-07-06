@@ -1355,6 +1355,15 @@ Eloquentは新しいモデルをリレーションへ追加するために便利
         new App\Comment(['message' => 'Another comment.']),
     ]);
 
+`save`と`saveMany`メソッドは、メモリ中に存在する親モデルのロード済みリレーションには新しいモデルを追加しません。`save`と`saveMany`メソッドを使った後にリレーションへアクセスする予定がある場合は、`refresh`メソッドを使い、モデルとそのリレーションを再ロードしたほうが良いでしょう。
+
+    $post->comments()->save($comment);
+
+    $post->refresh();
+
+    // 新規に保存したコメントを含む、全コメント
+    $post->comments;
+
 <a name="the-push-method"></a>
 #### モデルとリレーションの再帰的保存
 

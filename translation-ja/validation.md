@@ -319,7 +319,7 @@ Laravelは`TrimStrings`と`ConvertEmptyStringsToNull`ミドルウェアをアプ
     {
         return [
             'title.required' => 'A title is required',
-            'body.required'  => 'A message is required',
+            'body.required' => 'A message is required',
         ];
     }
 
@@ -504,10 +504,10 @@ Laravelは`TrimStrings`と`ConvertEmptyStringsToNull`ミドルウェアをアプ
 この例中の`attribute`プレースホルダーはバリデーション対象のフィールドの名前に置き換えられます。バリデーションメッセージ中で他のプレースホルダーを使うこともできます。例を見てください。
 
     $messages = [
-        'same'    => 'The :attribute and :other must match.',
-        'size'    => 'The :attribute must be exactly :size.',
+        'same' => 'The :attribute and :other must match.',
+        'size' => 'The :attribute must be exactly :size.',
         'between' => 'The :attribute value :input is not between :min - :max.',
-        'in'      => 'The :attribute must be one of the following types: :values',
+        'in' => 'The :attribute must be one of the following types: :values',
     ];
 
 #### 指定フィールドにカスタムメッセージ指定

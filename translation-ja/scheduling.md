@@ -104,14 +104,21 @@ Laravelのコマンドスケジューラは、Laravel自身の中でコマンド
 
 メソッド  | 説明
 ------------- | -------------
-`->cron('* * * * *');`  |  Cron指定に基づきタスク実行
+`->cron('* * * * *');`  | 　Cron指定に基づきタスク実行
 `->everyMinute();`  |  毎分タスク実行
+`->everyTwoMinutes();`  |  ２分毎にタスク実行
+`->everyThreeMinutes();`  |  ３分毎にタスク実行
+`->everyFourMinutes();`  |  ４分毎にタスク実行
 `->everyFiveMinutes();`  |  ５分毎にタスク実行
 `->everyTenMinutes();`  |  １０分毎にタスク実行
 `->everyFifteenMinutes();`  |  １５分毎にタスク実行
 `->everyThirtyMinutes();`  |  ３０分毎にタスク実行
 `->hourly();`  |  毎時タスク実行
 `->hourlyAt(17);`  |  １時間ごと、毎時１７分にタスク実行
+`->everyTwoHours();`  |  ２時間毎にタスク実行
+`->everyThreeHours();`  |  ３時間毎にタスク実行
+`->everyFourHours();`  |  ４時間毎にタスク実行
+`->everySixHours();`  |  ６時間毎にタスク実行
 `->daily();`  |  毎日深夜１２時に実行
 `->dailyAt('13:00');`  |  毎日13:00に実行
 `->twiceDaily(1, 13);`  |  毎日1:00と13:00時に実行

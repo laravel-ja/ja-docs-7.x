@@ -69,16 +69,16 @@ Read/Write接続を理解してもらうため、以下の例をご覧くださ�
         'write' => [
             'host' => [
                 '196.168.1.3',
-             ],
+            ],
         ],
-        'sticky'    => true,
-        'driver'    => 'mysql',
-        'database'  => 'database',
-        'username'  => 'root',
-        'password'  => '',
-        'charset'   => 'utf8mb4',
+        'sticky' => true,
+        'driver' => 'mysql',
+        'database' => 'database',
+        'username' => 'root',
+        'password' => '',
+        'charset' => 'utf8mb4',
         'collation' => 'utf8mb4_unicode_ci',
-        'prefix'    => '',
+        'prefix' => '',
     ],
 
 設定配列に`read`と`write`、`sticky`、３つのキーが追加されたことに注目してください。２つのキーとも`host`というキーを一つ持っています。`read`と`write`接続時の残りのデータベースオプションは、メインの`mysql`配列からマージされます。

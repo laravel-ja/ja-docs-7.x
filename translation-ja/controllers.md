@@ -158,7 +158,7 @@ Laravelリソースルートは一行のコードで、典型的な「CRUD」ル
 
     Route::resources([
         'photos' => 'PhotoController',
-        'posts' => 'PostController'
+        'posts' => 'PostController',
     ]);
 
 #### リソースコントローラにより処理されるアクション
@@ -210,7 +210,7 @@ APIに使用するリソースルートを宣言する場合、`create`や`edit`
 
     Route::apiResources([
         'photos' => 'PhotoController',
-        'posts' => 'PostController'
+        'posts' => 'PostController',
     ]);
 
 `create`や`edit`メソッドを含まないAPIリソースコントローラを素早く生成するには、`make:controller`コマンドを実行する際、`--api`スイッチを使用してください。

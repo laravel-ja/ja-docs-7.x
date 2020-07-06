@@ -656,6 +656,20 @@ The final, rendered HTML of the component will appear like the following:
         <!-- Contents of the $message variable -->
     </div>
 
+#### Filtering Attributes
+
+You may filter attributes using the `filter` method. This method accepts a Closure which should return `true` if you wish to retain the attribute in the attribute bag:
+
+    {{ $attributes->filter(fn ($value, $key) => $key == 'foo') }}
+
+For convenience, you may use the `whereStartsWith` method to retrieve all attributes whose keys begin with a given string:
+
+    {{ $attributes->whereStartsWith('wire:model') }}
+
+Using the `first` method, you may render the first attribute in a given attribute bag:
+
+    {{ $attributes->whereStartsWith('wire:model')->first() }}
+
 <a name="slots"></a>
 ### Slots
 

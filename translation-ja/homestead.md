@@ -520,7 +520,7 @@ Minioを使用するために、`config/filesystems.php`設定ファイルの中
         'region' => env('AWS_DEFAULT_REGION'),
         'bucket' => env('AWS_BUCKET'),
         'endpoint' => env('AWS_URL'),
-        'use_path_style_endpoint' => true
+        'use_path_style_endpoint' => true,
     ]
 
 最後に、`.env`ファイルへ以下のオプションを確実に用意してください。

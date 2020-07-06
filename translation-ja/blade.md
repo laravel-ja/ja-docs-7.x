@@ -656,6 +656,20 @@ HTML属性を使い、Bladeコンポーネントへデータを渡すことが�
         <!-- ここには$message変数の内容がレンダーされる -->
     </div>
 
+#### 属性のフィルタリング
+
+`filter`メソッドを使い、属性をフィルタリングできます。このメソッドはクロージャを引数に取り、属性バックの中へ残す属性に対し`true`を返してください。
+
+    {{ $attributes->filter(fn ($value, $key) => $key == 'foo') }}
+
+より便利に使うため、指定文字列から始まるキー名の属性を全部取得する、`whereStartsWith`メソッドを使うことも可能です。
+
+    {{ $attributes->whereStartsWith('wire:model') }}
+
+`first`メソッドを使い、指定した属性バッグの中の最初の属性をレンダーすることもできます。
+
+    {{ $attributes->whereStartsWith('wire:model')->first() }}
+
 <a name="slots"></a>
 ### スロット
 

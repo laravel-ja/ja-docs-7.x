@@ -27,7 +27,7 @@ Laravelのローカリゼーション機能はアプリケーションで多言�
     <?php
 
     return [
-        'welcome' => 'Welcome to our application'
+        'welcome' => 'Welcome to our application',
     ];
 
 > {note} 地域によって異なる言語では、ISO 15897に従った言語ディレクトリを名付けるべきでしょう。たとえば、ブリティッシュ・イングリッシュでは、"en-gb"の代わりに、"en_GB"を使用するべきです。
@@ -83,7 +83,7 @@ Laravelのローカリゼーション機能はアプリケーションで多言�
     // resources/lang/en/messages.php
 
     return [
-        'welcome' => 'Welcome to our application'
+        'welcome' => 'Welcome to our application',
     ];
 
 <a name="using-translation-strings-as-keys"></a>

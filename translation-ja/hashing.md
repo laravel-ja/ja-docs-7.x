@@ -54,7 +54,7 @@ LaravelのHash[ファサード](/docs/{{version}}/facades)は保存するユー�
 Bcryptアルゴリズムを使用する場合、`make`メソッドで`rounds`オプションを使用することにより、アルゴリズムのwork factorを管理できます。しかし、ほとんどのアプリケーションではデフォルト値で十分でしょう。
 
     $hashed = Hash::make('password', [
-        'rounds' => 12
+        'rounds' => 12,
     ]);
 
 #### Argon2のWork Factorの調整

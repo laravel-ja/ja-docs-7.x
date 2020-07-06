@@ -12,6 +12,10 @@
     - [Browser Macros](#browser-macros)
     - [Authentication](#authentication)
     - [Database Migrations](#migrations)
+    - [Cookies](#cookies)
+    - [Taking A Screenshot](#taking-a-screenshot)
+    - [Storing Console Output To Disk](#storing-console-output-to-disk)
+    - [Storing Page Source To Disk](#storing-page-source-to-disk)
 - [Interacting With Elements](#interacting-with-elements)
     - [Dusk Selectors](#dusk-selectors)
     - [Clicking Links](#clicking-links)
@@ -329,6 +333,46 @@ When your test requires migrations, like the authentication example above, you s
         use DatabaseMigrations;
     }
 
+<a name="cookies"></a>
+### Cookies
+
+You may use the `cookie` method to get or set an encrypted cookie's value:
+
+    $browser->cookie('name');
+
+    $browser->cookie('name', 'Taylor');
+
+You may use the `plainCookie` method to get or set an unencrypted cookie's value:
+
+    $browser->plainCookie('name');
+
+    $browser->plainCookie('name', 'Taylor');
+
+You may use the `deleteCookie` method to delete the given cookie:
+
+    $browser->deleteCookie('name');
+
+<a name="taking-a-screenshot"></a>
+### Taking A Screenshot
+
+You may use the `screenshot` method to take a screenshot and store it with the given filename. All screenshots will be stored within the `tests/Browser/screenshots` directory:
+
+    $browser->screenshot('filename');
+
+<a name="storing-console-output-to-disk"></a>
+### Storing Console Output To Disk
+
+You may use the `storeConsoleLog` method to write the console output to disk with the given filename. Console output will be stored within the `tests/Browser/console` directory:
+
+    $browser->storeConsoleLog('filename');
+
+<a name="storing-page-source-to-disk"></a>
+### Storing Page Source To Disk
+
+You may use the `storeSource` method to write the page's current source to disk with the given filename. The page source will be stored within the `tests/Browser/source` directory:
+
+    $browser->storeSource('filename');
+
 <a name="interacting-with-elements"></a>
 ## Interacting With Elements
 
@@ -362,7 +406,13 @@ To click a link, you may use the `clickLink` method on the browser instance. The
 
     $browser->clickLink($linkText);
 
-> {note} This method interacts with jQuery. If jQuery is not available on the page, Dusk will automatically inject it into the page so it is available for the test's duration.
+You may use the `seeLink` method to determine if a link that has the given display text is visible on the page:
+
+    if ($browser->seeLink($linkText)) {
+        // ...
+    }
+
+> {note} These methods interact with jQuery. If jQuery is not available on the page, Dusk will automatically inject it into the page so it is available for the test's duration.
 
 <a name="text-values-and-attributes"></a>
 ### Text, Values, & Attributes
@@ -706,7 +756,7 @@ Dusk even allows you to make assertions on the state of [Vue](https://vuejs.org)
         data: function () {
             return {
                 user: {
-                  name: 'Taylor'
+                    name: 'Taylor'
                 }
             };
         }
@@ -763,7 +813,9 @@ Dusk provides a variety of assertions that you may make against your application
 [assertFragmentBeginsWith](#assert-fragment-begins-with)
 [assertFragmentIsNot](#assert-fragment-is-not)
 [assertHasCookie](#assert-has-cookie)
+[assertHasPlainCookie](#assert-has-plain-cookie)
 [assertCookieMissing](#assert-cookie-missing)
+[assertPlainCookieMissing](#assert-plain-cookie-missing)
 [assertCookieValue](#assert-cookie-value)
 [assertPlainCookieValue](#assert-plain-cookie-value)
 [assertSee](#assert-see)
@@ -942,21 +994,35 @@ Assert that the current fragment does not match the given fragment:
 <a name="assert-has-cookie"></a>
 #### assertHasCookie
 
-Assert that the given cookie is present:
+Assert that the given encrypted cookie is present:
 
     $browser->assertHasCookie($name);
+
+<a name="assert-has-plain-cookie"></a>
+#### assertHasPlainCookie
+
+Assert that the given unencrypted cookie is present:
+
+    $browser->assertHasPlainCookie($name);
 
 <a name="assert-cookie-missing"></a>
 #### assertCookieMissing
 
-Assert that the given cookie is not present:
+Assert that the given encrypted cookie is not present:
 
     $browser->assertCookieMissing($name);
+
+<a name="assert-plain-cookie-missing"></a>
+#### assertPlainCookieMissing
+
+Assert that the given unencrypted cookie is not present:
+
+    $browser->assertPlainCookieMissing($name);
 
 <a name="assert-cookie-value"></a>
 #### assertCookieValue
 
-Assert that a cookie has a given value:
+Assert that an encrypted cookie has a given value:
 
     $browser->assertCookieValue($name, $value);
 
@@ -1128,7 +1194,7 @@ Assert that the element matching the given selector has the given value in the p
 
     $browser->assertAriaAttribute($selector, $attribute, $value);
 
-For example, given the markup `<button aria-label="Add"></>`, you may assert against the `aria-label` attribute like so:
+For example, given the markup `<button aria-label="Add"></button>`, you may assert against the `aria-label` attribute like so:
 
     $browser->assertAriaAttribute('button', 'label', 'Add')
 
@@ -1139,7 +1205,7 @@ Assert that the element matching the given selector has the given value in the p
 
     $browser->assertDataAttribute($selector, $attribute, $value);
 
-For example, given the markup `<tr id="row-1" data-content="attendees"></>`, you may assert against the `data-label` attribute like so:
+For example, given the markup `<tr id="row-1" data-content="attendees"></tr>`, you may assert against the `data-label` attribute like so:
 
     $browser->assertDataAttribute('#row-1', 'content', 'attendees')
 

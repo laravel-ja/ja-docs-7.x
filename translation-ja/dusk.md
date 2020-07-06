@@ -12,6 +12,10 @@
     - [ブラウザマクロ](#browser-macros)
     - [認証](#authentication)
     - [データベースマイグレーション](#migrations)
+    - [クッキー](#cookies)
+    - [スクリーンショットの取得](#taking-a-screenshot)
+    - [コンソール出力をディスクへ保存](#storing-console-output-to-disk)
+    - [ページソースをディスクへ保存](#storing-page-source-to-disk)
 - [要素の操作](#interacting-with-elements)
     - [Duskセレクタ](#dusk-selectors)
     - [リンクのクリック](#clicking-links)
@@ -329,6 +333,46 @@ PHPUnitテストランナが通常受け付ける引数は、`dusk`コマンド�
         use DatabaseMigrations;
     }
 
+<a name="cookies"></a>
+### クッキー
+
+暗号化したクッキーの値を取得／セットするには、`cookie`メソッドを使います。
+
+    $browser->cookie('name');
+
+    $browser->cookie('name', 'Taylor');
+
+暗号化していないクッキーの値を取得／セットするには、`plainCookie`メソッドを使います。
+
+    $browser->plainCookie('name');
+
+    $browser->plainCookie('name', 'Taylor');
+
+指定クッキーを削除するには、`deleteCookie`メソッドを使います。
+
+    $browser->deleteCookie('name');
+
+<a name="taking-a-screenshot"></a>
+### スクリーンショットの取得
+
+スクリーンショットを取るには、`screenshot`メソッドを使います。指定したファイル名で保存されます。スクリーンショットはすべて、`tests/Browser/screenshots`ディレクトリへ保存します。
+
+    $browser->screenshot('filename');
+
+<a name="storing-console-output-to-disk"></a>
+### コンソール出力をディスクへ保存
+
+コンソール出力を指定ファイル名でディスクに書き出すには`storeConsoleLog`メソッドを使います。コンソール出力は`tests/Browser/console`ディレクトリへ保存します。
+
+    $browser->storeConsoleLog('filename');
+
+<a name="storing-page-source-to-disk"></a>
+### ページソースをディスクへ保存
+
+そのページの現時点でのソースをディスクに書き出すには`storeSource`メソッドを使います。ページソースは指定名で、`tests/Browser/source`ディレクトリに出力します。
+
+    $browser->storeSource('filename');
+
 <a name="interacting-with-elements"></a>
 ## 要素の操作
 
@@ -362,7 +406,13 @@ Duskセレクタにより、CSSセレクタを記憶せず効率的にテスト�
 
     $browser->clickLink($linkText);
 
-> {note} このメソッドはjQueryを操作します。jQueryがそのページで使用不可能な場合、Duskは自動的にそのページへ挿入し、テストの中に使用します。
+`seeLink`メソッドを使い、指定表示テキストを持つリンクがページ上に表示されるかを判定できます。
+
+    if ($browser->seeLink($linkText)) {
+        // ...
+    }
+
+> {note} これらのメソッドはJQueryと連携しています。ページでJQueryが使用できない場合Duskは、そのテストの間Jqueryを使用できるようにするため自動的にインジェクションします。
 
 <a name="text-values-and-attributes"></a>
 ### テキスト、値、属性
@@ -706,7 +756,7 @@ Duskでは、[Vue](https://vuejs.org)コンポーネントデータの状態を�
         data: function () {
             return {
                 user: {
-                  name: 'Taylor'
+                    name: 'Taylor'
                 }
             };
         }
@@ -763,7 +813,9 @@ Duskはアプリケーションに対する数多くのアサートを提供し�
 [assertFragmentBeginsWith](#assert-fragment-begins-with)
 [assertFragmentIsNot](#assert-fragment-is-not)
 [assertHasCookie](#assert-has-cookie)
+[assertHasPlainCookie](#assert-has-plain-cookie)
 [assertCookieMissing](#assert-cookie-missing)
+[assertPlainCookieMissing](#assert-plain-cookie-missing)
 [assertCookieValue](#assert-cookie-value)
 [assertPlainCookieValue](#assert-plain-cookie-value)
 [assertSee](#assert-see)
@@ -942,21 +994,35 @@ Duskはアプリケーションに対する数多くのアサートを提供し�
 <a name="assert-has-cookie"></a>
 #### assertHasCookie
 
-指定したクッキーが存在していることを宣言します。
+指定した暗号化クッキーが存在することを宣言します。
 
     $browser->assertHasCookie($name);
+
+<a name="assert-has-plain-cookie"></a>
+#### assertHasPlainCookie
+
+指定した暗号化していないクッキーが存在していることを宣言します。
+
+    $browser->assertHasPlainCookie($name);
 
 <a name="assert-cookie-missing"></a>
 #### assertCookieMissing
 
-指定したクッキーが存在していないことを宣言します。
+指定した暗号化クッキーが存在していないことを宣言します。
 
     $browser->assertCookieMissing($name);
+
+<a name="assert-plain-cookie-missing"></a>
+#### assertPlainCookieMissing
+
+指定した暗号化していないクッキーが存在していないことを宣言します。
+
+    $browser->assertPlainCookieMissing($name);
 
 <a name="assert-cookie-value"></a>
 #### assertCookieValue
 
-クッキーが指定値を持っていることを宣言します。
+指定した暗号化クッキーが、指定値を持っていることを宣言します。
 
     $browser->assertCookieValue($name, $value);
 
@@ -1128,7 +1194,7 @@ Duskはアプリケーションに対する数多くのアサートを提供し�
 
     $browser->assertAriaAttribute($selector, $attribute, $value);
 
-たとえば、指定するマークアップが`<button aria-label="Add"></>`であり、`aria-label`に対して宣言する場合は、次のようになります。
+たとえば、指定するマークアップが`<button aria-label="Add"></button>`であり、`aria-label`に対して宣言する場合は、次のようになります。
 
     $browser->assertAriaAttribute('button', 'label', 'Add')
 
@@ -1139,7 +1205,7 @@ Duskはアプリケーションに対する数多くのアサートを提供し�
 
     $browser->assertDataAttribute($selector, $attribute, $value);
 
-たとえば、指定するマークアップが`<tr id="row-1" data-content="attendees"></>`であり、`data-label`属性に対して宣言をする場合、次のようになります。
+たとえば、指定するマークアップが`<tr id="row-1" data-content="attendees"></tr>`であり、`data-label`属性に対して宣言をする場合、次のようになります。
 
     $browser->assertDataAttribute('#row-1', 'content', 'attendees')
 

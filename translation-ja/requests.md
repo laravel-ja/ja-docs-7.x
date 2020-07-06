@@ -365,7 +365,7 @@ Laravelフレームワークが作成するクッキーはすべて暗号化さ�
 
 #### 他のファイルメソッド
 
-他にも、たくさんのメソッドが`UploadedFile`インスタンスに存在しています。[このクラスのAPIドキュメント](https://api.symfony.com/3.0/Symfony/Component/HttpFoundation/File/UploadedFile.html)で、より詳細な情報が得られます。
+他にも、たくさんのメソッドが`UploadedFile`インスタンスに存在しています。[このクラスのAPIドキュメント](https://api.symfony.com/master/Symfony/Component/HttpFoundation/File/UploadedFile.html)で、より詳細な情報が得られます。
 
 <a name="storing-uploaded-files"></a>
 ### アップロードファイルの保存

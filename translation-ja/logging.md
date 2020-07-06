@@ -187,7 +187,7 @@ Monologはデフォルトで`production`や`local`のような、現在の環境
     <?php
 
     namespace App\Logging;
-    
+
     use Monolog\Formatter\LineFormatter;
 
     class CustomizeFormatter
