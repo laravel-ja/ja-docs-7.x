@@ -664,9 +664,19 @@ Eloquentの`all`メソッドはモデルテーブルの全レコードを結果�
 
 データベーステーブルにも`deleted_at`カラムを追加する必要があります。Laravel[スキーマビルダ](/docs/{{version}}/migrations)にはこのカラムを作成するメソッドが存在しています。
 
-    Schema::table('flights', function (Blueprint $table) {
-        $table->softDeletes();
-    });
+    public function up()
+    {
+        Schema::table('flights', function (Blueprint $table) {
+            $table->softDeletes();
+        });
+    }
+
+    public function down()
+    {
+        Schema::table('flights', function (Blueprint $table) {
+            $table->dropSoftDeletes();
+        });
+    }
 
 これでモデルに対し`delete`メソッドを使用すれば、`deleted_at`カラムに現在の時間がセットされます。ソフトデリートされたモデルに対しクエリがあっても、削除済みのモデルはクエリ結果に含まれません。
 

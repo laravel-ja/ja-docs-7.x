@@ -14,6 +14,7 @@
     - [クライアント管理](#managing-clients)
     - [トークンのリクエスト](#requesting-tokens)
     - [トークンのリフレッシュ](#refreshing-tokens)
+    - [トークンの破棄](#revoking-tokens)
     - [トークンの破棄](#purging-tokens)
 - [PKCEを使った認可コードグラント](#code-grant-pkce)
     - [クライアント生成](#creating-a-auth-pkce-grant-client)
@@ -459,6 +460,25 @@ JSON APIは`web`と`auth`ミドルウェアにより保護されています。�
 
 > {tip} `/oauth/authorize`ルートと同様に、`/oauth/token`ルートは`Passport::routes`メソッドが定義しています。このルートを自分で定義する必要はありません。デフォルトでこのルートは、`ThrottleRequests`ミドルウェアの設定を利用し、アクセス回数制限されています。
 
+#### JSON API
+
+Passportには、承認済みアクセストークンを管理するためのJSON APIも含んでいます。これを独自のフロントエンドと組み合わせ、アクセストークンを管理するダッシュボードをユーザーへ提供できます。便宜上、[Axios](https://github.com/mzabriskie/axios)をエンドポイントへのHTTPリクエストを生成するデモンストレーションのため使用しています。JSON APIは`web`と`auth`ミドルウェアにより保護されているため、自身のアプリケーションからのみ呼び出しできます。
+
+#### `GET /oauth/tokens`
+
+このルートは、認証されたユーザーが作成した、承認済みアクセストークンをすべて返します。これは主に取り消すトークンを選んでもらうため、ユーザーの全トークンを一覧リスト表示するのに便利です。
+
+    axios.get('/oauth/tokens')
+        .then(response => {
+            console.log(response.data);
+        });
+
+#### `DELETE /oauth/tokens/{token-id}`
+
+このルートは、認証済みアクセストークンと関連するリフレッシュトークンを取り消すために使います。
+
+    axios.delete('/oauth/tokens/' + tokenId);
+
 <a name="refreshing-tokens"></a>
 ### トークンのリフレッシュ
 
@@ -479,6 +499,20 @@ JSON APIは`web`と`auth`ミドルウェアにより保護されています。�
     return json_decode((string) $response->getBody(), true);
 
 この`/oauth/token`ルートは、`access_token`、`refresh_token`、`expires_in`属性を含むJSONレスポンスを返します。`expires_in`属性は、アクセストークンが無効になるまでの秒数を含んでいます。
+
+<a name="revoking-tokens"></a>
+### トークンの取り消し
+
+`TokenRepository`の`revokeAccessToken`メソッドを利用し、トークンを取り消せます。トークンのリフレッシュトークンの取り消しは`RefreshTokenRepository`の`revokeRefreshTokensByAccessTokenId`メソッドを使います。
+
+    $tokenRepository = app('Laravel\Passport\TokenRepository');
+    $refreshTokenRepository = app('Laravel\Passport\RefreshTokenRepository');
+
+    // アクセストークンの取り消し
+    $tokenRepository->revokeAccessToken($tokenId);
+
+    // そのトークンのリフレッシュトークンを全て取り消し
+    $refreshTokenRepository->revokeRefreshTokensByAccessTokenId($tokenId);
 
 <a name="purging-tokens"></a>
 ### トークンの破棄
@@ -857,7 +891,7 @@ JSON APIは`web`と`auth`ミドルウェアにより保護されています。�
 
 #### `GET /oauth/personal-access-tokens`
 
-このルートは認証中のユーザーが作成したパーソナルアクセストークンをすべて返します。ユーザーがトークンの編集や削除を行うため、全トークンをリストするために主に使われます。
+このルートは認証中のユーザーが作成したパーソナルアクセストークンをすべて返します。ユーザーがトークンの編集や取り消しを行うため、全トークンをリストするために主に使われます。
 
     axios.get('/oauth/personal-access-tokens')
         .then(response => {
@@ -883,7 +917,7 @@ JSON APIは`web`と`auth`ミドルウェアにより保護されています。�
 
 #### `DELETE /oauth/personal-access-tokens/{token-id}`
 
-このルートはパーソナルアクセストークンを削除するために使用します。
+このルートはパーソナルアクセストークンを取り消すために使用します。
 
     axios.delete('/oauth/personal-access-tokens/' + tokenId);
 

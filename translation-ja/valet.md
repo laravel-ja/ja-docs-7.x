@@ -10,7 +10,7 @@
     - [TLSによる安全なサイト](#securing-sites)
 - [サイトの共有](#sharing-sites)
 - [サイト限定環境変数](#site-specific-environment-variables)
-- [プロキシサーバ](#proxying)
+- [プロキシサーバ](#proxying-services)
 - [カスタムValetドライバ](#custom-valet-drivers)
     - [ローカルドライバ](#local-drivers)
 - [その他のValetコマンド](#other-valet-commands)

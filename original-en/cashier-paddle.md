@@ -38,6 +38,7 @@
     - [Charging Products](#charging-products)
     - [Refunding Orders](#refunding-orders)
 - [Transactions](#transactions)
+    - [Past & Upcoming Payments](#past-and-upcoming-payments)
 - [Testing](#testing)
 
 <a name="introduction"></a>
@@ -632,6 +633,8 @@ If you wish to cancel a subscription immediately, you may call the `cancelNow` m
 <a name="with-payment-method-up-front"></a>
 ### With Payment Method Up Front
 
+> {note} While trialing and collecting payment method details up front, Paddle prevents any subscription changes such as swapping plans or updating quantities. If you want to allow a customer to swap plans during a trial the subscription must be cancelled and recreated.
+
 If you would like to offer trial periods to your customers while still collecting payment method information up front, you should use the `trialDays` method when creating your subscription pay links:
 
     $user = User::find(1);
@@ -870,6 +873,20 @@ When listing the transactions for the customer, you may use the transaction's he
             </tr>
         @endforeach
     </table>
+
+<a name="past-and-upcoming-payments"></a>
+### Past & Upcoming Payments
+
+You may use the `lastPayment` and `nextPayment` methods to display a customer's past or upcoming payments for recurring subscriptions:
+
+    $subscription = $user->subscription('default');
+
+    $lastPayment = $subscription->lastPayment();
+    $nextPayment = $subscription->nextPayment();
+
+Both of these methods will return an instance of `Laravel\Paddle\Payment`; however, `nextPayment` will return `null` when the billing cycle has ended (such as when a subscription has been cancelled):
+
+    Next payment: {{ $nextPayment->amount() }} due on {{ $nextPayment->date()->format('d/m/Y') }}
 
 <a name="testing"></a>
 ## Testing

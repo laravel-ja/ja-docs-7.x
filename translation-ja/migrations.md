@@ -495,7 +495,7 @@ Laravelはデータベースレベルの整合性を強制するために、テ�
 `foreignId`メソッドは`unsignedBigInteger`のエイリアスです。一方の`constrained`メソッドはテーブルとカラム名を`foreignId`で指定したカラム名をもとに規約により決定します。テーブル名が規約と合っていない場合は、`constrained`メソッドの引数にテーブル名を渡してください。
 
     Schema::table('posts', function (Blueprint $table) {
-        $table->foreignId('user_id')->constrained('users_table');
+        $table->foreignId('user_id')->constrained('users');
     });
 
 
