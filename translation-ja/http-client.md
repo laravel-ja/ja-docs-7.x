@@ -81,7 +81,7 @@
 リクエスト作成時に、リクエストの本体をそのまま指定したい場合は、`withBody`メソッドを使います。
 
     $response = Http::withBody(
-        base64_encode($photo)
+        base64_encode($photo), 'image/jpeg'
     )->post('http://test.com/photo');
 
 #### マルチパートリクエスト

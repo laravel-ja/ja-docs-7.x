@@ -303,7 +303,7 @@ Laravelには多様な利便性のあるキャストタイプが用意されて�
         public function set($model, $key, $value, $attributes)
         {
             if (! $value instanceof Address) {
-                throw InvalidArgumentException('The given value is not an Address instance.');
+                throw new InvalidArgumentException('The given value is not an Address instance.');
             }
 
             return [

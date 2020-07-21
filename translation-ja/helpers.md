@@ -176,6 +176,7 @@ Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し�
 [trim](#method-fluent-str-trim)
 [ucfirst](#method-fluent-str-ucfirst)
 [upper](#method-fluent-str-upper)
+[when](#method-fluent-str-when)
 [whenEmpty](#method-fluent-str-when-empty)
 [words](#method-fluent-str-words)
 
@@ -2145,6 +2146,22 @@ The `snake` method converts the given string to `snake`メソッドは、文字�
     $adjusted = Str::of('laravel')->upper();
 
     // LARAVEL
+
+<a name="method-fluent-str-when"></a>
+#### `when` {#collection-method}
+
+`when`メソッドは指定条件がtrueの場合に、指定クロージャを実行します。クロージャはFluentな文字列インスタンスを引数に受け取ります。
+
+    use Illuminate\Support\Str;
+
+    $string = Str::of('Taylor')
+                    ->when(true, function ($string) {
+                        return $string->append(' Otwell');
+                    });
+
+    // 'Taylor Otwell'
+
+`when`メソッドの第３引数として別のクロージャを渡せます。条件パラメータが`false`と評価された場合、このクロージャを実行します。
 
 <a name="method-fluent-str-when-empty"></a>
 #### `whenEmpty` {#collection-method}

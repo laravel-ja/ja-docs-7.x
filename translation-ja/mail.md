@@ -202,6 +202,7 @@ mailableクラスの`build`メソッドの中で、メールの中身をレン�
         /**
          * 新しいメッセージインスタンスの生成
          *
+         * @param  \App\Order  $order
          * @return void
          */
         public function __construct(Order $order)
@@ -253,6 +254,7 @@ mailableクラスの`build`メソッドの中で、メールの中身をレン�
         /**
          * 新しいメッセージインスタンスの生成
          *
+         * @param  \App\Order $order
          * @return void
          */
         public function __construct(Order $order)
