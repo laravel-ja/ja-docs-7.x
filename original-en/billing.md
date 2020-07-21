@@ -401,6 +401,14 @@ The `create` method, which accepts [a Stripe payment method identifier](#storing
 
 > {note} Passing a payment method identifier directly to the `create()` subscription method will also automatically add it to the user's stored payment methods.
 
+#### Quantities
+
+If you would like to set a specific quantity for the plan when creating the subscription, you may use the `quantity` method:
+
+    $user->newSubscription('default', 'price_monthly')
+         ->quantity(5)
+         ->create($paymentMethod);
+
 #### Additional Details
 
 If you would like to specify additional customer or subscription details, you may do so by passing them as the second and third arguments to the `create` method:
@@ -626,10 +634,26 @@ For more information on subscription quantities, consult the [Stripe documentati
 
     $user->newSubscription('default', [
         'price_monthly',
-        'chat-plan'
+        'chat-plan',
     ])->create($paymentMethod);
 
-Now the customer will have two plans on their `default` subscription. Both plans will be charged for on their respective billing intervals. Alternatively, you may add a new plan to an existing subscription at a later time:
+Now the customer will have two plans on their `default` subscription. Both plans will be charged for on their respective billing intervals. You can also use the `quantity` method to indicate the specific quantity for each plan:
+
+    $user = User::find(1);
+
+    $user->newSubscription('default', ['price_monthly', 'chat-plan'])
+        ->quantity(5, 'chat-plan')
+        ->create($paymentMethod);
+
+Or, you may dynamically add the extra plan and its quantity using the `plan` method:
+
+    $user = User::find(1);
+
+    $user->newSubscription('default', 'price_monthly')
+        ->plan('chat-plan', 5)
+        ->create($paymentMethod);
+
+Alternatively, you may add a new plan to an existing subscription at a later time:
 
     $user = User::find(1);
 
@@ -638,6 +662,12 @@ Now the customer will have two plans on their `default` subscription. Both plans
 The example above will add the new plan and the customer will be billed for it on their next billing cycle. If you would like to bill the customer immediately you may use the `addPlanAndInvoice` method:
 
     $user->subscription('default')->addPlanAndInvoice('chat-plan');
+
+If you would like to add a plan with a specific quantity, you can pass the quantity as the second parameter of the `addPlan` or `addPlanAndInvoice` methods:
+
+    $user = User::find(1);
+
+    $user->subscription('default')->addPlan('chat-plan', 5);
 
 You may remove plans from subscriptions using the `removePlan` method:
 

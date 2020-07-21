@@ -401,6 +401,14 @@ Billableモデルが自身のアカウントに付加されている支払いメ
 
 > {note} サブスクリプションの`create()`へ支払いメソッド識別子を直接渡すと、ユーザーの保存済み支払いメソッドへ自動的に追加します。
 
+#### 注文数
+
+サブスクリプションの作成時に注文数を指定する場合は、`quantity`メソッドを使います。
+
+    $user->newSubscription('default', 'price_monthly')
+         ->quantity(5)
+         ->create($paymentMethod);
+
 #### 詳細情報の指定
 
 ユーザーとサブスクリプションに関する詳細情報を追加したい場合は、`create`メソッドの第２引数と第３引数へ渡すことができます。
@@ -626,10 +634,26 @@ Stripeがサポートしている追加のフィールドについてのさら�
 
     $user->newSubscription('default', [
         'price_monthly',
-        'chat-plan'
+        'chat-plan',
     ])->create($paymentMethod);
 
-これにより、顧客は新しいデフォルト（`default`）サブスクリプションを購入できました。両プランともそれぞれの課金期間に応じ、課金されます。もしくは、既存のサブスクリプションへ新しいプランを後から追加することもできます。
+これにより、顧客は新しいデフォルト（`default`）サブスクリプションを購入できました。両プランともそれぞれの課金期間に応じ、課金されます。各プランの購入数を指定するために`quantity`メソッドも使えます。
+
+    $user = User::find(1);
+
+    $user->newSubscription('default', ['price_monthly', 'chat-plan'])
+        ->quantity(5, 'chat-plan')
+        ->create($paymentMethod);
+
+もしくは`plan`メソッドで、追加のプランと購入数を動的に指定できます。
+
+    $user = User::find(1);
+
+    $user->newSubscription('default', 'price_monthly')
+        ->plan('chat-plan', 5)
+        ->create($paymentMethod);
+
+他の方法として、既存のサブスクリプションへ後から、新しいプランを追加できます。
 
     $user = User::find(1);
 
@@ -638,6 +662,12 @@ Stripeがサポートしている追加のフィールドについてのさら�
 上記の例では新しいプランが追加され、次の請求サイクルで顧客へ請求されます。すぐに顧客に請求したい場合は、`addPlanAndInvoice`メソッドを使用します。
 
     $user->subscription('default')->addPlanAndInvoice('chat-plan');
+
+プラン追加と同時に購入数を指定したい場合は、`addPlan`や`addPlanAndInvoice`メソッドの第２引数へ購入数を渡してください。
+
+    $user = User::find(1);
+
+    $user->subscription('default')->addPlan('chat-plan', 5);
 
 サブスクリプションからプランを削除したい場合は、`removePlan`メソッドを使用します。
 
