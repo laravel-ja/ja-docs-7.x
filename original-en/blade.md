@@ -53,7 +53,7 @@ Two of the primary benefits of using Blade are _template inheritance_ and _secti
         <body>
             @section('sidebar')
                 This is the master sidebar.
-            @show
+            @endsection
 
             <div class="container">
                 @yield('content')
@@ -264,6 +264,14 @@ You may check if a section has content using the `@hasSection` directive:
         </div>
 
         <div class="clearfix"></div>
+    @endif
+
+You may use the `sectionMissing` directive to determine if a section does not have content:
+
+    @sectionMissing('navigation')
+        <div class="pull-right">
+            @include('default-navigation')
+        </div>
     @endif
 
 #### Environment Directives

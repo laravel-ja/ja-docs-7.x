@@ -43,6 +43,7 @@
     - [インボイス付き課金](#charge-with-invoice)
     - [払い戻し](#refunding-charges)
 - [インボイス](#invoices)
+    - [インボイス取得](#retrieving-invoices)
     - [インボイスPDF生成](#generating-invoice-pdfs)
 - [課金失敗の処理](#handling-failed-payments)
 - [堅牢な顧客認証 (SCA)](#strong-customer-authentication)
@@ -59,7 +60,7 @@ Laravel Cashierは[Stripe](https://stripe.com)によるサブスクリプショ�
 <a name="upgrading-cashier"></a>
 ## Cashierのアップデート
 
-新しいバージョンのCashierへアップグレードする場合は、[アップグレードガイド](https://github.com/laravel/cashier/blob/master/UPGRADE.md)を注意深く確認することが重要です。
+新しいバージョンのCashierへアップグレードする場合は、[アップグレードガイド](https://github.com/laravel/cashier-stripe/blob/master/UPGRADE.md)を注意深く確認することが重要です。
 
 > {note} ブレーキングチェンジを防ぐために、CashierではStripeの固定APIバージョンを使用しています。Cashier11では、Stripeの`2020-03-02`付けAPIバージョンを使用しています。Stripeの新機能や機能向上を利用するため、マイナーリリースでもStripe APIのバージョンを更新することがあります。
 
@@ -1050,12 +1051,21 @@ Stripeでの課金を払い戻す必要がある場合は、`refund`メソッド
 <a name="invoices"></a>
 ## インボイス
 
+<a name="retrieving-invoices"></a>
+### インボイス取得
+
 `invoices`メソッドにより、billableモデルのインボイスの配列を簡単に取得できます。
 
     $invoices = $user->invoices();
 
     // 結果にペンディング中のインボイスも含める
     $invoices = $user->invoicesIncludingPending();
+
+指定したインボイスを取得する、`findInvoice`メソッドも使用できます。
+
+    $invoice = $user->findInvoice($invoiceId);
+
+#### インボイス情報の表示
 
 顧客へインボイスを一覧表示するとき、そのインボイスに関連する情報を表示するために、インボイスのヘルパメソッドを表示に利用できます。ユーザーが簡単にダウンロードできるよう、テーブルで全インボイスを一覧表示する例を見てください。
 

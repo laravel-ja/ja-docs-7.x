@@ -227,6 +227,18 @@ Nginxには詳しくない？　問題ありません。`sites`プロパティ�
 
 > {note} Homesteadのスクリプトは可能な限り冪等性を保つように組まれています。しかしながら、プロビジョニング中に問題が起きたら、`vagrant destroy && vagrant up`によりマシンを壊し、再構築してください。
 
+#### サービスの有効／無効
+
+Homesteadはデフォルトで多くのサービスを起動します。プロビジョニング時にサービスの有効／無効をカスタマイズ可能です。例として、PostgreSQLを有効にし、MySQLを無効にしてみます。
+
+    services:
+        - enabled:
+            - "postgresql@12-main"
+        - disabled:
+            - "mysql"
+
+指定したサービスは、`enabled`と`disabled`ディレクティブ中で指定した順番に従い開始／停止します。
+
 <a name="hostname-resolution"></a>
 #### ホスト名の解決
 
@@ -460,12 +472,11 @@ Laravelベースではないプロジェクトも簡単に実行できるよう�
 <a name="wildcard-ssl"></a>
 ### ワイルドカードSSL
 
-Homesteadは`Homestead.yaml`ファイルの`sites:`セクションで定義している各サイトごとに、自己署名したSSL証明書を設定しています。サイトに対しワイルドカードSSL証明書を生成したい場合は、サイトの設定に`wildcard`オプションを追加してください。シングルドメイン証明書の代わりにワイルドカード証明書を使いたい場合はサイトの設定に`use_wildcard`オプションも追加してください。
+Homesteadは`Homestead.yaml`ファイルの`sites:`セクションで定義している各サイトごとに、自己署名したSSL証明書を設定しています。サイトに対しワイルドカードSSL証明書を生成したい場合は、サイトの設定に`wildcard`オプションを追加してください。特定ドメインの証明書の代わりに、デフォルトでワイルドカード証明書を使用します。
 
     - map: foo.domain.test
       to: /home/vagrant/domain
       wildcard: "yes"
-      use_wildcard: "yes"
 
 `use_wildcard`オプションが`no`と指定されている場合は、ワイルドカード証明書は生成されますが使用されません。
 
@@ -746,7 +757,7 @@ Homesteadの更新を開始する前に、現在の仮想マシンを削除す�
 
 上記のコマンドにより、最新のHomesteadコードがGitHubリポジトリよりpullされ、最新のタグをフェッチし、タグ付けされた最新のリリースをチェックアウトします。安定リリースバージョンの最新版は、[GitHubリリースページ](https://github.com/laravel/homestead/releases)で見つけてください。
 
-プロジェクトの`composer.json`ファイルによりHomesteadをインストールしている場合は、`composer.json`ファイルに`"laravel/homestead": "^10"`が含まれていることを確認し、依存コンポーネントをアップデートしてください。
+プロジェクトの`composer.json`ファイルによりHomesteadをインストールしている場合は、`composer.json`ファイルに`"laravel/homestead": "^11"`が含まれていることを確認し、依存コンポーネントをアップデートしてください。
 
     composer update
 

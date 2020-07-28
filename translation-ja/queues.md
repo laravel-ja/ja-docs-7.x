@@ -915,6 +915,12 @@ Supervisorの詳細情報は、[Supervisorドキュメント](http://supervisord
 
     php artisan queue:retry 5
 
+必要に応じ、複数のIDやIDの範囲（数値IDを使用時）をコマンドへ指定できます。
+
+    php artisan queue:retry 5 6 7 8 9 10
+
+    php artisan queue:retry --range=5-10
+
 失敗したジョブをすべて再試行するには、IDとして`all`を`queue:retry`コマンドへ指定し、実行してください。
 
     php artisan queue:retry all

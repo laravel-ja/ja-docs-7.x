@@ -53,7 +53,7 @@ Bladeを使用する主な利点は、**テンプレートの継承**と**セク
         <body>
             @section('sidebar')
                 ここがメインのサイドバー
-            @show
+            @endsection
 
             <div class="container">
                 @yield('content')
@@ -264,6 +264,14 @@ Blade（およびLaravelの`e`ヘルパ）はデフォルトで、HTMLエンテ�
         </div>
 
         <div class="clearfix"></div>
+    @endif
+
+セクションに何か内容が含まれているかを判定するために、`@sectionMissing`ディレクティブが使用できます。
+
+    @sectionMissing('navigation')
+        <div class="pull-right">
+            @include('default-navigation')
+        </div>
     @endif
 
 #### 環境ディレクティブ
