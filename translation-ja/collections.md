@@ -1445,6 +1445,23 @@ staticの`make`メソッドは、新しいコレクションインスタンス�
 
     // ['prod-100' => 'Desk', 'prod-200' => 'Chair']
 
+`pluck`メソッドは、「ドット」記法を使ったネストしている値の取得もサポートしています。
+
+    $collection = collect([
+        [
+            'speakers' => [
+                'first_day' => ['Rosa', 'Judith'],
+                'second_day' => ['Angela', 'Kathleen'],
+            ],
+        ],
+    ]);
+
+    $plucked = $collection->pluck('speakers.first_day');
+
+    $plucked->all();
+
+    // ['Rosa', 'Judith']
+
 重複するキーが存在している場合は、最後に一致した要素が結果のコレクションへ挿入されます。
 
     $collection = collect([

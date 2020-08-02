@@ -19,7 +19,7 @@ Laravelのエンクリプタを使用する準備として、`config/app.php`設
 
 #### 値の暗号化
 
-`encrypt`ヘルパを使用し、値を暗号化できます。OpenSSLと`AES-256-CBC`アルゴリズムが使用され、すべての値は暗号化されます。さらに、全暗号化済み値はメッセージ認証コード(MAC)を使用し署名されますので、暗号化済み値の変更は感知されます。
+`Crypt`ファサードの`encryptString`ヘルパを使用し、値を暗号化できます。OpenSSLと`AES-256-CBC`アルゴリズムが使用され、すべての値は暗号化されます。さらに、全暗号化済み値はメッセージ認証コード(MAC)を使用し署名されますので、暗号化済み値の変更は感知されます。
 
     <?php
 
@@ -28,6 +28,7 @@ Laravelのエンクリプタを使用する準備として、`config/app.php`設
     use App\Http\Controllers\Controller;
     use App\User;
     use Illuminate\Http\Request;
+    use Illuminate\Support\Facades\Crypt;
 
     class UserController extends Controller
     {
@@ -43,29 +44,20 @@ Laravelのエンクリプタを使用する準備として、`config/app.php`設
             $user = User::findOrFail($id);
 
             $user->fill([
-                'secret' => encrypt($request->secret),
+                'secret' => Crypt::encryptString($request->secret),
             ])->save();
         }
     }
 
-#### シリアライズしない暗号化
-
-暗号化の過程で暗号化する値は「シリアライズ(`serialize`)」されます。これにより、オブジェクトや配列の暗号化が可能になります。そのため、PHPではないクライアントで暗号化された値を受け取る場合、データを「非シリアライズ(`unserialize`)」する必要が起きるでしょう。もし、シリアライズせずに値を暗号化／復号したい場合は、`Crypt`ファサードの`encryptString`と`decryptString`を使用してください。
-
-    use Illuminate\Support\Facades\Crypt;
-
-    $encrypted = Crypt::encryptString('Hello world.');
-
-    $decrypted = Crypt::decryptString($encrypted);
-
 #### 値の復号
 
-`decrypt`ヘルパにより、値を復号できます。MACが無効な場合など、その値が正しくない時は`Illuminate\Contracts\Encryption\DecryptException`が投げられます。
+`Crypt`ファサードの`decryptString`ヘルパにより、値を復号できます。MACが無効な場合など、その値が正しくない時は`Illuminate\Contracts\Encryption\DecryptException`が投げられます。
 
     use Illuminate\Contracts\Encryption\DecryptException;
+    use Illuminate\Support\Facades\Crypt;
 
     try {
-        $decrypted = decrypt($encryptedValue);
+        $decrypted = Crypt::decryptString($encryptedValue);
     } catch (DecryptException $e) {
         //
     }

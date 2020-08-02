@@ -53,7 +53,7 @@ Bladeを使用する主な利点は、**テンプレートの継承**と**セク
         <body>
             @section('sidebar')
                 ここがメインのサイドバー
-            @endsection
+            @show
 
             <div class="container">
                 @yield('content')

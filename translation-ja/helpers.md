@@ -216,11 +216,9 @@ Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し�
 [csrf_field](#method-csrf-field)
 [csrf_token](#method-csrf-token)
 [dd](#method-dd)
-[decrypt](#method-decrypt)
 [dispatch](#method-dispatch)
 [dispatch_now](#method-dispatch-now)
 [dump](#method-dump)
-[encrypt](#method-encrypt)
 [env](#method-env)
 [event](#method-event)
 [factory](#method-factory)
@@ -2435,13 +2433,6 @@ The `snake` method converts the given string to `snake`メソッドは、文字�
 
 スクリプトの実行を停止したくない場合は、代わりに[`dump`](#method-dump)関数を使ってください。
 
-<a name="method-decrypt"></a>
-#### `decrypt()` {#collection-method}
-
-`decrypt`関数は、指定値をLaravelの[暗号化機能](/docs/{{version}}/encryption)を用い、復号します。
-
-    $decrypted = decrypt($encrypted_value);
-
 <a name="method-dispatch"></a>
 #### `dispatch()` {#collection-method}
 
@@ -2466,13 +2457,6 @@ The `snake` method converts the given string to `snake`メソッドは、文字�
     dump($value1, $value2, $value3, ...);
 
 変数の値をダンプした後に実行を停止したい場合は、代わりに[`dd`](#method-dd)関数を使用してください。
-
-<a name="method-encrypt"></a>
-#### `encrypt()` {#collection-method}
-
-`encrypt`関数は、Laravelの[暗号化機能](/docs/{{version}}/encryption)を用い、指定値を暗号化します。
-
-    $encrypted = encrypt($unencrypted_value);
 
 <a name="method-env"></a>
 #### `env()` {#collection-method}
