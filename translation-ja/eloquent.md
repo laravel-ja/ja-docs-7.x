@@ -545,25 +545,7 @@ Eloquentの`all`メソッドはモデルテーブルの全レコードを結果�
 
     $flight->fill(['name' => 'Flight 22']);
 
-#### 属性の保護
-
-`$fillable`が複数代入時における属性の「許可リスト」として動作する一方、`$guarded`の使用を選ぶことができます。`$guarded`プロパティは複数代入したくない属性の配列です。配列に含まれない他の属性は全部複数代入可能です。そのため`$guarded`は「拒否リスト」として働きます。重要なのは、`$fillable`か`$guarded`のどちらか一方を使用することです。両方一度には使えません。以下の例は、**`price`を除いた**全属性に複数代入できます。
-
-    <?php
-
-    namespace App;
-
-    use Illuminate\Database\Eloquent\Model;
-
-    class Flight extends Model
-    {
-        /**
-         * 複数代入しない属性
-         *
-         * @var array
-         */
-        protected $guarded = ['price'];
-    }
+#### 複数代入の許可
 
 全属性を複数代入可能にする場合は、`$guarded`プロパティに空の配列を定義します。
 
@@ -1002,7 +984,6 @@ Eloquentイベントの定義とマップができたら、[イベントリス�
 
     namespace App;
 
-    use App\Scopes\AgeScope;
     use Illuminate\Database\Eloquent\Model;
 
     class User extends Model

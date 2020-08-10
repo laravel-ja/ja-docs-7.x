@@ -8,6 +8,7 @@
     - [モデルインデックスの設定](#configuring-model-indexes)
     - [検索可能データの設定](#configuring-searchable-data)
     - [モデルIDの設定](#configuring-the-model-id)
+    - [ユーザーの識別](#identifying-users)
 - [インデックス](#indexing)
     - [バッチ取り込み](#batch-import)
     - [レコード追加](#adding-records)
@@ -170,6 +171,15 @@ Scoutはデフォルトとして、モデルの主キーを検索インデック
             return 'email';
         }
     }
+
+<a name="identifying-users"></a>
+### ユーザーの識別
+
+ScoutはAlgoliaを使用する場合、自動的にユーザーを識別します。認証済みユーザーを検索操作と結びつけると、Algoliaダッシュボードで検索分析を閲覧する場合、役に立つでしょう。`.env`ファイル中の`SCOUT_IDENTIFY`を`true`に設定するとユーザー認証が有効になります。
+
+    SCOUT_IDENTIFY=true
+
+この機能を有効にすると、リクエストのIPアドレスと認証済みユーザーのプライマリ識別子もAlgoliaに渡されるため、これらのデータはそのユーザーが行った検索リクエストへ関連付けられます。
 
 <a name="indexing"></a>
 ## インデックス

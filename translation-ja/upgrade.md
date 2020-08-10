@@ -47,7 +47,13 @@ Laravel7は裏で動作しているSymfonyコンポーネントを5.xへアッ�
 <a name="updating-dependencies"></a>
 ### 依存パッケージのアップデート
 
-`composer.json`中の依存パッケージ指定で、`laravel/framework`を`^7.0`へアップデートしてください。さらに、`nunomaduro/collision`は`^4.1`、`laravel/tinker`は`^2.0`、`facade/ignition`は`^2.0`へアップデートしてください。
+`composer.json`ファイル中に指定されている以下のパッケージ依存を更新してください。
+
+- `laravel/framework`を`^7.0`へ
+- `nunomaduro/collision`を`^4.1`へ
+- `phpunit/phpunit`を`^8.5`へ
+- `laravel/tinker`を`^2.0`へ
+- `facade/ignition`を`^2.0`へ
 
 以下のファーストパーティ製パッケージは、Laravel7に対応する新しいメジャーリリースを出しました。どれか使用しているのであれば、それぞれのアップグレードガイドをLaravel7へのアップグレードの前にお読みください。
 

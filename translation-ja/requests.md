@@ -427,7 +427,7 @@ TLS／SSL証明を行うロードバランサの裏でアプリケーション�
         /**
          * プロキシを検出するために使用するヘッダ
          *
-         * @var string
+         * @var int
          */
         protected $headers = Request::HEADER_X_FORWARDED_ALL;
     }

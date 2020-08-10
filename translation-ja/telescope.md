@@ -5,7 +5,8 @@
     - [設定](#configuration)
     - [データの刈り込み](#data-pruning)
     - [マイグレーションのカスタマイズ](#migration-customization)
-- [ダッシュボードの認可](#dashboard-authorization)
+    - [ダッシュボードの認可](#dashboard-authorization)
+- [Telescopeのアップグレード](#upgrading-telescope)
 - [フィルタリング](#filtering)
     - [エンティティ](#filtering-entries)
     - [バッチ](#filtering-batches)
@@ -49,12 +50,6 @@ Telescopeをインストールしたら、`telescope:install` Artisanコマン�
     php artisan telescope:install
 
     php artisan migrate
-
-#### Telescopeのアップデート
-
-Telescopeを更新したら、Telescopeのアセットを再リソース公開してください。
-
-    php artisan telescope:publish
 
 ### 特定の環境でのみのインストレーション
 
@@ -113,7 +108,7 @@ Telescopeのアセットをリソース公開すると、主となる設定フ�
     $schedule->command('telescope:prune --hours=48')->daily();
 
 <a name="dashboard-authorization"></a>
-## ダッシュボードの認可
+### ダッシュボードの認可
 
 Telescopeはデフォルトで、ダッシュボードを`/telescope`で表示します。デフォルトでは`local`環境からのみ、このダッシュボードへアクセスできます。`app/Providers/TelescopeServiceProvider.php`ファイルの中に、`gate`メソッドが存在しています。この認可ゲートで、Telescopeの**local以外**でのアクセスをコントロールできます。Telescopeに対するアクセスを宣言する必要に応じ、このゲートを自由に変更してください。
 
@@ -134,6 +129,23 @@ Telescopeはデフォルトで、ダッシュボードを`/telescope`で表示�
     }
 
 > {note} 実行環境では、`APP_ENV`環境変数を必ず`production`に変更してください。それ以外の値の場合、Telescopeインストールは一般公開されます。
+
+<a name="upgrading-telescope"></a>
+## Telescopeのアップグレード
+
+Telescopを新しいバージョンへアップグレードするときは、Telescopeのアセットを必ず再リソース公開してください。
+
+    php artisan telescope:publish
+
+アセットを最新状態に保ち、将来のアップデートで起きる問題を防ぐために、アプリケーションの`composer.json`ファイルの`post-update-cmd`スクリプトへ`telescope:publish`コマンドを追加しておくのが良いでしょう。
+
+    {
+        "scripts": {
+            "post-update-cmd": [
+                "@php artisan telescope:publish --ansi"
+            ]
+        }
+    }
 
 <a name="filtering"></a>
 ## フィルタリング

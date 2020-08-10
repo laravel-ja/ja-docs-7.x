@@ -911,7 +911,7 @@ Supervisorの詳細情報は、[Supervisorドキュメント](http://supervisord
 
     php artisan queue:failed
 
-`queue:failed`コマンドはジョブID、接続、キュー、失敗した時間をリスト表示します。失敗したジョブをジョブIDで指定すると、リトライ可能です。たとえば、IDが`5`の失敗したジョブを再試行するには、以下のコマンドを実行します。
+`queue:failed`コマンドはジョブID、接続、キュー、失敗した時間、その他の情報をリスト表示します。失敗したジョブをジョブIDで指定すると、リトライ可能です。たとえば、IDが`5`の失敗したジョブを再試行するには、以下のコマンドを実行します。
 
     php artisan queue:retry 5
 

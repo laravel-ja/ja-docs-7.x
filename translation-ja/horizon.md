@@ -102,9 +102,19 @@ Horizonは、`/horizon`でダッシュボードを表示します。デフォル
 
 Horizonの新しいメジャーバージョンへアップグレードする場合は、注意深く[アップグレードガイド](https://github.com/laravel/horizon/blob/master/UPGRADE.md)を確認するのが重要です。
 
-付け加えて、Horizonのアセットを再公開する必要があります。
+付け加えて、新しいHorizonへバージョンアップするときは、アセットを再公開する必要があります。
 
     php artisan horizon:publish
+
+最新の更新状態を維持し、将来のアップデートで起きる問題を防ぐために、`composer.json`ファイルの`post-update-cmd`スクリプトへこのコマンドを追加しておくのが良いでしょう。
+
+    {
+        "scripts": {
+            "post-update-cmd": [
+                "@php artisan horizon:publish --ansi"
+            ]
+        }
+    }
 
 <a name="running-horizon"></a>
 ## Horizonの実行

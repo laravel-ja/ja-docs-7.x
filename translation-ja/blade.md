@@ -558,7 +558,7 @@ HTML属性を使い、Bladeコンポーネントへデータを渡すことが�
         /**
          * コンポーネントを表すビュー／コンテンツの取得
          *
-         * @return \Illuminate\View\View|string
+         * @return \Illuminate\View\View|\Closure|string
          */
         public function render()
         {
@@ -611,6 +611,28 @@ HTML属性を使い、Bladeコンポーネントへデータを渡すことが�
     <option {{ $isSelected($value) ? 'selected="selected"' : '' }} value="{{ $value }}">
         {{ $label }}
     </option>
+
+#### クラス内での属性／スロットの使用
+
+Bladeコンポーネントはクラスのrenderメソッドの中からコンポーネント名、属性、スロットへアクセスできます。しかし、このデータにアクセスするにはコンポーネントの`render`メソッドからクロージャを返す必要があります。クロージャは唯一の引数として`$data`配列を受け取ります。
+
+    /**
+     * コンポーネントを表すビュー／内容の取得
+     *
+     * @return \Illuminate\View\View|\Closure|string
+     */
+    public function render()
+    {
+        return function (array $data) {
+            // $data['componentName'];
+            // $data['attributes'];
+            // $data['slot'];
+
+            return view('components.alert');
+        };
+    }
+
+`componentName`は、HTMLタグ中で`x-`プレフィックスに続けて使用している名前と同じです。そのため、`<x-alert />`の`componentName`は`alert`となります。`attributes`要素はHTMLタグ中に現れるすべての属性を含みます。`slot`要素はそのコンポーネントのスロットの内容の`Illuminate\Support\HtmlString`インスタンスです。
 
 #### 依存の追加
 
@@ -735,7 +757,7 @@ VueのようなJavaScriptフレームワークを使用している方は「ス�
     /**
      * コンポーネントを表すビュー／コンテンツの取得
      *
-     * @return \Illuminate\View\View|string
+     * @return \Illuminate\View\View|\Closure|string
      */
     public function render()
     {

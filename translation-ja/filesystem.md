@@ -376,6 +376,16 @@ LaravelのFlysystem統合では、複数のプラットフォームにおける�
 
     Storage::setVisibility('file.jpg', 'public');
 
+アップロード済みファイルを取り扱うときは、`public`の視認性を付け保存するために、`storePublicly`か`storePubliclyAs`メソッドを使ってください。
+
+    $path = $request->file('avatar')->storePublicly('avatars', 's3');
+
+    $path = $request->file('avatar')->storePubliclyAs(
+        'avatars',
+        $request->user()->id,
+        's3'
+    );
+
 <a name="deleting-files"></a>
 ## ファイル削除
 

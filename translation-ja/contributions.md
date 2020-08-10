@@ -29,6 +29,7 @@ LaravelのソースコードはGitHubで管理され、各Laravelプロジェク
 - [Laravel Dusk](https://github.com/laravel/dusk)
 - [Laravel Cashier Stripe](https://github.com/laravel/cashier)
 - [Laravel Cashier Paddle](https://github.com/laravel/cashier-paddle)
+- [Laravel Echo](https://github.com/laravel/echo)
 - [Laravel Envoy](https://github.com/laravel/envoy)
 - [Laravel Framework](https://github.com/laravel/framework)
 - [Laravel Homestead](https://github.com/laravel/homestead)
