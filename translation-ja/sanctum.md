@@ -134,9 +134,9 @@ Sanctumにより認証されたリクエストを処理するとき、そのト�
 
     // 全トークンの破棄
     $user->tokens()->delete();
-    
-    // Revoke the user's current token...
-    $request->user()->currentAccessToken()->delete();    
+
+    // このユーザーの現在のトークンを取り消す
+    $request->user()->currentAccessToken()->delete();
 
     // 特定トークンの破棄
     $user->tokens()->where('id', $id)->delete();
