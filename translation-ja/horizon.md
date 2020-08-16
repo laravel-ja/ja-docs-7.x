@@ -267,6 +267,7 @@ queueableオブジェクトのタグを任意に定義したい場合は、そ�
 
     'waits' => [
         'redis:default' => 60,
+        'redis:critical,high' => 90,
     ],
 
 <a name="metrics"></a>

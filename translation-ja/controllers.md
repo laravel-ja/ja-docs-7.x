@@ -11,6 +11,7 @@
     - [ネストしたリソース](#restful-nested-resources)
     - [リソースルートの命名](#restful-naming-resource-routes)
     - [リソースルートパラメータの命名](#restful-naming-resource-route-parameters)
+    - [リソースルートのスコープ](#restful-scoping-resource-routes)
     - [リソースURIのローカライズ](#restful-localizing-resource-uris)
     - [リソースコントローラへのルート追加](#restful-supplementing-resource-controllers)
 - [依存注入とコントローラ](#dependency-injection-and-controllers)
@@ -267,6 +268,26 @@ DELETE    | `/comments/{comment}`             | destroy      | comments.destroy
 上記のサンプルコードは、リソースの`show`ルートで次のURIを生成します。
 
     /users/{admin_user}
+
+
+<a name="restful-scoping-resource-routes"></a>
+### リソースルートのスコープ
+
+リソースルート定義で複数のEloquentモデルを暗黙的にバインドする場合、最初のEloquentモデルの子限定のように、２番目のEloquentモデルをスコープする必要が起きえます。たとえば、指定ユーザーのスラグでブログ投稿を取得する状況を考えてください。
+
+    use App\Http\Controllers\PostsController;
+
+    Route::resource('users.posts', PostsController::class)->scoped();
+
+`scoped`メソッドに配列を渡し、デフォルトモデルのルートキーをオーバーライドできます。
+
+    use App\Http\Controllers\PostsController;
+
+    Route::resource('users.posts', PostsController::class)->scoped([
+        'post' => 'slug',
+    ]);
+
+ネストしたルートパラメータとしてカスタムキー付きの暗黙のバインディングを使用すると、Laravelは自動的にネストしたモデルを取得するためにクエリをスコープします。このとき、親には規約に即したリレーション名が使われているものとして扱います。今回の例の場合、`User`モデルには`Post`モデルを取得するために使用できる`posts`（ルートパラメーター名の複数型）の名前を持つリレーションがあると仮定します。
 
 <a name="restful-localizing-resource-uris"></a>
 ### リソースURIのローカライズ

@@ -19,8 +19,6 @@ LaravelでRedis使用するには、PECLを使用して[PhpRedis](https://github
 
     composer require predis/predis
 
-> {note} Predisはオリジナル作者がパッケージを放棄したため、将来のリリースではLaravelから削除します。
-
 <a name="configuration"></a>
 ### 設定
 
@@ -46,7 +44,21 @@ LaravelでRedis使用するには、PECLを使用して[PhpRedis](https://github
 
     ],
 
-デフォルトのサーバ設定は、開発時には十分でしょう。しかしご自由に自分の環境に合わせてこの配列を変更してください。各Redisサーバは名前、ホスト、ポートの指定が必要です。
+デフォルトのサーバ設定は、開発時には十分でしょう。しかしご自由に自分の環境に合わせてこの配列を変更してください。Redis接続を表すシングルURLを定義していない場合、各Redisサーバの名前、ホスト、ポートの指定が必要です。
+
+    'redis' => [
+
+        'client' => env('REDIS_CLIENT', 'phpredis'),
+
+        'default' => [
+            'url' => 'tcp://127.0.0.1:6379?database=0',
+        ],
+
+        'cache' => [
+            'url' => 'tls://user:password@127.0.0.1:6380?database=1',
+        ],
+
+    ],
 
 #### クラスタ設定
 
@@ -123,7 +135,7 @@ PhpRedis拡張は、`config/database.php`の中で`REDIS_CLIENT`環境変数の�
 
     'RedisManager' => Illuminate\Support\Facades\Redis::class,
 
-デフォルトの`host`、`port`、`database`、`password`オプションに加え、PhpRedisは`persistent`、`prefix`、`read_timeout`、`timeout`追加オプションをサポートしています。`config/database.php`設定ファイル中のRedisサーバ設定に、これらのオプションを追加してください。
+デフォルトの`host`、`port`、`database`、`password`オプションに加え、PhpRedisは`persistent`、`prefix`、`read_timeout`、`timeout`、`context`追加オプションをサポートしています。`config/database.php`設定ファイル中のRedisサーバ設定に、これらのオプションを追加してください。
 
     'default' => [
         'host' => env('REDIS_HOST', 'localhost'),
@@ -131,6 +143,10 @@ PhpRedis拡張は、`config/database.php`の中で`REDIS_CLIENT`環境変数の�
         'port' => env('REDIS_PORT', 6379),
         'database' => 0,
         'read_timeout' => 60,
+        'context' => [
+            // 'auth' => ['username', 'secret'],
+            // 'stream' => ['verify_peer' => false],
+        ],
     ],
 
 #### Redisファサード

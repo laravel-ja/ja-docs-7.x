@@ -224,7 +224,23 @@ Laravelの各通知は、（通常、`app/Notifications`ディレクトリに設
         );
     }
 
-さらに、`toMail`メソッドから[Mailableオブジェクト](/docs/{{version}}/mail)を返すこともできます。
+`MailMessage`:`MailMessage`の`view`メソッドで指定する配列の第２要素としてビュー名を渡すことにより、メールメッセージの平文テキストビューを指定できます。
+
+    /**
+     * 通知のメールプレゼンテーションを取得
+     *
+     * @param  mixed  $notifiable
+     * @return \Illuminate\Notifications\Messages\MailMessage
+     */
+    public function toMail($notifiable)
+    {
+        return (new MailMessage)->view(
+            ['emails.name.html', 'emails.name.plain'],
+            ['invoice' => $this->invoice]
+        );
+    }
+
+さらに、`toMail`メソッドから[Mailableオブジェクト](/docs/{{version}}/mail)をそのまま返すこともできます。
 
     use App\Mail\InvoicePaid as Mailable;
 
