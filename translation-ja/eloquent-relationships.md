@@ -837,7 +837,7 @@ has many through（〜経由で多数へ紐づく）リレーションは、仲�
 
 > {note} 既存のアプリケーションへ"morph map"を追加する場合は、データベース中のすべてのmorphable `*_type`カラムの値は完全なクラス名を持っており、"map"名へ変換する必要が起きます。
 
-`getMorphClass`メソッドを使用すると、実行時に指定モデルのmorph別名を決められます。逆に、`Relation::getMorphedModel`メソッドを使い、morph別名に関連付けている完全なクラス名を決めることもできます。
+`getMorphClass`メソッドを使用し、実行時の指定モデルのmorph別名を求められます。逆に、`Relation::getMorphedModel`メソッドを使い、morph別名に関連付けたクラスの完全な名前を求めることもできます。
 
     use Illuminate\Database\Eloquent\Relations\Relation;
 
