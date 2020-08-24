@@ -18,10 +18,6 @@ Horizon（水平線、展望）は、Laravelで動作するRedisキューのた�
 
 一つのシンプルな設定ファイルにすべてのワーカ設定を保存するため、チーム全体がコラボレート可能なソースコントロール下に、設定を保持できます。
 
-<p align="center">
-<img src="https://res.cloudinary.com/dtfbvvkyp/image/upload/v1537195039/photos/Test.png">
-</p>
-
 <a name="installation"></a>
 ## インストール
 

@@ -62,7 +62,7 @@ Laravel Cashierは[Stripe](https://stripe.com)によるサブスクリプショ�
 
 新しいバージョンのCashierへアップグレードする場合は、[アップグレードガイド](https://github.com/laravel/cashier-stripe/blob/master/UPGRADE.md)を注意深く確認することが重要です。
 
-> {note} ブレーキングチェンジを防ぐために、CashierではStripeの固定APIバージョンを使用しています。Cashier11では、Stripeの`2020-03-02`付けAPIバージョンを使用しています。Stripeの新機能や機能向上を利用するため、マイナーリリースでもStripe APIのバージョンを更新することがあります。
+> {note} ブレーキングチェンジを防ぐために、CashierではStripeの固定APIバージョンを使用しています。Cashier12では、Stripeの`2020-03-02`付けAPIバージョンを使用しています。Stripeの新機能や機能向上を利用するため、マイナーリリースでもStripe APIのバージョンを更新することがあります。
 
 <a name="installation"></a>
 ## インストール

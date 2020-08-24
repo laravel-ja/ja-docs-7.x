@@ -13,6 +13,7 @@
     - [ループ変数](#the-loop-variable)
     - [コメント](#comments)
     - [PHP](#php)
+    - [`@once`ディレクティブ](#the-once-directive)
 - [フォーム](#forms)
     - [CSRFフィールド](#csrf-field)
     - [Methodフィールド](#method-field)
@@ -415,6 +416,19 @@ PHPコードをビューへ埋め込むと便利な場合もあります。Blade
 
 > {tip} Bladeはこの機能を提供していますが、数多く使用しているのであれば、それはテンプレートへ多すぎるロジックを埋め込んでいるサインです。
 
+<a name="the-once-directive"></a>
+### `@once`ディレクティブ
+
+T`@once`ディレクティブは、レンダリングサイクルごとに一度だけ評価されるテンプレートの一部を定義するできます。これは[stacks](#stacks)を使い、JavaScriptをページのヘッダへ挿入するのに便利です。たとえば、ループ内で与えられた [component](#components)をレンダリングしている場合、最初にコンポーネントがレンダリングされたときのみ、JavaScriptをヘッダにプッシュできます。
+
+    @once
+        @push('scripts')
+            <script>
+                // カスタムJavaScriptコード…
+            </script>
+        @endpush
+    @endonce
+
 <a name="forms"></a>
 ## フォーム
 
@@ -667,6 +681,8 @@ Bladeコンポーネントはクラスのrenderメソッドの中からコンポ
     <div {{ $attributes }}>
         <!-- コンポーネントのコンテンツ -->
     </div>
+
+> {note} コンポーネントでの変数（`{{ $attributes }}`）の表示や、`@env`ディレクティブの使用は、今のところサポートしていません。
 
 #### デフォルト／属性のマージ
 

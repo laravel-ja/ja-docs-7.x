@@ -367,7 +367,7 @@ Laravelはリフレクションを使いリスナクラスをスキャンし、�
          * 失敗したジョブの処理
          *
          * @param  \App\Events\OrderShipped  $event
-         * @param  \Exception  $exception
+         * @param  \Throwable  $exception
          * @return void
          */
         public function failed(OrderShipped $event, $exception)

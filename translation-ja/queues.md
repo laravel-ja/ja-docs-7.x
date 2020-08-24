@@ -808,7 +808,7 @@ Supervisorの詳細情報は、[Supervisorドキュメント](http://supervisord
 <a name="cleaning-up-after-failed-jobs"></a>
 ### ジョブ失敗後のクリーンアップ
 
-失敗時にジョブ特定のクリーンアップを実行するため、ジョブクラスで`failed`メソッドを直接定義できます。これはユーザーに警告を送ったり、ジョブの実行アクションを巻き戻すために最適な場所です。`failed`メソッドには、そのジョブを落とすことになった例外（`Exception`）が渡されます。
+失敗時にジョブ特定のクリーンアップを実行するため、ジョブクラスで`failed`メソッドを直接定義できます。これはユーザーに警告を送ったり、ジョブの実行アクションを巻き戻すために最適な場所です。`failed`メソッドには、そのジョブを落とすことになった`Throwable`例外が渡されます。
 
     <?php
 
@@ -853,10 +853,10 @@ Supervisorの詳細情報は、[Supervisorドキュメント](http://supervisord
         /**
          * ジョブ失敗の処理
          *
-         * @param  \Exception  $exception
+         * @param  \Throwable  $exception
          * @return void
          */
-        public function failed(Exception $exception)
+        public function failed(Throwable $exception)
         {
             // 失敗の通知をユーザーへ送るなど…
         }
