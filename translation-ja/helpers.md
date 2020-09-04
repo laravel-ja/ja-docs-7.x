@@ -103,6 +103,9 @@ Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し�
 [Str::limit](#method-str-limit)
 [Str::lower](#method-str-lower)
 [Str::orderedUuid](#method-str-ordered-uuid)
+[Str::padBoth](#method-str-padboth)
+[Str::padLeft](#method-str-padleft)
+[Str::padRight](#method-str-padright)
 [Str::plural](#method-str-plural)
 [Str::random](#method-str-random)
 [Str::replaceArray](#method-str-replace-array)
@@ -156,6 +159,9 @@ Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し�
 [ltrim](#method-fluent-str-ltrim)
 [match](#method-fluent-str-match)
 [matchAll](#method-fluent-str-match-all)
+[padBoth](#method-fluent-str-padboth)
+[padLeft](#method-fluent-str-padleft)
+[padRight](#method-fluent-str-padright)
 [plural](#method-fluent-str-plural)
 [prepend](#method-fluent-str-prepend)
 [replace](#method-fluent-str-replace)
@@ -1276,6 +1282,51 @@ NULL値を指定すると、空の配列が返ってきます。
 
     return (string) Str::orderedUuid();
 
+<a name="method-str-padboth"></a>
+#### `Str::padBoth()` {#collection-method}
+
+`Str::padBoth`メソッドは、PHPの`str_pad`関数のラッパーで、文字列の両脇を別の文字列で埋めます。
+
+    use Illuminate\Support\Str;
+
+    $padded = Str::padBoth('James', 10, '_');
+
+    // '__James___'
+
+    $padded = Str::padBoth('James', 10);
+
+    // '  James   '
+
+<a name="method-str-padleft"></a>
+#### `Str::padLeft()` {#collection-method}
+
+`Str::padBoth`メソッドは、PHPの`str_pad`関数のラッパーで、文字列の左端を別の文字列で埋めます。
+
+    use Illuminate\Support\Str;
+
+    $padded = Str::padLeft('James', 10, '-=');
+
+    // '-=-=-James'
+
+    $padded = Str::padLeft('James', 10);
+
+    // '     James'
+
+<a name="method-str-padright"></a>
+#### `Str::padRight()` {#collection-method}
+
+`Str::padBoth`メソッドは、PHPの`str_pad`関数のラッパーで、文字列の右端を別の文字列で埋めます。
+
+    use Illuminate\Support\Str;
+
+    $padded = Str::padRight('James', 10, '-');
+
+    // 'James-----'
+
+    $padded = Str::padRight('James', 10);
+
+    // 'James     '
+
 <a name="method-str-plural"></a>
 #### `Str::plural()` {#collection-method}
 
@@ -1739,7 +1790,7 @@ Fluent文字列はより読み書きしやすい(fluent)、オブジェクト指
 
     // true
 
-    $result = Str::of('ü')->isAcii();
+    $result = Str::of('ü')->isAscii();
 
     // false
 
@@ -1876,6 +1927,51 @@ Fluent文字列はより読み書きしやすい(fluent)、オブジェクト指
     // collect(['un', 'ly']);
 
 一致しなかった場合は、空のコレクションを返します。
+
+<a name="method-fluent-str-padboth"></a>
+#### `padBoth` {#collection-method}
+
+`padBoth`メソッドは、PHPの`str_pad`関数のラッパーで、文字列の両端を別の文字列で埋めます。
+
+    use Illuminate\Support\Str;
+
+    $padded = Str::of('James')->padBoth(10, '_');
+
+    // '__James___'
+
+    $padded = Str::of('James')->padBoth(10);
+
+    // '  James   '
+
+<a name="method-fluent-str-padleft"></a>
+#### `padLeft` {#collection-method}
+
+`padBoth`メソッドは、PHPの`str_pad`関数のラッパーで、文字列の左端を別の文字列で埋めます。
+
+    use Illuminate\Support\Str;
+
+    $padded = Str::of('James')->padLeft(10, '-=');
+
+    // '-=-=-James'
+
+    $padded = Str::of('James')->padLeft(10);
+
+    // '     James'
+
+<a name="method-fluent-str-padright"></a>
+#### `padRight` {#collection-method}
+
+`padBoth`メソッドは、PHPの`str_pad`関数のラッパーで、文字列の右端を別の文字列で埋めます。
+
+    use Illuminate\Support\Str;
+
+    $padded = Str::of('James')->padRight(10, '-');
+
+    // 'James-----'
+
+    $padded = Str::of('James')->padRight(10);
+
+    // 'James     '
 
 <a name="method-fluent-str-plural"></a>
 #### `plural` {#collection-method}

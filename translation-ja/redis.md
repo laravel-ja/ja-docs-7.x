@@ -60,6 +60,24 @@ LaravelでRedis使用するには、PECLを使用して[PhpRedis](https://github
 
     ],
 
+#### 接続スキームの設定
+
+デフォルトでRedisサーバへの接続に、`tcp`スキームをRedisクライアントは使用します。しかし、Redisサーバ接続設定の`scheme`設定オプションを指定すれば、TLS／SSL暗号化を使用できます。
+
+    'redis' => [
+
+        'client' => env('REDIS_CLIENT', 'phpredis'),
+
+        'default' => [
+            'scheme' => 'tls',
+            'host' => env('REDIS_HOST', '127.0.0.1'),
+            'password' => env('REDIS_PASSWORD', null),
+            'port' => env('REDIS_PORT', 6379),
+            'database' => env('REDIS_DB', 0),
+        ],
+
+    ],
+
 #### クラスタ設定
 
 アプリケーションでRedisサーバのクラスタを使用している場合は、Redis設定の`clusters`キーで定義する必要があります。

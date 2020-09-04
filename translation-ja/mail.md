@@ -326,7 +326,7 @@ mailableクラスの`build`メソッドの中で、メールの中身をレン�
      */
     public function build()
     {
-       return $this->view('email.orders.shipped')
+       return $this->view('emails.orders.shipped')
                    ->attachFromStorage('/path/to/file');
     }
 
@@ -339,7 +339,7 @@ mailableクラスの`build`メソッドの中で、メールの中身をレン�
      */
     public function build()
     {
-       return $this->view('email.orders.shipped')
+       return $this->view('emails.orders.shipped')
                    ->attachFromStorage('/path/to/file', 'name.pdf', [
                        'mime' => 'application/pdf'
                    ]);
@@ -354,7 +354,7 @@ mailableクラスの`build`メソッドの中で、メールの中身をレン�
      */
     public function build()
     {
-       return $this->view('email.orders.shipped')
+       return $this->view('emails.orders.shipped')
                    ->attachFromStorageDisk('s3', '/path/to/file');
     }
 

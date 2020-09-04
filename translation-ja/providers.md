@@ -91,7 +91,7 @@ Laravelに含まれている`config/app.php`ファイルを開けば、`provider
          */
         public $singletons = [
             DowntimeNotifier::class => PingdomDowntimeNotifier::class,
-            ServerToolsProvider::class => ServerToolsProvider::class,
+            ServerProvider::class => ServerToolsProvider::class,
         ];
     }
 

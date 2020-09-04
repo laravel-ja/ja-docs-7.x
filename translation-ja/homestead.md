@@ -297,7 +297,7 @@ Windows：
         - crystal: true
         - docker: true
         - elasticsearch:
-            version: 7
+            version: 7.9.0
         - gearman: true
         - golang: true
         - grafana: true

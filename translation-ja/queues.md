@@ -564,7 +564,7 @@ handleメソッドの中でレート制限をする代わりに、レート制�
 
 #### タイムアウト
 
-> {note} `timeout`機能はPHP7.1以上で、`pcntl` PHP拡張に最適化しています。
+> {note} ジョブのタイムアウトを利用するには、`pcntl`PHP拡張をインストールする必要があります。
 
 同様に、ジョブの最大実行秒数を指定するために、Artisanコマンドラインに`--timeout`スイッチを指定できます。
 
@@ -816,7 +816,7 @@ Supervisorの詳細情報は、[Supervisorドキュメント](http://supervisord
 
     use App\AudioProcessor;
     use App\Podcast;
-    use Exception;
+    use Throwable;
     use Illuminate\Bus\Queueable;
     use Illuminate\Contracts\Queue\ShouldQueue;
     use Illuminate\Queue\InteractsWithQueue;

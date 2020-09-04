@@ -280,6 +280,12 @@ Laravelアプリケーションの`config/app.php`設定ファイルには、Lar
 
     <x-courier-button />
 
+#### 無名コンポーネント
+
+パッケージが無名コンポーネントを持っている場合、"views"ディレクトリ（`loadViewsFrom`で指定している場所）の`components`ディレクトリの中へ設置する必要があります。すると、パッケージのビュー名前空間を先頭に付けたコンポーネント名でレンダーできます。
+
+    <x-courier::alert />
+
 <a name="commands"></a>
 ## コマンド
 

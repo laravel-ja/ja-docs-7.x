@@ -286,7 +286,11 @@ You may check if the application is running in the production environment using 
 Or, you may determine if the application is running in a specific environment using the `@env` directive:
 
     @env('staging')
-        // Staging specific content...
+        // The application is running in "staging"...
+    @endenv
+    
+    @env(['staging', 'production'])
+        // The application is running in "staging" or "production"...
     @endenv
 
 <a name="switch-statements"></a>
@@ -642,7 +646,7 @@ Blade components also allow you to access the component name, attributes, and sl
             // $data['attributes'];
             // $data['slot'];
 
-            return view('components.alert');
+            return '<div>Component content</div>';
         };
     }
 
@@ -681,7 +685,7 @@ All of the attributes that are not part of the component's constructor will auto
     <div {{ $attributes }}>
         <!-- Component Content -->
     </div>
-    
+
 > {note} Echoing variables (`{{ $attributes }}`) or using directives such as `@env` directly on a component is not supported at this time.
 
 #### Default / Merged Attributes

@@ -43,8 +43,6 @@
 <a name="introduction"></a>
 ## Introduction
 
-> {note} Cashier Paddle is currently in beta. During the beta period things can and probably will change. Don't use Cashier Paddle in production until a stable version has been released. We appreciate your help with testing and reporting any bugs.
-
 Laravel Cashier Paddle provides an expressive, fluent interface to [Paddle's](https://paddle.com) subscription billing services. It handles almost all of the boilerplate subscription billing code you are dreading. In addition to basic subscription management, Cashier can handle: coupons, swapping subscription, subscription "quantities", cancellation grace periods, and more.
 
 While working with Cashier we recommend you also refer to Paddle's [user guides](https://developer.paddle.com/guides) and [API documentation](https://developer.paddle.com/api-reference/intro).
@@ -210,6 +208,7 @@ Therefore, when displaying subscriptions you should always inform the user which
     $subscription = $user->subscription('default');
 
     $customerEmailAddress = $subscription->paddleEmail();
+    $paymentMethod = $subscription->paymentMethod();
     $cardBrand = $subscription->cardBrand();
     $cardLastFour = $subscription->cardLastFour();
     $cardExpirationDate = $subscription->cardExpirationDate();
@@ -771,7 +770,17 @@ Next, define a route to your Cashier controller within your `routes/web.php` fil
         '\App\Http\Controllers\WebhookController'
     );
 
-Cashier emits a `Laravel\Paddle\Events\WebhookReceived` event when a webhook is received, and a `Laravel\Paddle\Events\WebhookHandled` event when a webhook was handled. Both events contain the full payload of the Paddle webhook.
+Cashier emits a `Laravel\Paddle\Events\WebhookReceived` event when a webhook is received and a `Laravel\Paddle\Events\WebhookHandled` event when a webhook was handled. Both events contain the full payload of the Paddle webhook.
+
+Cashier also emit events dedicated to the type of the received webhook. In addition to the full payload from Paddle, they also contain the relevant models that were used to process the webhook such as the billable model, the subscription, or the receipt:
+
+<div class="content-list" markdown="1">
+- `PaymentSucceeded`
+- `SubscriptionPaymentSucceeded`
+- `SubscriptionCreated`
+- `SubscriptionUpdated`
+- `SubscriptionCancelled`
+</div>
 
 You can optionally also override the default, built-in webhook route by setting the `CASHIER_WEBHOOK` env variable in your `.env` file. This value should be the full URL to your webhook route and needs to match the URL set in your Paddle control panel:
 
@@ -812,12 +821,6 @@ The `charge` method accepts an array as its third argument, allowing you to pass
     $payLink = $user->charge(12.99, 'Product Title', [
         'custom_option' => $value,
     ]);
-
-You may also use the `charge` method without an underlying customer or user:
-
-    use App\User;
-
-    $payLink = (new User)->charge(12.99, 'Product title');
 
 Charges happen in the currency specified in the `cashier.currency` configuration option. By default, this is set to USD. You may override the default currency by setting the `CASHIER_CURRENCY` in your `.env` file:
 
@@ -929,7 +932,7 @@ Alternatively, you can perform more precise customization by catching the [`subs
             // Handle the failed subscription payment...
         }
     }
-    
+
 <a name="testing"></a>
 ## Testing
 
